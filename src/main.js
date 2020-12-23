@@ -5,8 +5,21 @@ import App from './App'
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import router from './router'
-
 Vue.use(Antd)
+
+
+import {postRequest} from "./utils/api";
+import {postKeyValueRequest} from "./utils/api";
+import {putRequest} from "./utils/api";
+import {deleteRequest} from "./utils/api";
+import {getRequest} from "./utils/api";
+
+Vue.prototype.postRequest = postRequest;
+Vue.prototype.postKeyValueRequest = postKeyValueRequest;
+Vue.prototype.putRequest = putRequest;
+Vue.prototype.deleteRequest = deleteRequest;
+Vue.prototype.getRequest = getRequest;
+
 
 Vue.config.productionTip = false
 /* 打包到tomcat需要修改config/index.js 和在router/index.js中增加base */

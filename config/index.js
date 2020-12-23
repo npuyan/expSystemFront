@@ -4,13 +4,29 @@
 
 const path = require('path')
 
+
+let proxyObj = {};
+proxyObj['/ws'] = {
+  ws: true,
+  target: "ws://localhost:8800"
+};
+proxyObj['/'] = {
+  ws: false,
+  target: 'http://localhost:8800',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/': ''
+  }
+}
+
+
 module.exports = {
   dev: {
 
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: proxyObj,
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
