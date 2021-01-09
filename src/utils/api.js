@@ -1,4 +1,5 @@
 import axios from 'axios'
+import qs from 'qs'
 import {Message} from 'view-design'
 import router from '../router/index.js'
 
@@ -52,7 +53,7 @@ export const postRequest = (url, params) => {
   return axios({
     method: 'post',
     url: `${base}${url}`,
-    data: params
+    data: qs.stringify(params)
   })
 }
 export const putRequest = (url, params) => {

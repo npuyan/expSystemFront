@@ -5,7 +5,9 @@ import App from './App'
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import router from './router'
+import {Form} from 'view-design'
 Vue.use(Antd)
+Vue.use(Form)
 
 
 import {postRequest} from "./utils/api";

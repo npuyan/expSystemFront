@@ -1,90 +1,94 @@
 <template>
   <div class="login-container">
 
-<!--    <a-card class="login-form">-->
-      <a-form class="login-form" id="login-form" :form="form" @submit="onSubmit">
-        <h2 class="login-title">实验系统</h2>
-        <a-form-item>
-          <a-input v-decorator="[
-          'userName',
+    <!--    <a-card class="login-form">-->
+    <a-form class="login-form" id="login-form" :form="form">
+      <h2 class="login-title">实验系统</h2>
+      <a-form-item>
+        <a-input v-decorator="[
+          'username',
           { rules: [{ required: true, message: 'Please input your username!' }] },
-        ]" placeholder="用户名" >
-            <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)"/>
-          </a-input>
+        ]" placeholder="用户名">
+          <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)"/>
+        </a-input>
         <br>
-        </a-form-item>
-        <a-form-item>
-          <a-input v-decorator="[
+      </a-form-item>
+      <a-form-item>
+        <a-input v-decorator="[
           'password',
           { rules: [{ required: true, message: 'Please input your Password!' }] },
         ]"
-                   type="password" placeholder="密码" >
-            <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
-          </a-input>
-        </a-form-item>
-        <a-form-item>
-          <a-checkbox
-            v-decorator="[
+                 type="password" placeholder="密码">
+          <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)"/>
+        </a-input>
+      </a-form-item>
+      <a-form-item>
+        <a-checkbox
+          v-decorator="[
           'remember',
           {
             valuePropName: 'checked',
             initialValue: true,
           },
         ]"
-          >
-            记住我 &nbsp&nbsp
-          </a-checkbox>
-          <a class="login-form-forgot" href="">
-            忘记密码
-          </a>
-          <div>
+        >
+          记住我 &nbsp&nbsp
+        </a-checkbox>
+        <a class="login-form-forgot" href="">
+          忘记密码
+        </a>
+        <div>
           <a-button @click="onSubmit" type="primary" html-type="submit" class="login-form-button">
             登录
           </a-button>
           Or
-          <a href="">
+          <router-link :to="{path:'/logup'}">
+          <a href="" @click="">
             注册
           </a>
-          </div>
-        </a-form-item>
-      </a-form>
-<!--    </a-card>-->
+          </router-link>
+        </div>
+      </a-form-item>
+    </a-form>
+    <!--    </a-card>-->
 
   </div>
 </template>
 <script>
 export default {
-  beforeCreate() {
-    this.form = this.$form.createForm(this, { name: 'login-form' });
-  },
-  // data () {
-  //   return {
-  //     form: {
-  //       username: '',
-  //       password: ''
-  //     }
-  //   }
+  // beforeCreate () {
+  //   this.form = this.$form.createForm(this, {name: 'login-form'})
   // },
+  data () {
+    return {
+      form: this.$form.createForm(this, {name: 'coordinated'}),
+    }
+  },
+
   methods: {
-    onSubmit: function () {
-      // alert("submit");
-      var _this=this;
-      _this.postRequest('/dologin',{
-        username:_this.form.username,
-        password:_this.form.password
-      }).then(resp=>{
-        if(resp&&resp.status==200){
-          alert("1");
-          var data=resp.data;
-          alert(data)
-          this.$store.commit('INIT_CURRENTHR', resp.obj);
-          let path = _this.$route.query.redirect;
-          _this.$router.replace((path == '/' || path == undefined) ? '/home' : path);
-        }else {
-          _this.vcUrl='/verifyCode?time=' + new Date();
+    onSubmit: function (e) {
+      e.preventDefault()
+      var _this = this
+      // _this.$router.replace('/home');
+      _this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          _this.postRequest('/login', {
+            username: values.username,
+            password: values.password
+          }).then(resp => {
+            if (resp) {
+              var data = resp.data
+              // this.$store.commit('INIT_CURRENTHR', resp.obj)
+              let path = _this.$route.query.redirect
+              alert(path)
+              _this.$router.replace((path == '/' || path == undefined) ? '/lay' : path)
+            } else {
+              _this.vcUrl = '/verifyCode?time=' + new Date()
+            }
+          })
         }
       })
-      // this.$router.push({path: '/'})
     }
   }
 }

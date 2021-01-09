@@ -6,6 +6,7 @@ import login from '../views/login'
 import Home from '../views/Home'
 import lay from '../views/lay'
 import novnc from '../views/novnc'
+import logup from '../views/logup'
 
 Vue.use(Router)
 export default new Router({
@@ -16,7 +17,13 @@ export default new Router({
       path: '/',
       name: login,
       component: login
-    }, {
+    },
+    {
+      path: '/logup',
+      name: logup,
+      component: logup
+    },
+    {
       path: '/hello',
       name: 'hello',
       component: HelloWorld
