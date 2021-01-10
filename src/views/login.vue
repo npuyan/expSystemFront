@@ -69,7 +69,6 @@ export default {
     onSubmit: function (e) {
       e.preventDefault()
       var _this = this
-      // _this.$router.replace('/home');
       _this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
@@ -77,13 +76,14 @@ export default {
             username: values.username,
             password: values.password
           }).then(resp => {
-            if (resp) {
+            if (resp&&resp.status==200) {
               var data = resp.data
               // this.$store.commit('INIT_CURRENTHR', resp.obj)
               let path = _this.$route.query.redirect
-              alert(path)
-              _this.$router.replace((path == '/' || path == undefined) ? '/lay' : path)
+              _this.$router.push("/lay");
+              // _this.$router.replace((path == '/' || path == undefined) ? '/lay' : path)
             } else {
+              alert("账号或密码错误");
               _this.vcUrl = '/verifyCode?time=' + new Date()
             }
           })

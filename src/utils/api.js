@@ -52,6 +52,7 @@ export const postKeyValueRequest = (url, params) => {
 export const postRequest = (url, params) => {
   return axios({
     method: 'post',
+    withCredentials: true,
     url: `${base}${url}`,
     data: qs.stringify(params)
   })

@@ -1,4 +1,4 @@
-# myvueproject
+# expSystemFront
 
 > A Vue.js project
 
@@ -10,7 +10,7 @@
 ## todolist
 |  todo   | date  |  负责  |
 |  :----:  | :----:  |  ----  |
-| 设计数据库  | 未定 |  zty   |
+| 设计数据库  | 完成 |  zty   |
 | docker集群配置  | 未定 | zty   |
 ## Build Setup
 

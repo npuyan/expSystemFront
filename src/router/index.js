@@ -10,7 +10,7 @@ import logup from '../views/logup'
 
 Vue.use(Router)
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   // base:'/myvueproject/'
   routes: [
     {
