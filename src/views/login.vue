@@ -61,7 +61,7 @@ export default {
   // },
   data () {
     return {
-      form: this.$form.createForm(this, {name: 'coordinated'}),
+      form: this.$form.createForm(this, {name: 'coordinated'})
     }
   },
 
@@ -72,18 +72,18 @@ export default {
       _this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
-          _this.postRequest('/login', {
+          _this.postRequest('/api/login', {
             username: values.username,
             password: values.password
           }).then(resp => {
-            if (resp&&resp.status==200) {
+            if (resp && resp.status === 200) {
               var data = resp.data
               // this.$store.commit('INIT_CURRENTHR', resp.obj)
               let path = _this.$route.query.redirect
-              _this.$router.push("/lay");
+              _this.$router.push('/lay')
               // _this.$router.replace((path == '/' || path == undefined) ? '/lay' : path)
             } else {
-              alert("账号或密码错误");
+              alert('账号或密码错误')
               _this.vcUrl = '/verifyCode?time=' + new Date()
             }
           })

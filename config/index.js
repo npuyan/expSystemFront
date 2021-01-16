@@ -10,27 +10,38 @@ proxyObj['/ws'] = {
   ws: true,
   target: "ws://localhost:8800"
 };
-proxyObj['/'] = {
+proxyObj['/api']={
   ws: false,
   target: 'http://localhost:8800',
   changeOrigin: true,
-  pathRewrite: {
-    '^/': ''
+  pathRewrite:{
+    '^/api':''
   }
 }
+proxyObj['/login']={
+  ws: false,
+  target: 'http://localhost:8800',
+  changeOrigin: true,
+}
+// proxyObj['/'] = {
+//   ws: false,
+//   target: 'http://localhost:8800',
+//   changeOrigin: true,
+//   pathRewrite: {
+//     '^/': ''
+//   }
+// }
 
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: proxyObj,
-
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-   // host: '0.0.0.0',
+    // host: '0.0.0.0',
     port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

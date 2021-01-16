@@ -101,7 +101,7 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       collapsed: true
     }
@@ -115,18 +115,18 @@ export default {
       // window.location.assign("http://ubuntu:"+ans)
     },
     onJumpNewPort: function (a) {
-      console.log("new Port")
-      console.log(a);
-      var _this = this;
-      alert("正在创建新的容器，请确定后等待5s")
-      _this.postRequest('/startNewPort', {
+      console.log('new Port')
+      console.log(a)
+      var _this = this
+      alert('正在创建新的容器，请确定后等待5s')
+      _this.postRequest('api/startNewPort', {
         port: String(a)
       }).then(resp => {
         if (resp) {
-          alert("连接成功")
+          alert('连接成功')
           this.$router.push({path: '/novnc', query: {port: a}})
         } else {
-          alert("连接服务器失败")
+          alert('连接服务器失败')
         }
       })
     }

@@ -22,7 +22,6 @@ Vue.prototype.putRequest = putRequest;
 Vue.prototype.deleteRequest = deleteRequest;
 Vue.prototype.getRequest = getRequest;
 
-
 Vue.config.productionTip = false
 /* 打包到tomcat需要修改config/index.js 和在router/index.js中增加base */
 /* eslint-disable no-new */
