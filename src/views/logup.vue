@@ -158,7 +158,8 @@ export default {
             offset: 0
           }
         }
-      }
+      },
+      form: this.$form.createForm(this, {name: 'coordinated'})
     }
   },
   beforeCreate () {
@@ -167,10 +168,22 @@ export default {
   methods: {
     handleSubmit (e) {
       e.preventDefault()
-      this.form.validateFieldsAndScroll((err, values) => {
+      var _this = this
+      _this.form.validateFieldsAndScroll((err, values) => {
         if (values.agreement === true) {
           if (!err) {
             console.log('Received values of form: ', values)
+            _this.postRequest('/api/logup', values
+            ).then(resp => {
+              if (resp) {
+                alert('注册成功')
+                var data = resp.data
+                let path = _this.$route.query.redirect
+                _this.$router.push('/')
+              } else {
+                alert('注册失败')
+              }
+            })
           }
         } else {
           alert('未确认！')
