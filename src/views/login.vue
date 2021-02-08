@@ -80,7 +80,7 @@ export default {
               var data = resp.data
               // this.$store.commit('INIT_CURRENTHR', resp.obj)
               let path = _this.$route.query.redirect
-              _this.$router.push('/lay')
+              _this.$router.push({path: '/lay' , query: {user_name: values.username}})
               // _this.$router.replace((path == '/' || path == undefined) ? '/lay' : path)
             } else {
               alert('账号或密码错误')

@@ -23,14 +23,14 @@ proxyObj['/login']={
   target: 'http://localhost:8800',
   changeOrigin: true,
 }
-// proxyObj['/'] = {
-//   ws: false,
-//   target: 'http://localhost:8800',
-//   changeOrigin: true,
-//   pathRewrite: {
-//     '^/': ''
-//   }
-// }
+proxyObj['/'] = {
+  ws: false,
+  target: 'http://localhost:8800',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/': ''
+  }
+}
 
 
 module.exports = {
