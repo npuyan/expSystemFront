@@ -3,10 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import Antd from 'ant-design-vue'
+import Button from 'ant-design-vue/lib/button';
 import 'ant-design-vue/dist/antd.css'
 import router from './router'
 import {Form} from 'view-design'
 Vue.use(Antd)
+Vue.use(Button)
 Vue.use(Form)
 
 

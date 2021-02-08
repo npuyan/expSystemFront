@@ -7,6 +7,7 @@ import Home from '../views/Home'
 import lay from '../views/lay'
 import novnc from '../views/novnc'
 import logup from '../views/logup'
+import course from '../views/course'
 
 Vue.use(Router)
 export default new Router({
@@ -46,6 +47,10 @@ export default new Router({
       path: '/novnc',
       name: 'novnc',
       component: novnc
+    }, {
+      path: '/course',
+      name: 'course',
+      component: course
     }
   ]
 })
