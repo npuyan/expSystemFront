@@ -1,16 +1,15 @@
 <template>
   <div>
-  <div id="target"></div>
-  <div style="background-color: #F5F5F5; padding: 15px;">
-
-    <!-- style="border: 2px solid rgb(50, 50, 24)" -->
-    <a-page-header
-      :ghost="true"
-      title="所有课程"
-      sub-title="All courses"
-      @back="backHistory"
-    />
-  </div>
+    <div id="target"></div>
+    <div style="background-color: #f5f5f5; padding: 15px">
+      <!-- style="border: 2px solid rgb(50, 50, 24)" -->
+      <a-page-header
+        :ghost="true"
+        title="所有课程"
+        sub-title="All courses"
+        @back="backHistory"
+      />
+    </div>
 
     <a-list
       :grid="{ gutter: 1, column: 4 }"
@@ -29,13 +28,14 @@
         <a-button type="primary" @click="selectthis(item.courseId)"
           >选课</a-button
         >
+        <a-button type="primary" @click="dropthis(item.courseId)"
+          >退课</a-button
+        >
       </a-list-item>
     </a-list>
 
-
-    <a-icon type="up-circle" style="fontSize : 50px" @click="backtop()"/>
+    <a-icon type="up-circle" style="fontsize: 50px" @click="backtop()" />
     <p>返回顶部</p>
-
   </div>
 </template>
 <script>
@@ -56,6 +56,7 @@ export default {
         console.log(resp);
         _this.courselist = resp;
       } else {
+        console.log(resp);
         alert("连接服务器失败");
       }
     });
@@ -73,14 +74,44 @@ export default {
           courseid: String(id),
         })
         .then((resp) => {
-          if (resp) {
+          if (resp.status == 200) {
             console.log("选课成功");
             console.log(resp);
             alert("选课成功");
           } else {
-            alert(resp);
+            if (resp.status == 500) alert(resp.msg);
             console.log(resp);
           }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    dropthis: function (id) {
+      console.log("drop this course!");
+      console.log(id);
+      console.log(this.$route.query.user_name);
+      var _this = this;
+      _this
+        .postRequest("api/dropcourse", {
+          username: String(this.$route.query.user_name),
+          courseid: String(id),
+        })
+        .then((resp) => {
+          if (resp.status == 200) {
+            console.log("退课成功");
+            console.log(resp);
+            alert("退课成功");
+          } else {
+            if (resp.status == 500) alert(resp.msg);
+            else {
+              alert(resp.msg);
+            }
+            console.log(resp);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
         });
     },
     backHistory() {
@@ -89,7 +120,7 @@ export default {
 
     backtop() {
       target.scrollIntoView();
-    }
+    },
   },
 };
 </script>
