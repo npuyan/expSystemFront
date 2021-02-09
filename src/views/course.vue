@@ -79,7 +79,12 @@ export default {
             console.log(resp);
             alert("选课成功");
           } else {
-            if (resp.status == 500) alert(resp.msg);
+            if (resp.status == 500) {
+              alert(resp.msg);
+            }
+            else {
+              alert(resp.msg);
+            }
             console.log(resp);
           }
         })
@@ -103,7 +108,9 @@ export default {
             console.log(resp);
             alert("退课成功");
           } else {
-            if (resp.status == 500) alert(resp.msg);
+            if (resp.status == 500) {
+              alert(resp.msg);
+            }
             else {
               alert(resp.msg);
             }
