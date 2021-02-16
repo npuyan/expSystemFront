@@ -7,6 +7,16 @@ import Home from '../views/Home'
 import lay from '../views/lay'
 import novnc from '../views/novnc'
 import logup from '../views/logup'
+import adminIndex from '../views/admin/adminIndex'
+import chooseCourseManage from '../views/admin/chooseCourseManage'
+import clusterManage from '../views/admin/clusterManage'
+import courseManage from '../views/admin/courseManage'
+import envManage from '../views/admin/envManage'
+import imageManage from '../views/admin/imageManage'
+import labManage from '../views/admin/labManage'
+import studentManage from '../views/admin/studentManage'
+import teacherIndex from '../views/teacher/teacherIndex'
+import teacherManage from '../views/admin/teacherManage'
 import course from '../views/course'
 
 Vue.use(Router)
@@ -47,6 +57,49 @@ export default new Router({
       path: '/novnc',
       name: 'novnc',
       component: novnc
+    }, {
+      path: '/adminindex',
+      name: 'adminindex',
+      component: adminIndex,
+      children: [
+        {
+          // 默认打开跳到集群管理
+          path: '/',
+          redirect: '/clusterManage'
+        }, {
+          path: '/chooseCourseManage',
+          name: chooseCourseManage,
+          component: chooseCourseManage
+        }, {
+          path: '/clusterManage',
+          name: clusterManage,
+          component: clusterManage
+        }, {
+          path: '/courseManage',
+          name: courseManage,
+          component: courseManage
+        }, {
+          path: '/envManage',
+          name: envManage,
+          component: envManage
+        }, {
+          path: '/imageManage',
+          name: imageManage,
+          component: imageManage
+        }, {
+          path: '/labManage',
+          name: labManage,
+          component: labManage
+        }, {
+          path: '/studentManage',
+          name: studentManage,
+          component: studentManage
+        }, {
+          path: '/teacherManage',
+          name: teacherManage,
+          component: teacherManage
+        }
+      ]
     }, {
       path: '/course',
       name: 'course',

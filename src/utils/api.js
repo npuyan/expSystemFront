@@ -27,7 +27,6 @@ axios.interceptors.response.use(success => {
       Message.error({message: '未知错误!'})
     }
   }
-  return
 })
 
 let base = ''
@@ -54,7 +53,7 @@ export const postRequest = (url, params) => {
     method: 'post',
     withCredentials: true,
     url: `${base}${url}`,
-    data: qs.stringify(params)
+    data: params
   })
 }
 export const putRequest = (url, params) => {

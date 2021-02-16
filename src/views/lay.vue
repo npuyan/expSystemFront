@@ -76,101 +76,102 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     // todos
 
     return {
       collapsed: true,
       courselist: [],
       course_name: null,
-      lablist: [],
-    };
+      lablist: []
+    }
   },
 
-  mounted() {
-    console.log("mounted!");
+  mounted () {
+    console.log('mounted!')
 
-    var _this = this;
+    var _this = this
     _this
-      .postRequest("api/getselectedcourses", {
-        username: String(this.$route.query.user_name),
+      .postRequest('api/getselectedcourses', {
+        username: String(this.$route.query.user_name)
       })
       .then((resp) => {
         if (resp) {
-          console.log("得到课程数据");
-          console.log(resp);
-          _this.courselist = resp;
+          console.log('得到课程数据')
+          console.log(resp)
+          _this.courselist = resp
         } else {
-          alert("连接服务器失败");
+          alert('连接服务器失败')
         }
-      });
+      })
   },
 
   methods: {
     onJump: function (a) {
-      console.log("submit!");
+      console.log('submit!')
       // eslint-disable-next-line no-unused-vars
-      console.log(this.$router);
+      console.log(this.$router)
 
-      this.$router.push({ path: "/novnc", query: { port: a } });
+      this.$router.push({ path: '/novnc', query: { port: a } })
       // window.location.assign("http://ubuntu:"+ans)
     },
     onJumpNewPort: function (a) {
-      console.log("new Port");
-      console.log(a);
-      var _this = this;
-      alert("正在创建新的容器，请确定后等待5s");
+      console.log('new Port')
+      console.log(a)
+      var _this = this
+      alert('正在创建新的容器，请确定后等待5s')
       _this
-        .postRequest("api/startNewPort", {
-          port: String(a),
+        .postRequest('api/startNewPort', {
+          port: String(a)
         })
         .then((resp) => {
           if (resp) {
-            alert("连接成功");
-            this.$router.push({ path: "/novnc", query: { port: a } });
+            alert('连接成功')
+            this.$router.push({ path: '/novnc', query: { port: a } })
           } else {
-            alert("连接服务器失败");
+            alert('连接服务器失败')
           }
-        });
+        })
     },
 
     search: function () {},
 
     getlab: function (id, name) {
-      console.log("getlab", id, name);
-      this.course_name = name;
-      console.log("to string", String(id));
-      var _this = this;
+      console.log('getlab', id, name)
+      this.course_name = name
+      console.log('to string', String(id))
+      var _this = this
       _this
-        .postRequest("api/getlabbycourseid", {
-          courseid: String(id),
+        .postRequest('api/getlabbycourseid', {
+          courseid: String(id)
         })
         .then((resp) => {
           if (resp) {
-            console.log("得到课程实验数据");
-            console.log(resp);
-            _this.lablist = resp;
+            console.log('得到课程实验数据')
+            console.log(resp)
+            _this.lablist = resp
           } else {
-            alert("连接服务器失败");
+            alert('连接服务器失败')
           }
-        });
+        })
     },
 
     selectcourse: function () {
-      console.log("step in select course page!");
+      console.log('step in select course page!')
       // eslint-disable-next-line no-unused-vars
-      console.log(this.$router);
+      console.log(this.$router)
 
       this.$router.push({
-        path: "/course",
-        query: { user_name: this.$route.query.user_name },
-      });
-    },
-  },
-};
+        path: '/course',
+        query: { user_name: this.$route.query.user_name }
+      })
+    }
+  }
+}
 </script>
 
 <style>
+
 #components-layout-demo-side .logo {
   height: 32px;
   background: rgba(255, 255, 255, 0.2);

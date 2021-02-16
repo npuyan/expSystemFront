@@ -71,7 +71,7 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       collapsed: false,
       port: this.$route.query.port,
@@ -86,23 +86,23 @@ export default {
   methods: {
     test: function () {
       alert(this.port)
-    },
+    }
   },
-  mounted() {
+  mounted () {
     let _this = this
     window.onbeforeunload = function (e) {
-      if (_this.$route.name == "novnc") {
-        e = e || window.event;
+      if (_this.$route.name == 'novnc') {
+        e = e || window.event
         // 兼容IE8和Firefox 4之前的版本
         if (e) {
-          e.returnValue = '关闭提示1111';
+          e.returnValue = '关闭提示1111'
         }
         // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
-        return '关闭提示222';
+        return '关闭提示222'
       } else {
         window.onbeforeunload = null
       }
-    };
+    }
   }
 }
 </script>
