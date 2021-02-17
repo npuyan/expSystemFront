@@ -40,96 +40,94 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      courselist: [],
-    };
+      courselist: []
+    }
   },
 
-  mounted() {
-    console.log("mounted!");
+  mounted () {
+    console.log('mounted!')
 
-    var _this = this;
-    _this.postRequest("api/getallcourse", {}).then((resp) => {
+    var _this = this
+    _this.postRequest('api/getallcourse', {}).then((resp) => {
       if (resp) {
-        console.log("得到课程数据");
-        console.log(resp);
-        _this.courselist = resp;
+        console.log('得到课程数据')
+        console.log(resp)
+        _this.courselist = resp
       } else {
-        console.log(resp);
-        alert("连接服务器失败");
+        console.log(resp)
+        alert('连接服务器失败')
       }
-    });
+    })
   },
 
   methods: {
     selectthis: function (id) {
-      console.log("selectthis!");
-      console.log(id);
-      console.log(this.$route.query.user_name);
-      var _this = this;
+      console.log('selectthis!')
+      console.log(id)
+      console.log(this.$route.query.user_name)
+      var _this = this
       _this
-        .postRequest("api/choosecourse", {
+        .postRequest('api/choosecourse', {
           username: String(this.$route.query.user_name),
-          courseid: String(id),
+          courseid: String(id)
         })
         .then((resp) => {
-          if (resp.status == 200) {
-            console.log("选课成功");
-            console.log(resp);
-            alert("选课成功");
+          if (resp.status === 200) {
+            console.log('选课成功')
+            console.log(resp)
+            alert('选课成功')
           } else {
-            if (resp.status == 500) {
-              alert(resp.msg);
+            if (resp.status === 500) {
+              alert(resp.msg)
+            } else {
+              alert(resp.msg)
             }
-            else {
-              alert(resp.msg);
-            }
-            console.log(resp);
+            console.log(resp)
           }
         })
         .catch((error) => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
     dropthis: function (id) {
-      console.log("drop this course!");
-      console.log(id);
-      console.log(this.$route.query.user_name);
-      var _this = this;
+      console.log('drop this course!')
+      console.log(id)
+      console.log(this.$route.query.user_name)
+      var _this = this
       _this
-        .postRequest("api/dropcourse", {
+        .postRequest('api/dropcourse', {
           username: String(this.$route.query.user_name),
-          courseid: String(id),
+          courseid: String(id)
         })
         .then((resp) => {
-          if (resp.status == 200) {
-            console.log("退课成功");
-            console.log(resp);
-            alert("退课成功");
+          if (resp.status === 200) {
+            console.log('退课成功')
+            console.log(resp)
+            alert('退课成功')
           } else {
-            if (resp.status == 500) {
-              alert(resp.msg);
+            if (resp.status === 500) {
+              alert(resp.msg)
+            } else {
+              alert(resp.msg)
             }
-            else {
-              alert(resp.msg);
-            }
-            console.log(resp);
+            console.log(resp)
           }
         })
         .catch((error) => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
-    backHistory() {
-      this.$router.go(-1); //返回上一层
+    backHistory () {
+      this.$router.go(-1) // 返回上一层
     },
 
-    backtop() {
-      target.scrollIntoView();
-    },
-  },
-};
+    backtop () {
+      target.scrollIntoView()
+    }
+  }
+}
 </script>
 <style>
 </style>

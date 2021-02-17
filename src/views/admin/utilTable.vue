@@ -129,8 +129,8 @@ export default {
       item.key = item[this.dataIdName]
       delete item[this.dataIdName]
     },
-    renameBackId: function (item, id) {
-      item[id] = item.key
+    renameBackId: function (item) {
+      item[this.dataIdName] = item.key
       delete item.key
     },
     /* 添加一个空行 */
@@ -186,8 +186,9 @@ export default {
       const targetCache = newCacheData.filter(item => key === item.key)[0]
       if (target && targetCache) {
         var newtarget = Object.assign({}, target)
-        newtarget.id = newtarget.key
-        delete newtarget.key
+        // newtarget.id = newtarget.key
+        // delete newtarget.key
+        this.renameBackId(newtarget)
         delete newtarget.editable
         console.log('newtart')
         console.log(newtarget)
