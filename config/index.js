@@ -6,6 +6,7 @@ const path = require('path')
 
 
 let proxyObj = {};
+/*本地运行全部开启*/
 proxyObj['/ws'] = {
   ws: true,
   target: "ws://localhost:8800"
@@ -23,6 +24,7 @@ proxyObj['/login']={
   target: 'http://localhost:8800',
   changeOrigin: true,
 }
+/*服务器运行只开这一个*/
 proxyObj['/'] = {
   ws: false,
   target: 'http://localhost:8800',
