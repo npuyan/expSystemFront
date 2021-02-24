@@ -74,6 +74,7 @@ export default {
           courseid: String(id),
         })
         .then((resp) => {
+          console.log(resp);
           if (resp.status == 200) {
             console.log("选课成功");
             console.log(resp);

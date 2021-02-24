@@ -18,6 +18,12 @@ import studentManage from '../views/admin/studentManage'
 import teacherIndex from '../views/teacher/teacherIndex'
 import teacherManage from '../views/admin/teacherManage'
 import course from '../views/course'
+import myStudent from '../views/teacher/myStudent'
+import myCourse from '../views/teacher/myCourse'
+import myLab from '../views/teacher/myLab'
+import courseDetails from '../views/teacher/courseDetails'
+import pendingApplications from '../views/teacher/pendingApplications'
+
 
 Vue.use(Router)
 export default new Router({
@@ -101,6 +107,35 @@ export default new Router({
         }
       ]
     }, {
+      path: '/teacherIndex',
+      name: teacherIndex,
+      component: teacherIndex,
+      children: [
+        {
+          path: '/myStudent',
+          name: myStudent,
+          component: myStudent
+        }, {
+          path: '/myCourse',
+          name: myCourse,
+          component: myCourse
+        }, {
+          path: '/myLab',
+          name: myLab,
+          component: myLab
+        }, {
+          path: '/courseDetails',
+          name: courseDetails,
+          component: courseDetails
+        }, {
+          path: '/pendingApplications',
+          name: pendingApplications,
+          component: pendingApplications
+        }
+
+      ]
+
+    },{
       path: '/course',
       name: 'course',
       component: course
