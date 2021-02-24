@@ -132,18 +132,19 @@ export default {
     /* 获取数据 */
     fetch (params = {}) {
       console.log("the params in fetch")
-      console.log(params)
+      var temp_param = JSON.stringify(params)
+      console.log(temp_param)
       this.loading = true
-      this.postRequest(this.fetchUrl, {
-        // this.getRequest('api/getallusercourse', {
-       username: params
-      }).then(data => {
+      this.postRequest(this.fetchUrl, 
+        params
+      ).then(data => {
         const pagination = {...this.pagination}
         // Read total count from server
         // pagination.total = data.totalCount;
         pagination.total = 200
         this.loading = false
         this.data = data
+        console.log(data)
         this.pagination = pagination
         this.count = data.length
         this.data.forEach(this.renameId)

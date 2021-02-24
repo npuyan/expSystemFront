@@ -1,21 +1,24 @@
 <template>
   <div>
-    <a-tabs default-active-key="1" @change="callback">
+    <a-tabs @tabClick="callback">
       <a-tab-pane
         :key="courseitem.courseId"
         :tab="courseitem.courseName"
-        v-for="courseitem in courselist"        
+        v-for="courseitem in courselist"
       >
-        <util-table
-          :data="data"
-          :columns="columns"
-          :columns-name="columnsName"
-          :data-id-name="dataIdName"
-          :fetch-url="fetchUrl"
-          :del-url="delUrl"
-          :save-url="saveUrl"
-        >
-        </util-table>
+        <div v-if="clickflag == 1">
+          <util-table
+            :data="data"
+            :columns="columns"
+            :columns-name="columnsName"
+            :data-id-name="dataIdName"
+            :recv-param="parameter"
+            :fetch-url="fetchUrl"
+            :del-url="delUrl"
+            :save-url="saveUrl"
+          >
+          </util-table>
+        </div>
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -86,6 +89,7 @@ export default {
     // this.cacheData = data.map(item => ({...item}))
     return {
       courselist: [],
+      clickflag: 0,
       data: [],
       loading: false,
       count: 0,
@@ -93,19 +97,18 @@ export default {
       columns,
       columnsName,
       dataIdName: "userId",
-      parameter: "",
-      fetchUrl: "api/getallstudent",
+      parameter: { courseid: 0 },
+      fetchUrl: "api/getallstudentbycourse",
       delUrl: "api/delUserById",
       saveUrl: "api/updateuser",
     };
   },
   methods: {
     callback(key) {
+      console.log("callback");
       console.log(key);
+      this.parameter.courseid = key;
     },
-    switch(courseid) {
-      this.parameter = courseid
-    }
   },
 
   mounted() {
@@ -120,6 +123,10 @@ export default {
         console.log("返回数据");
         console.log(resp);
         this.courselist = resp;
+        this.clickflag = 1;
+        if (this.courselist.length > 0) {
+          this.parameter.courseid = this.courselist[0].courseId;
+        }
       });
   },
 };

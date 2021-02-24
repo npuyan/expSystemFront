@@ -1,111 +1,123 @@
 <template>
-<div>
-    <a-tabs default-active-key="1" @change="callback">
+  <div>
+    <a-tabs @tabClick="callback">
       <a-tab-pane
         :key="courseitem.courseId"
         :tab="courseitem.courseName"
-        v-for="courseitem in courselist"        
+        v-for="courseitem in courselist"
       >
-        <util-table
-          :data="data"
-          :columns="columns"
-          :columns-name="columnsName"
-          :data-id-name="dataIdName"
-          :fetch-url="fetchUrl"
-          :del-url="delUrl"
-          :save-url="saveUrl"
-        >
-        </util-table>
+        <div v-if="clickflag == 1">
+          <util-table
+            :data="data"
+            :columns="columns"
+            :columns-name="columnsName"
+            :data-id-name="dataIdName"
+            :recv-param="parameter"
+            :fetch-url="fetchUrl"
+            :del-url="delUrl"
+            :save-url="saveUrl"
+          >
+          </util-table>
+        </div>
       </a-tab-pane>
     </a-tabs>
   </div>
 </template>
 
 <script>
-import UtilTable from '../teacher/utilTable'
+import UtilTable from "../teacher/utilTable";
 const columnsName = [
-  'labName', 'courseId', 'courseName', 'envId', 'docPath', 'remarks', 'sectionId'
-]
+  "labName",
+  "courseId",
+  "courseName",
+  "envId",
+  "docPath",
+  "remarks",
+  "sectionId",
+];
 const columns = [
   {
-    title: '实验名称',
-    dataIndex: 'labName',
+    title: "实验名称",
+    dataIndex: "labName",
     sorter: false,
-    scopedSlots: {customRender: 'labName'}
+    scopedSlots: { customRender: "labName" },
   },
   {
-    title: '关联课程id',
-    dataIndex: 'courseId',
+    title: "关联课程id",
+    dataIndex: "courseId",
     sorter: false,
-    scopedSlots: {customRender: 'courseId'}
+    scopedSlots: { customRender: "courseId" },
   },
   {
-    title: '课程名称',
-    dataIndex: 'courseName',
+    title: "课程名称",
+    dataIndex: "courseName",
     sorter: false,
-    scopedSlots: {customRender: 'courseName'}
+    scopedSlots: { customRender: "courseName" },
   },
   {
-    title: '环境Id',
-    dataIndex: 'envId',
+    title: "环境Id",
+    dataIndex: "envId",
     sorter: false,
-    scopedSlots: {customRender: 'envId'}
+    scopedSlots: { customRender: "envId" },
   },
   {
-    title: '实验文档路径',
-    dataIndex: 'docPath',
+    title: "实验文档路径",
+    dataIndex: "docPath",
     sorter: false,
-    scopedSlots: {customRender: 'docPath'}
+    scopedSlots: { customRender: "docPath" },
   },
   {
-    title: '实验描述',
-    dataIndex: 'remarks',
+    title: "实验描述",
+    dataIndex: "remarks",
     sorter: false,
-    scopedSlots: {customRender: 'remarks'}
+    scopedSlots: { customRender: "remarks" },
   },
   {
-    title: '第几次实验',
-    dataIndex: 'sectionId',
+    title: "第几次实验",
+    dataIndex: "sectionId",
     sorter: false,
-    scopedSlots: {customRender: 'sectionId'}
+    scopedSlots: { customRender: "sectionId" },
   },
   {
-    title: '删除',
-    dataIndex: 'delete',
-    scopedSlots: {customRender: 'delete'}
-  }, {
-    title: '编辑',
-    dataIndex: 'edit',
-    scopedSlots: {customRender: 'edit'}
-  }
-]
+    title: "删除",
+    dataIndex: "delete",
+    scopedSlots: { customRender: "delete" },
+  },
+  {
+    title: "编辑",
+    dataIndex: "edit",
+    scopedSlots: { customRender: "edit" },
+  },
+];
 export default {
-  name: 'labManage',
-  components: {UtilTable},
-  data () {
+  name: "labManage",
+  components: { UtilTable },
+  data() {
     // this.cacheData = data.map(item => ({...item}))
     return {
       courselist: [],
+      clickflag: 0,
       data: [],
       loading: false,
       count: 0,
-      editingKey: '',
+      editingKey: "",
       columns,
       columnsName,
-      dataIdName: 'id',
+      dataIdName: "id",
+      parameter: { courseid: 0 },
       /* 已完成1,2,3 */
-      fetchUrl: 'api/getallcourselab',
-      delUrl: 'api/delcourselabbyid',
-      saveUrl: 'api/updatecourselab'
-    }
+      fetchUrl: "api/getlabbycourseid",
+      delUrl: "api/delcourselabbyid",
+      saveUrl: "api/updatecourselab",
+    };
   },
-    methods: {
+  methods: {
     callback(key) {
+      console.log("callback");
       console.log(key);
+
+      this.parameter.courseid = key;
     },
-    switch(courseid) {
-      this.parameter = courseid
-    }
   },
   mounted() {
     console.log("mounted!");
@@ -119,11 +131,14 @@ export default {
         console.log("返回数据");
         console.log(resp);
         this.courselist = resp;
+        this.clickflag = 1;
+        if (this.courselist.length > 0) {
+          this.parameter.courseid = this.courselist[0].courseId;
+        }
       });
   },
-}
+};
 </script>
 
 <style scoped>
-
 </style>
