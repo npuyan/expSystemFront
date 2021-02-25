@@ -29,7 +29,6 @@
                       @confirm="() => onDelete(record.key)"
         >
           <a-button>删除</a-button>
-          <!--          <a href="javascript:;">删除</a>-->
         </a-popconfirm>
       </template>
       <template slot="edit" slot-scope="text,record,index">
@@ -49,6 +48,9 @@
             </a-button>
           </span>
         </div>
+      </template>
+      <template slot="info" slot-scope="text,record,index">
+        <a-button>详细信息</a-button>
       </template>
     </a-table>
   </div>
@@ -131,11 +133,11 @@ export default {
     },
     /* 获取数据 */
     fetch (params = {}) {
-      console.log("the params in fetch")
+      console.log('the params in fetch')
       var temp_param = JSON.stringify(params)
       console.log(temp_param)
       this.loading = true
-      this.postRequest(this.fetchUrl, 
+      this.postRequest(this.fetchUrl,
         params
       ).then(data => {
         const pagination = {...this.pagination}
@@ -177,7 +179,7 @@ export default {
       // alert(key)
       console.log()
       this.postRequest(this.delUrl, {
-      // this.postRequest('api/dropcoursebyid', {
+        // this.postRequest('api/dropcoursebyid', {
         id: key
       }).then(resp => {
         if (resp) {
@@ -193,6 +195,7 @@ export default {
     },
     /* 根据key打开编辑 */
     edit (key) {
+      console.log('key' + key)
       const newData = [...this.data]
       const target = newData.filter(item => key === item.key)[0]
       this.editingKey = key
@@ -238,6 +241,7 @@ export default {
     },
     /* 取消编辑，恢复到编辑之前 */
     cancel (key) {
+      console.log('cancel' + key)
       const newData = [...this.data]
       const target = newData.filter(item => key === item.key)[0]
       this.editingKey = ''

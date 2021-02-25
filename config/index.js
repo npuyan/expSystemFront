@@ -11,15 +11,15 @@ proxyObj['/ws'] = {
   ws: true,
   target: "ws://localhost:8800"
 };
-proxyObj['/api']={
+proxyObj['/api'] = {
   ws: false,
   target: 'http://localhost:8800',
   changeOrigin: true,
-  pathRewrite:{
-    '^/api':''
+  pathRewrite: {
+    '^/api': ''
   }
 }
-proxyObj['/login']={
+proxyObj['/login'] = {
   ws: false,
   target: 'http://localhost:8800',
   changeOrigin: true,

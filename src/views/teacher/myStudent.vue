@@ -25,21 +25,21 @@
 </template>
 
 <script>
-import UtilTable from "../teacher/utilTable";
+import UtilTable from '../teacher/utilTable'
 const columnsName = [
-  "userName",
-  "password",
-  "phone",
-  "email",
-  "state",
-  "userType",
-];
+  'userName',
+  'password',
+  'phone',
+  'email',
+  'state',
+  'userType'
+]
 const columns = [
   {
-    title: "用户名",
-    dataIndex: "username",
+    title: '用户名',
+    dataIndex: 'username',
     sorter: false,
-    scopedSlots: { customRender: "username" },
+    scopedSlots: { customRender: 'username' }
   },
   // {
   //   title: '密码',
@@ -48,44 +48,44 @@ const columns = [
   //   scopedSlots: {customRender: 'password'}
   // },
   {
-    title: "电话",
-    dataIndex: "phone",
+    title: '电话',
+    dataIndex: 'phone',
     sorter: false,
-    scopedSlots: { customRender: "phone" },
+    scopedSlots: { customRender: 'phone' }
   },
   {
-    title: "邮箱",
-    dataIndex: "email",
+    title: '邮箱',
+    dataIndex: 'email',
     sorter: false,
-    scopedSlots: { customRender: "email" },
+    scopedSlots: { customRender: 'email' }
   },
   {
-    title: "用户状态",
-    dataIndex: "state",
+    title: '用户状态',
+    dataIndex: 'state',
     sorter: false,
-    scopedSlots: { customRender: "state" },
+    scopedSlots: { customRender: 'state' }
   },
   {
-    title: "用户类型",
-    dataIndex: "userType",
+    title: '用户类型',
+    dataIndex: 'userType',
     sorter: false,
-    scopedSlots: { customRender: "userType" },
+    scopedSlots: { customRender: 'userType' }
   },
   {
-    title: "删除",
-    dataIndex: "delete",
-    scopedSlots: { customRender: "delete" },
+    title: '删除',
+    dataIndex: 'delete',
+    scopedSlots: { customRender: 'delete' }
   },
   {
-    title: "编辑",
-    dataIndex: "edit",
-    scopedSlots: { customRender: "edit" },
-  },
-];
+    title: '编辑',
+    dataIndex: 'edit',
+    scopedSlots: { customRender: 'edit' }
+  }
+]
 export default {
-  name: "studentManage",
+  name: 'studentManage',
   components: { UtilTable },
-  data() {
+  data () {
     // this.cacheData = data.map(item => ({...item}))
     return {
       courselist: [],
@@ -93,43 +93,44 @@ export default {
       data: [],
       loading: false,
       count: 0,
-      editingKey: "",
+      editingKey: '',
       columns,
       columnsName,
-      dataIdName: "userId",
+      dataIdName: 'userId',
       parameter: { courseid: 0 },
-      fetchUrl: "api/getallstudentbycourse",
-      delUrl: "api/delUserById",
-      saveUrl: "api/updateuser",
-    };
+      fetchUrl: 'api/getallstudentbycourse',
+      delUrl: 'api/delUserById',
+      saveUrl: 'api/updateuser'
+    }
   },
   methods: {
-    callback(key) {
-      console.log("callback");
-      console.log(key);
-      this.parameter.courseid = key;
-    },
+    callback (key) {
+      console.log('callback')
+      console.log(key)
+      this.parameter.courseid = key
+    }
   },
 
-  mounted() {
-    console.log("mounted!");
+  mounted () {
+    console.log('mounted!')
 
-    var _this = this;
+    var _this = this
     _this
-      .postRequest("api/getcoursebyteacher", {
-        username: String(this.$route.query.user_name),
+      .postRequest('api/getcoursebyteacher', {
+        username: String(this.$route.query.user_name)
       })
       .then((resp) => {
-        console.log("返回数据");
-        console.log(resp);
-        this.courselist = resp;
-        this.clickflag = 1;
+        console.log('返回数据')
+        console.log(resp)
+        this.courselist = resp
+        this.clickflag = 1
+        console.log('this courselist' + this.courselist.length)
         if (this.courselist.length > 0) {
-          this.parameter.courseid = this.courselist[0].courseId;
+          this.parameter.courseid = this.courselist[0].courseId
         }
-      });
-  },
-};
+      })
+  }
+}
 </script>
 
 <style scoped>

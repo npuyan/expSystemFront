@@ -24,7 +24,6 @@ import myLab from '../views/teacher/myLab'
 import courseDetails from '../views/teacher/courseDetails'
 import pendingApplications from '../views/teacher/pendingApplications'
 
-
 Vue.use(Router)
 export default new Router({
   // mode: 'history',
@@ -112,14 +111,20 @@ export default new Router({
       component: teacherIndex,
       children: [
         {
-          path: '/myStudent',
-          name: myStudent,
-          component: myStudent
+          // 默认打开跳到课程管理
+          path: '/',
+          redirect: '/myCourse'
         }, {
           path: '/myCourse',
           name: myCourse,
           component: myCourse
-        }, {
+        },
+        {
+          path: '/myStudent',
+          name: myStudent,
+          component: myStudent
+        },
+        {
           path: '/myLab',
           name: myLab,
           component: myLab
@@ -135,7 +140,7 @@ export default new Router({
 
       ]
 
-    },{
+    }, {
       path: '/course',
       name: 'course',
       component: course

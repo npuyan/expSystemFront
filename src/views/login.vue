@@ -32,7 +32,7 @@
           },
         ]"
         >
-          记住我 &nbsp&nbsp
+          记住我 &nbsp &nbsp
         </a-checkbox>
         <a class="login-form-forgot" href="">
           忘记密码
@@ -43,9 +43,9 @@
           </a-button>
           Or
           <router-link :to="{path:'/logup'}">
-          <a href="" @click="">
-            注册
-          </a>
+            <a href="">
+              注册
+            </a>
           </router-link>
         </div>
       </a-form-item>
@@ -77,11 +77,26 @@ export default {
             password: values.password
           }).then(resp => {
             if (resp && resp.status === 200) {
+              console.log(resp.status)
               var data = resp.data
               // this.$store.commit('INIT_CURRENTHR', resp.obj)
               let path = _this.$route.query.redirect
-              _this.$router.push({path: '/lay' , query: {user_name: values.username}})
-              // _this.$router.replace((path == '/' || path == undefined) ? '/lay' : path)
+              var user = resp.obj
+              console.log(user)
+              console.log('用户类型' + user.userType)
+              if (user.userType === '0') {
+                // 管理员登录
+                _this.$router.push({path: '/adminindex', query: {user_name: values.username}})
+              } else if (user.userType === '1') {
+                // 教师登录
+                console.log('教师登录')
+                _this.$router.push({path: '/teacherIndex', query: {user_name: values.username}})
+              } else if (user.userType === '2') {
+                // 学生登录
+                console.log(user.userType)
+                _this.$router.push({path: '/lay', query: {user_name: values.username}})
+                // _this.$router.replace((path == '/' || path == undefined) ? '/lay' : path)
+              }
             } else {
               alert('账号或密码错误')
               _this.vcUrl = '/verifyCode?time=' + new Date()

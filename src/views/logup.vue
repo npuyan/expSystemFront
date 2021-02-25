@@ -4,7 +4,7 @@
       <a-form :form="form" @submit="handleSubmit">
         <a-form-item v-bind="formItemLayout" has-feedback>
       <span slot="label">
-              学号&nbsp;
+              学工号&nbsp;
         <a-tooltip title="唯一用户名">
           <a-icon type="question-circle-o"/>
         </a-tooltip>
@@ -17,6 +17,13 @@
           },
         ]"
           />
+        </a-form-item>
+        <a-form-item v-bind="formItemLayout" label='注册类别' has-feedback>
+          <a-select v-decorator="['type']">
+            <a-select-option :key="c" v-for="c in ['学生','教师','管理员']">
+              {{c}}
+            </a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item v-bind="formItemLayout" label="密码" has-feedback>
           <a-input
@@ -227,7 +234,7 @@ export default {
   width: 100%;
   height: 100%;
   background-color: cornflowerblue;
-  /*background-image: url("../assets/plane.jpg");*/
+  background-image: url("../assets/plane.jpg");
   background-size: 100% 100%;
 }
 </style>

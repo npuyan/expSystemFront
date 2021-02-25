@@ -25,74 +25,79 @@
 </template>
 
 <script>
-import UtilTable from "../teacher/utilTable";
+import UtilTable from '../teacher/utilTable'
 const columnsName = [
-  "labName",
-  "courseId",
-  "courseName",
-  "envId",
-  "docPath",
-  "remarks",
-  "sectionId",
-];
+  'labName',
+  'courseId',
+  'courseName',
+  'envId',
+  'docPath',
+  'remarks',
+  'sectionId'
+]
 const columns = [
   {
-    title: "实验名称",
-    dataIndex: "labName",
+    title: '实验名称',
+    dataIndex: 'labName',
     sorter: false,
-    scopedSlots: { customRender: "labName" },
+    scopedSlots: { customRender: 'labName' }
   },
   {
-    title: "关联课程id",
-    dataIndex: "courseId",
+    title: '关联课程id',
+    dataIndex: 'courseId',
     sorter: false,
-    scopedSlots: { customRender: "courseId" },
+    scopedSlots: { customRender: 'courseId' }
   },
   {
-    title: "课程名称",
-    dataIndex: "courseName",
+    title: '课程名称',
+    dataIndex: 'courseName',
     sorter: false,
-    scopedSlots: { customRender: "courseName" },
+    scopedSlots: { customRender: 'courseName' }
   },
   {
-    title: "环境Id",
-    dataIndex: "envId",
+    title: '环境Id',
+    dataIndex: 'envId',
     sorter: false,
-    scopedSlots: { customRender: "envId" },
+    scopedSlots: { customRender: 'envId' }
   },
   {
-    title: "实验文档路径",
-    dataIndex: "docPath",
+    title: '实验文档路径',
+    dataIndex: 'docPath',
     sorter: false,
-    scopedSlots: { customRender: "docPath" },
+    scopedSlots: { customRender: 'docPath' }
   },
   {
-    title: "实验描述",
-    dataIndex: "remarks",
+    title: '实验描述',
+    dataIndex: 'remarks',
     sorter: false,
-    scopedSlots: { customRender: "remarks" },
+    scopedSlots: { customRender: 'remarks' }
   },
   {
-    title: "第几次实验",
-    dataIndex: "sectionId",
+    title: '第几次实验',
+    dataIndex: 'sectionId',
     sorter: false,
-    scopedSlots: { customRender: "sectionId" },
+    scopedSlots: { customRender: 'sectionId' }
   },
   {
-    title: "删除",
-    dataIndex: "delete",
-    scopedSlots: { customRender: "delete" },
+    title: '删除',
+    dataIndex: 'delete',
+    scopedSlots: { customRender: 'delete' }
   },
   {
-    title: "编辑",
-    dataIndex: "edit",
-    scopedSlots: { customRender: "edit" },
+    title: '编辑',
+    dataIndex: 'edit',
+    scopedSlots: { customRender: 'edit' }
   },
-];
+  {
+    title: '详细信息',
+    dataIndex: 'info',
+    scopedSlots: {customRender: 'info'}
+  }
+]
 export default {
-  name: "labManage",
+  name: 'labManage',
   components: { UtilTable },
-  data() {
+  data () {
     // this.cacheData = data.map(item => ({...item}))
     return {
       courselist: [],
@@ -100,44 +105,45 @@ export default {
       data: [],
       loading: false,
       count: 0,
-      editingKey: "",
+      editingKey: '',
       columns,
       columnsName,
-      dataIdName: "id",
+      /* 此处必须是后端传过来的数据的逐渐名称，否则前端无法进行识别 */
+      dataIdName: 'labId',
       parameter: { courseid: 0 },
       /* 已完成1,2,3 */
-      fetchUrl: "api/getlabbycourseid",
-      delUrl: "api/delcourselabbyid",
-      saveUrl: "api/updatecourselab",
-    };
+      fetchUrl: 'api/getlabbycourseid',
+      delUrl: 'api/delcourselabbyid',
+      saveUrl: 'api/updatecourselab'
+    }
   },
   methods: {
-    callback(key) {
-      console.log("callback");
-      console.log(key);
+    callback (key) {
+      console.log('callback')
+      console.log(key)
 
-      this.parameter.courseid = key;
-    },
+      this.parameter.courseid = key
+    }
   },
-  mounted() {
-    console.log("mounted!");
+  mounted () {
+    console.log('mounted!')
 
-    var _this = this;
+    var _this = this
     _this
-      .postRequest("api/getcoursebyteacher", {
-        username: String(this.$route.query.user_name),
+      .postRequest('api/getcoursebyteacher', {
+        username: String(this.$route.query.user_name)
       })
       .then((resp) => {
-        console.log("返回数据");
-        console.log(resp);
-        this.courselist = resp;
-        this.clickflag = 1;
+        console.log('返回数据')
+        console.log(resp)
+        this.courselist = resp
+        this.clickflag = 1
         if (this.courselist.length > 0) {
-          this.parameter.courseid = this.courselist[0].courseId;
+          this.parameter.courseid = this.courselist[0].courseId
         }
-      });
-  },
-};
+      })
+  }
+}
 </script>
 
 <style scoped>

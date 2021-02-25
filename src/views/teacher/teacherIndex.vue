@@ -9,7 +9,7 @@
       </div>
       <a-menu
         theme="dark"
-        :default-selected-keys="['1']"
+        :default-selected-keys="['/mycourse']"
         mode="inline"
         @select="meunitemselect"
       >
@@ -48,42 +48,43 @@
 <script>
 // import func from '../../../vue-temp/vue-editor-bridge';
 export default {
-  data() {
+  data () {
     return {
       collapsed: false,
-      menuitem: "",
+      menuitem: '我的课程',
       menuList: [
         {
-          title: "我的课程",
-          path: "/mycourse",
+          // 在index.js中设置打开教师页面默认重定向到我的课程
+          title: '我的课程',
+          path: '/mycourse'
         },
         {
-          title: "我的学生",
-          path: "/mystudent",
+          title: '我的学生',
+          path: '/mystudent'
         },
         {
-          title: "我的实验",
-          path: "/myLab",
+          title: '我的实验',
+          path: '/myLab'
         },
         {
-          title: "待处理申请",
-          path: "/pendingApplications",
-        },
-      ],
-    };
+          title: '待处理申请',
+          path: '/pendingApplications'
+        }
+      ]
+    }
   },
 
   methods: {
     search: function () {},
-    meunitemselect({ item, key, selectedKeys }) {
-      this.menuitem = item.title;
+    meunitemselect ({ item, key, selectedKeys }) {
+      this.menuitem = item.title
       this.$router.push({
         path: key,
         query: {user_name: this.$route.query.user_name}
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style>
