@@ -9,51 +9,46 @@
         left: 0,
       }"
     >
-      <!--  选课按钮    -->
       <div>
-        <br/>
-        <br/>
+        <br />
+        <br />
         <a-button type="primary" size="large" @click="selectcourse()">
           进入选课
         </a-button>
-        <br/>
-        <br/>
+        <br />
+        <br />
       </div>
-      <!--搜索栏-->
+
       <div class="logo">
         <a-input-search
           aria-placeholder="搜索"
           @click="search"
         ></a-input-search>
       </div>
-      <!-- 左侧课程名称-->
-      <a-menu theme="dark"
-              mode="inline"
-              :default-selected-keys="[courselist[0].courseId]"
-              @select="getlab">
-        <a-menu-item v-for="item in courselist" :key="item.courseId">
-          <!--                     @click="getlab(key, courseitem.courseName)"-->
-          <span>  {{ item.courseName }}</span>
+
+      <a-menu theme="dark" mode="inline" :default-selected-keys="['1']">
+        <!--        @click="getlab(courseitem.courseId, courseitem.courseName)">-->
+        <a-menu-item
+          :key="courseitem.courseId"
+          v-for="courseitem in courselist"
+          @click="getlab(courseitem.courseId, courseitem.courseName)"
+        >
+          {{ courseitem.courseName }}
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
-
     <a-layout :style="{ marginLeft: '200px' }">
-      <!--     右侧叶面题头 -->
       <a-layout-header style="background: #fff; padding: 0; text-align: center">
         <h1 style="font-size: 25px">实验系统</h1>
       </a-layout-header>
-
       <a-layout-content style="margin: 0 16px">
-
-        <!--    右侧crumb    -->
         <a-breadcrumb style="margin: 16px 0">
           <a-breadcrumb-item>计算机科学</a-breadcrumb-item>
           <a-breadcrumb-item>{{ course_name }}</a-breadcrumb-item>
         </a-breadcrumb>
-
-        <!--右侧实验列表        -->
-        <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
+        <div
+          :style="{ padding: '24px', background: '#fff', minHeight: '360px' }"
+        >
           <a-list :grid="{ gutter: 16, column: 4 }" :data-source="lablist">
             <a-list-item
               slot="renderItem"
@@ -92,34 +87,31 @@ export default {
 
   mounted () {
     console.log('mounted!')
+
     var _this = this
-    _this.postRequest('api/getselectedcourses', {
-      username: String(this.$route.query.user_name)
-    }).then((resp) => {
-      if (resp) {
-        console.log('得到课程数据')
-        console.log(resp)
-        this.courselist = resp
-        this.course_name = this.courselist[0].courseName
-        this.getlab({item: 0, key: this.courselist[0].courseId, selectedKeys: 0})
-      } else {
-        alert('连接服务器失败')
-      }
-    })
+    _this
+      .postRequest('api/getselectedcourses', {
+        username: String(this.$route.query.user_name)
+      })
+      .then((resp) => {
+        if (resp) {
+          console.log('得到课程数据')
+          console.log(resp)
+          _this.courselist = resp
+        } else {
+          alert('连接服务器失败')
+        }
+      })
   },
+
   methods: {
     onJump: function (a) {
       console.log('submit!')
+      // eslint-disable-next-line no-unused-vars
       console.log(this.$router)
-      this.$router.push({path: '/novnc', query: {port: a}})
-    },
-    onJumpLab: function (labitem) {
-      console.log(labitem)
-      this.postRequest('', {
-      //  TODO 传入课程，实验，用户名，打开对应的实验环境并返回启动的的端口
-      }).then(
-      //  TODO 跳转到novnc并连接到返回的端口
-      )
+
+      this.$router.push({ path: '/novnc', query: { port: a } })
+      // window.location.assign("http://ubuntu:"+ans)
     },
     onJumpNewPort: function (a) {
       console.log('new Port')
@@ -133,21 +125,19 @@ export default {
         .then((resp) => {
           if (resp) {
             alert('连接成功')
-            this.$router.push({path: '/novnc', query: {port: a}})
+            this.$router.push({ path: '/novnc', query: { port: a } })
           } else {
             alert('连接服务器失败')
           }
         })
     },
-    search: function () {
-    },
-    getlab: function ({item, key, selectedKeys}) {
-      console.log('key' + key)
-      var course = this.courselist.filter(it => key === it.courseId)[0]
-      var id = course.courseId
-      var name = course.courseName
+
+    search: function () {},
+
+    getlab: function (id, name) {
       console.log('getlab', id, name)
       this.course_name = name
+      console.log('to string', String(id))
       var _this = this
       _this
         .postRequest('api/getlabbycourseid', {
@@ -171,7 +161,7 @@ export default {
 
       this.$router.push({
         path: '/course',
-        query: {user_name: this.$route.query.user_name}
+        query: { user_name: this.$route.query.user_name }
       })
     }
   }

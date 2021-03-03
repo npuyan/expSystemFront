@@ -19,7 +19,7 @@
       position
     >
       <a-list-item slot="renderItem" slot-scope="item, index">
-        <img src="../assets/logo.png" style="width: 100px; height: 100px" />
+        <img src="../../assets/logo.png" style="width: 100px; height: 100px" />
         <a-list-item-meta description="">
           <a slot="title">{{ item.courseName }}</a>
 
