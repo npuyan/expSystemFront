@@ -25,7 +25,7 @@
           <p>3.右侧小箭头设置栏可以调整缩放模式为本地模式</p>
           <p>4.显示红色noVNC 遇到一个错误，请刷新</p>
           <p>5.“系统”是一直打开同一个容器，“新的系统"是每次开启一个新的容器</p>
-          <img src="../assets/logo.png">
+          <img src="../../assets/logo.png">
         </div>
         <!--        <div id="markdow"  style="text-align: left">
                   <h1>实验教程</h1>

@@ -90,7 +90,7 @@ export default {
               } else if (user.userType === '1') {
                 // 教师登录
                 console.log('教师登录')
-                _this.$router.push({path: '/teacherIndex', query: {user_name: values.username}})
+                _this.$router.push({path: '/teacherIndex', query: {user_name: values.username, user_id: user.userId}})
               } else if (user.userType === '2') {
                 // 学生登录
                 console.log(user.userType)

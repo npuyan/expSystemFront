@@ -43,7 +43,7 @@
       </a-layout-header>
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb style="margin: 16px 0">
-          <a-breadcrumb-item>计算机科学</a-breadcrumb-item>
+          <a-breadcrumb-item>学生</a-breadcrumb-item>
           <a-breadcrumb-item>{{ course_name }}</a-breadcrumb-item>
         </a-breadcrumb>
         <div
@@ -56,7 +56,7 @@
               @click="onJump('6080')"
             >
               <img
-                src="../assets/logo.png"
+                src="../../assets/logo.png"
                 style="width: 100px; height: 100px"
               />
 

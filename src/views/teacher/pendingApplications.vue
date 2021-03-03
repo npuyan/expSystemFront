@@ -55,13 +55,16 @@ const columns = [
     title: "申请人身份",
     dataIndex: "requestUserId",
     scopedSlots: { customRender: "requestUserId" },
-    filters: [],
-    onFilter: (record) => record.requestUserId === 2,
   },
   {
     title: "申请时间",
     dataIndex: "requestTime",
     scopedSlots: { customRender: "requestTime" },
+  },
+  {
+    title: "审核人ID",
+    dataIndex: "checkUserId",
+    scopedSlots: { customRender: "checkUserId" },
   },
   {
     title: "审核时间",
@@ -88,10 +91,12 @@ export default {
       data: [],
       timer: "",
       currentTime: new Date(), // 获取当前时间
+      myId: this.$route.query.user_id,
     };
   },
   mounted() {
     console.log("mounted!");
+    console.log(this.myId);
     this.fetch();
   },
   methods: {
@@ -104,6 +109,8 @@ export default {
       }
     },
     fetch() {
+      var newList = [];
+
       var _this = this;
       _this
         .postRequest("api/getcourserequestqueue", {
@@ -112,8 +119,15 @@ export default {
         .then((resp) => {
           console.log("返回数据");
           console.log(resp);
-          this.data = resp;
+          resp.forEach((item) => {
+            if (item.checkUserId == this.myId) {
+              newList.push(item);
+            }
+          });
+
+          this.data = newList;
         });
+
       this.cacheData = this.data.map((item) => ({ ...item }));
     },
     agree(key) {
