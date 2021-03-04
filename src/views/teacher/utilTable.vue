@@ -50,7 +50,7 @@
         </div>
       </template>
       <template slot="info" slot-scope="text,record,index">
-        <a-button>详细信息</a-button>
+        <a-button @click="courseDetails()">详细信息</a-button>
       </template>
     </a-table>
   </div>
@@ -250,6 +250,11 @@ export default {
         delete target.editable
         this.data = newData
       }
+    },
+    courseDetails() {
+      this.$router.push({
+        path: '/teacherCourseDetails'
+      })
     }
   }
 }

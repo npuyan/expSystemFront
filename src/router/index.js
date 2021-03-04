@@ -6,6 +6,7 @@ import logup from '../views/logup'
 import lay from '../views/student/lay'
 import novnc from '../views/student/novnc'
 import course from '../views/student/course'
+import studentCourseDetails from '../views/student/courseDetails'
 import adminIndex from '../views/admin/adminIndex'
 import chooseCourseManage from '../views/admin/chooseCourseManage'
 import clusterManage from '../views/admin/clusterManage'
@@ -19,7 +20,8 @@ import teacherManage from '../views/admin/teacherManage'
 import myStudent from '../views/teacher/myStudent'
 import myCourse from '../views/teacher/myCourse'
 import myLab from '../views/teacher/myLab'
-import courseDetails from '../views/teacher/courseDetails'
+import teacherCourseDetails from '../views/teacher/courseDetails'
+import teacherLabDetails from '../views/teacher/labDetails'
 import pendingApplications from '../views/teacher/pendingApplications'
 
 Vue.use(Router)
@@ -118,9 +120,13 @@ export default new Router({
           name: myLab,
           component: myLab
         }, {
-          path: '/courseDetails',
-          name: courseDetails,
-          component: courseDetails
+          path: '/teacherCourseDetails',
+          name: teacherCourseDetails,
+          component: teacherCourseDetails
+        }, {
+          path: 'teacherLabDetails',
+          name: teacherLabDetails,
+          component: teacherLabDetails
         }, {
           path: '/pendingApplications',
           name: pendingApplications,
@@ -132,7 +138,16 @@ export default new Router({
     }, {
       path: '/course',
       name: 'course',
-      component: course
+      component: course,
+      children: [
+        {
+          path: '/studentCourseDetails',
+          name: studentCourseDetails,
+          component: studentCourseDetails
+
+        }
+      ]
+
     }
   ]
 })
