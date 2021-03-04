@@ -75,9 +75,9 @@ export default {
         })
         .then((resp) => {
           if (resp.status === 200) {
-            console.log('选课成功')
+            console.log('请求成功，等待老师审批')
             console.log(resp)
-            alert('选课成功')
+            alert('请求成功，等待老师审批')
           } else {
             if (resp.status === 500) {
               alert(resp.msg)

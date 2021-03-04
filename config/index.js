@@ -7,18 +7,18 @@ const path = require('path')
 
 let proxyObj = {};
 /*本地运行全部开启*/
-proxyObj['/ws'] = {
-  ws: true,
-  target: "ws://localhost:8800"
-};
-proxyObj['/api'] = {
-  ws: false,
-  target: 'http://localhost:8800',
-  changeOrigin: true,
-  pathRewrite: {
-    '^/api': ''
-  }
-}
+// proxyObj['/ws'] = {
+//   ws: true,
+//   target: "ws://localhost:8800"
+// };
+// proxyObj['/api'] = {
+//   ws: false,
+//   target: 'http://localhost:8800',
+//   changeOrigin: true,
+//   pathRewrite: {
+//     '^/api': ''
+//   }
+// }
 proxyObj['/login'] = {
   ws: false,
   target: 'http://localhost:8800',

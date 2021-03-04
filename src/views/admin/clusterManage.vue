@@ -14,7 +14,7 @@ export default {
     // this.cacheData = data.map(item => ({...item}))
     return {
       // TODO 更改为dashboard的管理界面
-      dashboardUrl: 'https://www.baidu.com/'
+      dashboardUrl: 'https://124.70.84.98:30433/'
     }
   }
 }

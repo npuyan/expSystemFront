@@ -75,7 +75,7 @@ export default {
     return {
       collapsed: false,
       port: this.$route.query.port,
-      url: 'http://49.234.13.89:'
+      url: 'http://124.70.84.98:'
     }
   },
   computed: {
