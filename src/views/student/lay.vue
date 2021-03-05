@@ -92,6 +92,7 @@ export default {
 
   mounted () {
     console.log('mounted!')
+
     var _this = this
     _this.postRequest('api/getselectedcourses', {
       username: String(this.$route.query.user_name)
@@ -107,6 +108,7 @@ export default {
       }
     })
   },
+
   methods: {
     // onJump: function (a) {
     //   console.log('submit!')
