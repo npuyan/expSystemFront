@@ -108,38 +108,44 @@ export default {
     })
   },
   methods: {
-    onJump: function (a) {
-      console.log('submit!')
-      console.log(this.$router)
-      this.$router.push({path: '/novnc', query: {port: a}})
-    },
+    // onJump: function (a) {
+    //   console.log('submit!')
+    //   console.log(this.$router)
+    //   this.$router.push({path: '/novnc', query: {port: a}})
+    // },
     onJumpLab: function (labitem) {
+      console.log('labitme')
       console.log(labitem)
-      this.postRequest('', {
+      this.postRequest('api/openlabenv', {
         //  TODO 传入课程，实验，用户名，打开对应的实验环境并返回启动的的端口
-      }).then(
+        username: String(this.$route.query.user_name),
+        courselab: labitem
+      }).then((resp) => {
         //  TODO 跳转到novnc并连接到返回的端口
-      )
-      this.$router.push({path: '/novnc', query: {port: 31399}})
+        if (resp && resp.status === 200) {
+          console.log(resp)
+          this.$router.push({path: '/novnc', query: {port: resp.obj}})
+        }
+      })
     },
-    onJumpNewPort: function (a) {
-      console.log('new Port')
-      console.log(a)
-      var _this = this
-      alert('正在创建新的容器，请确定后等待5s')
-      _this
-        .postRequest('api/startNewPort', {
-          port: String(a)
-        })
-        .then((resp) => {
-          if (resp) {
-            alert('连接成功')
-            this.$router.push({path: '/novnc', query: {port: a}})
-          } else {
-            alert('连接服务器失败')
-          }
-        })
-    },
+    // onJumpNewPort: function (a) {
+    //   console.log('new Port')
+    //   console.log(a)
+    //   var _this = this
+    //   alert('正在创建新的容器，请确定后等待5s')
+    //   _this
+    //     .postRequest('api/startNewPort', {
+    //       port: String(a)
+    //     })
+    //     .then((resp) => {
+    //       if (resp) {
+    //         alert('连接成功')
+    //         this.$router.push({path: '/novnc', query: {port: a}})
+    //       } else {
+    //         alert('连接服务器失败')
+    //       }
+    //     })
+    // },
     search: function () {
     },
     getlab: function ({item, key, selectedKeys}) {
