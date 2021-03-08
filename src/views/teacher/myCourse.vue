@@ -15,7 +15,13 @@
 <script>
 import UtilTable from '../teacher/utilTable'
 const columnsName = [
-  'courseName', 'author', 'type', 'tag', 'time', 'picture', 'createTime', 'remark'
+  'courseName', 
+  'author', 
+  'type', 
+  'tag', 
+  'time', 
+  'picture', 
+  'createTime',
 ]
 const columns = [
   {

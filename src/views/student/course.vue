@@ -19,7 +19,7 @@
       position
     >
       <a-list-item slot="renderItem" slot-scope="item, index">
-        <img src="../../assets/logo.png" style="width: 100px; height: 100px" @click="gotoDetails(item)" />
+        <img src="../../assets/logo.png" style="width: 100px; height: 100px" @click="gotoDetails(item.courseId)" />
         <a-list-item-meta description="">
           <a slot="title">{{ item.courseName }}</a>
 
@@ -121,6 +121,7 @@ export default {
     },
 
     gotoDetails (id){
+      console.log("转到课程详情页")
       this.$router.push({
         path: '/studentCourseDetails',
         query: {course_id: id}

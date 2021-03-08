@@ -124,7 +124,7 @@ export default new Router({
           name: teacherCourseDetails,
           component: teacherCourseDetails
         }, {
-          path: 'teacherLabDetails',
+          path: '/teacherLabDetails',
           name: teacherLabDetails,
           component: teacherLabDetails
         }, {
@@ -138,15 +138,11 @@ export default new Router({
     }, {
       path: '/course',
       name: 'course',
-      component: course,
-      children: [
-        {
-          path: '/studentCourseDetails',
-          name: studentCourseDetails,
-          component: studentCourseDetails
-
-        }
-      ]
+      component: course
+    }, {
+      path: '/studentCourseDetails',
+      name: studentCourseDetails,
+      component: studentCourseDetails
 
     }
   ]

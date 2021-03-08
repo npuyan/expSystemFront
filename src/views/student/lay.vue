@@ -126,7 +126,7 @@ export default {
         //  TODO 跳转到novnc并连接到返回的端口
         if (resp && resp.status === 200) {
           console.log(resp)
-          this.$router.push({path: '/novnc', query: {port: resp.obj}})
+          this.$router.push({path: '/novnc', query: {port: resp.obj, doc_path: labitem.docPath}})
         }
       })
     },

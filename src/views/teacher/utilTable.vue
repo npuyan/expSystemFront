@@ -50,7 +50,7 @@
         </div>
       </template>
       <template slot="info" slot-scope="text,record,index">
-        <a-button @click="courseDetails()">详细信息</a-button>
+        <a-button @click="Details(record)">详细信息</a-button>
       </template>
     </a-table>
   </div>
@@ -140,13 +140,15 @@ export default {
       this.postRequest(this.fetchUrl,
         params
       ).then(data => {
+        console.log("实验列表数据")
+        console.log(data)
         const pagination = {...this.pagination}
         // Read total count from server
         // pagination.total = data.totalCount;
         pagination.total = 200
         this.loading = false
         this.data = data
-        console.log(data)
+        
         this.pagination = pagination
         this.count = data.length
         this.data.forEach(this.renameId)
@@ -251,10 +253,23 @@ export default {
         this.data = newData
       }
     },
-    courseDetails() {
-      this.$router.push({
-        path: '/teacherCourseDetails'
+    Details(record) {
+      console.log(record)
+      if(record.hasOwnProperty('labName')){
+        // 实验详情
+        this.$router.push({
+        path: '/teacherLabDetails',
+        query: {id: record.key, doc_path: record.docPath}
       })
+      }
+      else {
+        // 课程详情
+        this.$router.push({
+        path: '/teacherCourseDetails',
+        query: {id: record}
+      })
+      }
+      
     }
   }
 }

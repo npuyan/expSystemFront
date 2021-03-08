@@ -20,9 +20,14 @@
             </a-button>
           </a-button-group>
         </div>
-        <div class="markdown-body">
-          <lab-markdown></lab-markdown>
+        <div class="pdf">
+          <pdf ref="pdf" 
+            v-for="i in numPages" 
+            :key="i"  
+            :page="i"  
+            :src="pdfUrl"> </pdf>
         </div>
+
       </div>
       <br /><br /><br />
     </a-layout-sider>
@@ -42,20 +47,20 @@
   </a-layout>
 </template>
 <script>
-import labMarkdown from "../../assets/实验.md";
-import "highlight.js/styles/github.css";
-import "github-markdown-css";
+import pdf from "vue-pdf";
 
 export default {
   components: {
-    labMarkdown,
+    pdf,
   },
 
   data() {
     return {
+      pdfUrl: "",
       collapsed: false,
       port: this.$route.query.port,
-      url: 'http://124.70.84.98:'
+      url: "http://124.70.84.98:",
+      numPages: null, // pdf 总页数 
     };
   },
   computed: {
@@ -64,6 +69,15 @@ export default {
     },
   },
   methods: {
+    getNumPages() {
+      let loadingTask = pdf.createLoadingTask(this.pdfUrl)
+      loadingTask.promise.then(pdf => {
+        this.numPages = pdf.numPages
+      }).catch(err => {
+        console.error('pdf 加载失败', err);
+      })
+    },
+
     test: function () {
       alert(this.port);
     },
@@ -83,6 +97,10 @@ export default {
         window.onbeforeunload = null;
       }
     };
+
+    var filename = this.$route.query.doc_path;
+    this.pdfUrl = "api/downloadfile?filename=" + filename;
+    this.getNumPages()
   },
 };
 </script>
@@ -102,14 +120,5 @@ export default {
 
 p {
   margin-bottom: 15px;
-}
-
-.markdown-body {
-  box-sizing: border-box;
-  min-width: 200px;
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 45px;
-  text-align: left;
 }
 </style>
