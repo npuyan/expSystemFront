@@ -21,6 +21,7 @@ import myStudent from '../views/teacher/myStudent'
 import myCourse from '../views/teacher/myCourse'
 import myLab from '../views/teacher/myLab'
 import teacherCourseDetails from '../views/teacher/courseDetails'
+import teacherCourseBasic from '../views/teacher/courseBasic'
 import teacherLabDetails from '../views/teacher/labDetails'
 import pendingApplications from '../views/teacher/pendingApplications'
 
@@ -128,6 +129,13 @@ export default new Router({
           name: teacherLabDetails,
           component: teacherLabDetails
         }, {
+          path: '/teacherCourseBasic',
+          name: teacherCourseBasic,
+          component: teacherCourseBasic
+        }, 
+        
+        
+        {
           path: '/pendingApplications',
           name: pendingApplications,
           component: pendingApplications

@@ -160,20 +160,30 @@ export default {
       item.key = item[this.dataIdName]
       delete item[this.dataIdName]
     },
-    renameBackId: function (item, id) {
-      item[id] = item.key
+    renameBackId: function (item) {
+      item[this.dataIdName] = item.key
       delete item.key
     },
     /* 添加一个空行 */
     handleAdd () {
-      const {count, data} = this
-      const newData = {
-        id: '自动生成',
-        userId: '--',
-        courseId: '--'
-      }
-      this.data = [...data, newData]
-      this.count = count + 1
+
+      this.$router.push({
+        path: '/teacherCourseBasic',
+        query: {obj: {"courseName": '',
+                      "author": '',
+                      "type": '',
+                      "tag": '',
+                      "time": null,
+                      "remark": ''}}})
+
+      // const {count, data} = this
+      // const newData = {
+      //   id: '自动生成',
+      //   userId: '--',
+      //   courseId: '--'
+      // }
+      // this.data = [...data, newData]
+      // this.count = count + 1
     },
     /* 根据key删除 */
     onDelete (key) {
@@ -218,8 +228,9 @@ export default {
       const targetCache = newCacheData.filter(item => key === item.key)[0]
       if (target && targetCache) {
         var newtarget = Object.assign({}, target)
-        newtarget.id = newtarget.key
-        delete newtarget.key
+        // newtarget.id = newtarget.key
+        // delete newtarget.key
+        this.renameBackId(newtarget)
         delete newtarget.editable
         console.log('newtart')
         console.log(newtarget)
@@ -259,14 +270,14 @@ export default {
         // 实验详情
         this.$router.push({
         path: '/teacherLabDetails',
-        query: {id: record.key, doc_path: record.docPath}
+        query: {obj: record}
       })
       }
       else {
         // 课程详情
         this.$router.push({
-        path: '/teacherCourseDetails',
-        query: {id: record}
+        path: '/teacherCourseBasic',
+        query: {obj: record}
       })
       }
       
