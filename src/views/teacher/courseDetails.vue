@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-steps :current="1" size="default">
+    <a-steps :current="1" size="default" type="navigation" :style="stepStyle">
       <a-step title="课程基本信息" />
       <a-step title="课程详细信息" />
       <a-step title="实验详细信息" />
@@ -9,6 +9,7 @@
     <br />
     <br />
     <a-card title="课程详情" class="coursepage">
+      <a-form :form="form" @submit="handleSubmit">
       <a-form-item v-bind="formItemLayout" label="课程名称" has-feedback>
         <a-input
           v-decorator="[
@@ -89,6 +90,7 @@
         </div>
 
       </a-form-item>
+      </a-form>
     </a-card>
 
     <div>
@@ -122,7 +124,7 @@ export default {
       previewVisible: false,
       previewImage: "",
       fileList: [],
-      fullUrl: "api/uploadcoursepicture?courseid=24", //+ this.$route.query.obj.courseId,
+      fullUrl: "api/uploadcoursepicture?courseid="+ this.$route.query.obj.courseId,
       formItemLayout: {
         labelCol: {
           xs: { span: 24 },
@@ -144,10 +146,19 @@ export default {
   },
 
   beforeCreate() {
-    this.form = this.$form.createForm(this, { name: "course_info" });
+    this.form = this.$form.createForm(this, { name: "course_infos" });
   },
 
   mounted() {
+    console.log("course_item is ", this.course_item)
+    if (this.course_item.picture != null){
+      this.fileList.push({
+          uid: '-1',
+          name: String(this.course_item.picture),
+          status: 'done',
+          url: 'http://localhost:8081/api/downloadcoursepicture?filename=' + this.course_item.picture
+      })
+    }
     this.getLab();
   },
 
@@ -156,14 +167,12 @@ export default {
       var _this = this;
       _this
         .postRequest("api/getlabbycourseid", {
-          courseid: "24" //String(this.course_item.course_id),
+          courseid: String(this.course_item.courseId),
         })
         .then((resp) => {
           console.log("返回数据");
           console.log(resp);
-          
           this.lablist = resp;
-          
           
         });
     },
@@ -217,7 +226,8 @@ export default {
     },
 
     editAttribute(item) {
-      item["course_id"] = 24; //this.course_item.courseId
+      item["course_id"] = this.course_item.courseId;
+      item["course_name"] = this.course_item.courseName
       item["lab_id"] = null;
       item["env_id"] = 1;
       item["doc_path"] = "";

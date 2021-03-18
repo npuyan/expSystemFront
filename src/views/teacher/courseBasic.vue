@@ -1,92 +1,101 @@
 <template>
   <div>
-  <a-steps :current="0" size="default">
-    <a-step title="课程基本信息" />
-    <a-step title="课程详细信息" />
-    <a-step title="实验详细信息" />
-  </a-steps>
-  <br/>
-  <br/>
-  <br/>
-
+    <div>
+      <a-steps
+        :current="0"
+        size="default"
+        type="navigation"
+        :style="stepStyle"
+        @change="onChange"
+      >
+        <a-step title="课程基本信息" />
+        <a-step title="课程详细信息" />
+        <a-step title="实验详细信息" />
+      </a-steps>
+    </div>
+    <br />
+    <br />
+    <br />
 
     <a-card title="课程详情" class="coursepage">
-      <a-form :form="form" @submit="handleSubmit">
-        <a-form-item v-bind="formItemLayout" label="课程名称" has-feedback>
-          <a-input
-            v-decorator="[
-              'course_name',
-              { initialValue: course_item.courseName },
-              {
-                rules: [{ required: true, message: '请输入课程名称!' }],
-              },
-            ]"
-          />
-        </a-form-item>
-        <a-form-item v-bind="formItemLayout" label="作者" has-feedback>
-          <a-input
-            v-decorator="[
-              'author',
-              { initialValue: course_item.author },
-              {
-                rules: [{ required: true, message: '请输入课程作者!' }],
-              },
-            ]"
-          />
-        </a-form-item>
-        <a-form-item v-bind="formItemLayout" label="课程类别" has-feedback>
-          <a-input
-            v-decorator="[
-              'type',
-              { initialValue: course_item.type },
-              {
-                rules: [{ required: true, message: '请输入课程类别!' }],
-              },
-            ]"
-          />
-        </a-form-item>
-        <a-form-item v-bind="formItemLayout" label="课程标签" has-feedback>
-          <a-input
-            v-decorator="[
-              'tag',
-              { initialValue: course_item.tag },
-              {
-                rules: [{ required: true, message: '请输入课程标签!' }],
-              },
-            ]"
-          />
-        </a-form-item>
-        <a-form-item v-bind="formItemLayout" label="课程时长" has-feedback>
-          <a-input
-            v-decorator="[
-              'time',
-              { initialValue: course_item.time },
-              {
-                rules: [{ required: true, message: '请输入课程时长!' }],
-              },
-            ]"
-          />
-        </a-form-item>
-        <a-form-item v-bind="formItemLayout" label="课程描述" has-feedback>
-          <a-input
-            v-decorator="[
-              'remark',
-              { initialValue: course_item.remark },
-              {
-                rules: [{ required: true, message: '请输入课程描述!' }],
-              },
-            ]"
-          />
-        </a-form-item>
+      <keep-alive>
+        <a-form :form="form" @submit="handleSubmit">
+          <a-form-item v-bind="formItemLayout" label="课程名称" has-feedback>
+            <a-input
+              v-decorator="[
+                'course_name',
+                { initialValue: course_item.courseName },
+                {
+                  rules: [{ required: true, message: '请输入课程名称!' }],
+                },
+              ]"
+            />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" label="作者" has-feedback>
+            <a-input
+              v-decorator="[
+                'author',
+                { initialValue: course_item.author },
+                {
+                  rules: [{ required: true, message: '请输入课程作者!' }],
+                },
+              ]"
+            />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" label="课程类别" has-feedback>
+            <a-input
+              v-decorator="[
+                'type',
+                { initialValue: course_item.type },
+                {
+                  rules: [{ required: true, message: '请输入课程类别!' }],
+                },
+              ]"
+            />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" label="课程标签" has-feedback>
+            <a-input
+              v-decorator="[
+                'tag',
+                { initialValue: course_item.tag },
+                {
+                  rules: [{ required: true, message: '请输入课程标签!' }],
+                },
+              ]"
+            />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" label="课程时长" has-feedback>
+            <a-input
+              v-decorator="[
+                'time',
+                { initialValue: course_item.time },
+                {
+                  rules: [{ required: true, message: '请输入课程时长!' }],
+                },
+              ]"
+            />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" label="课程描述" has-feedback>
+            <a-input
+              v-decorator="[
+                'remark',
+                { initialValue: course_item.remark },
+                {
+                  rules: [{ required: true, message: '请输入课程描述!' }],
+                },
+              ]"
+            />
+          </a-form-item>
 
-        <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
-          <a-space :size="300">
-          <a-button type="primary" html-type="submit"> Submit </a-button>
+          <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
+            <a-space :size="300">
+              <a-button type="primary" html-type="submit"> Submit </a-button>
 
-          <a-button type="primary"  @click="next()">下一步</a-button>
-          </a-space>
-        </a-form-item>
-      </a-form>
+              <!-- <a-button type="primary"  @click="next()">下一步</a-button> -->
+            </a-space>
+          </a-form-item>
+        </a-form>
+      </keep-alive>
     </a-card>
   </div>
 </template>
@@ -94,6 +103,10 @@
 export default {
   data() {
     return {
+      stepStyle: {
+        marginBottom: "60px",
+        boxShadow: "0px -1px 0 0 #e8e8e8 inset",
+      },
       formItemLayout: {
         labelCol: {
           xs: { span: 24 },
@@ -108,9 +121,9 @@ export default {
         },
       },
       course_item: this.$route.query.obj,
-      updateUrl: 'api/updatecourse',
-      addUrl: 'api/addcourse',
-      saveUrl: ''
+      updateUrl: "api/updatecourse",
+      addUrl: "api/addcourse",
+      saveUrl: "",
     };
   },
 
@@ -119,15 +132,14 @@ export default {
   },
 
   mounted() {
-    console.log("course-item = ")
-    console.log(this.course_item)
-    if(this.course_item.courseName === ''){
-      this.saveUrl = this.addUrl
+    console.log("course-item = ");
+    console.log(this.course_item);
+    if (this.course_item.courseName === "") {
+      this.saveUrl = this.addUrl;
+    } else {
+      this.saveUrl = this.updateUrl;
     }
-    else{
-      this.saveUrl = this.updateUrl
-    }
-    console.log("saveUrl = ", this.saveUrl)
+    console.log("saveUrl = ", this.saveUrl);
   },
 
   methods: {
@@ -135,19 +147,14 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-
-          this.course_item.courseName = values.course_name
-          this.course_item.author = values.author
-          this.course_item.tag = values.tag
-          this.course_item.type = values.type
-          this.course_item.time = values.time
-          this.course_item.remark = values.remark
-          this.course_item['course_id'] = 24
-          this.editAttribute(values)
+          this.editAttribute(values);
           console.log("Received values of form: ", values);
-          this.postRequest(this.saveUrl, {"course": values}).then((resp) => {
+          this.postRequest(this.saveUrl, { course: values }).then((resp) => {
             if (resp && resp.status === 200) {
               alert("编辑成功");
+              console.log("recevied from backend : ", resp);
+              this.course_item = resp.obj;
+              this.next();
             } else {
               alert("编辑失败");
             }
@@ -177,15 +184,24 @@ export default {
     },
 
     editAttribute(item) {
-      item["course_id"] = null
-      item["picture"] = null
-      item["create_time"] = null
+      item["course_id"] = null;
+      item["picture"] = null;
+      item["create_time"] = null;
     },
 
     next() {
       this.$router.push({
-        path: '/teacherCourseDetails',
-        query: {obj: this.course_item}})
+        path: "/teacherCourseDetails",
+        query: { obj: this.course_item },
+      });
+    },
+
+    onChange(current) {
+      console.log("onChange:", current);
+      // this.current = current;
+      if (current === 1) {
+        this.next()
+      }
     },
     // prev() {
     //   this.current--;

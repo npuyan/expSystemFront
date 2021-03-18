@@ -31,7 +31,7 @@
               mode="inline"
               :default-selected-keys="[courselist[0].courseId]"
               @select="getlab">
-        <a-menu-item v-for="item in courselist" :key="item.courseId">
+        <a-menu-item v-for="item in courselist" :key="item.courseId" >
           <!--                     @click="getlab(key, courseitem.courseName)"-->
           <span>  {{ item.courseName }}</span>
         </a-menu-item>
@@ -61,7 +61,7 @@
               @click="onJumpLab(item)">
               <!--          容器显示卡片    -->
               <a-card>
-                <img src="../../assets/logo.png" style="width: 100px; height: 100px"/>
+                <img :src="imageUrl" style="width: 100px; height: 100px"/>
                 <a-list-item-meta description="容器镜像">
                   <a slot="title">{{ item.labName }}</a>
                 </a-list-item-meta>
@@ -86,7 +86,8 @@ export default {
       collapsed: true,
       courselist: [],
       course_name: null,
-      lablist: []
+      lablist: [],
+      imageUrl: 'http://localhost:8081/api/downloadcoursepicture?filename='
     }
   },
 
@@ -115,9 +116,11 @@ export default {
     //   console.log(this.$router)
     //   this.$router.push({path: '/novnc', query: {port: a}})
     // },
+    
     onJumpLab: function (labitem) {
       console.log('labitme')
       console.log(labitem)
+      // this.$router.push({path: '/novnc', query: {port: 6080, doc_path: labitem.docPath}})
       this.postRequest('api/openlabenv', {
         //  TODO 传入课程，实验，用户名，打开对应的实验环境并返回启动的的端口
         username: String(this.$route.query.user_name),
@@ -152,6 +155,13 @@ export default {
     },
     getlab: function ({item, key, selectedKeys}) {
       console.log('key' + key)
+      var i = 0
+
+      for (i = 0; i < this.courselist.length; i++) { 
+        if(this.courselist[i].courseId === key){
+                this.imageUrl = this.imageUrl + this.courselist[i].picture
+        }
+      }
       var course = this.courselist.filter(it => key === it.courseId)[0]
       var id = course.courseId
       var name = course.courseName

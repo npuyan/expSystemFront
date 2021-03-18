@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-steps :current="2" size="default">
+    <a-steps :current="2" size="default" type="navigation" :style="stepStyle">
       <a-step title="课程基本信息" />
       <a-step title="课程详细信息" />
       <a-step title="实验详细信息" />

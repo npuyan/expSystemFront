@@ -266,6 +266,7 @@ export default {
     },
     Details(record) {
       console.log(record)
+      this.renameBackId(record)
       if(record.hasOwnProperty('labName')){
         // 实验详情
         this.$router.push({
