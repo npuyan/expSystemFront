@@ -131,7 +131,7 @@ export default {
     var _this = this
     _this
       .postRequest('api/getcoursebyteacher', {
-        username: String(this.$route.query.user_name)
+        username: this.$store.state.userName
       })
       .then((resp) => {
         console.log('返回数据')

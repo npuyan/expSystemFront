@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-steps :current="1" size="default" type="navigation" :style="stepStyle">
+    <a-steps :current="1" size="default" type="navigation" :style="stepStyle" @change="onChange">
       <a-step title="课程基本信息" />
       <a-step title="课程详细信息" />
       <a-step title="实验详细信息" />
@@ -163,6 +163,18 @@ export default {
   },
 
   methods: {
+
+    onChange(current) {
+      console.log("onChange:", current);
+      // this.current = current;
+      if (current === 0) {
+        this.$router.push({
+          path: '/teacherCourseBasic',
+          query: {obj: this.course_item}
+          })
+      }
+    },
+
     getLab() {
       var _this = this;
       _this

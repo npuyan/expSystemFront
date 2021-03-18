@@ -91,7 +91,7 @@ export default {
       data: [],
       timer: "",
       currentTime: new Date(), // 获取当前时间
-      myId: this.$route.query.user_id,
+      myId: this.$store.state.userId,
     };
   },
   mounted() {
@@ -114,7 +114,7 @@ export default {
       var _this = this;
       _this
         .postRequest("api/getcourserequestqueue", {
-          username: String(this.$route.query.user_name),
+          username: this.$store.state.userName,
         })
         .then((resp) => {
           console.log("返回数据");

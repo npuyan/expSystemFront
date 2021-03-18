@@ -79,8 +79,7 @@ export default {
     meunitemselect ({ item, key, selectedKeys }) {
       this.menuitem = item.title
       this.$router.push({
-        path: key,
-        query: {user_name: this.$route.query.user_name, user_id: this.$route.query.user_id}
+        path: key
       })
     }
   }

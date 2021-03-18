@@ -96,7 +96,7 @@ export default {
 
     var _this = this
     _this.postRequest('api/getselectedcourses', {
-      username: String(this.$route.query.user_name)
+      username: this.$store.state.userName
     }).then((resp) => {
       if (resp) {
         console.log('得到课程数据')
@@ -189,8 +189,7 @@ export default {
       console.log(this.$router)
 
       this.$router.push({
-        path: '/course',
-        query: {user_name: this.$route.query.user_name}
+        path: '/course'
       })
     }
   }

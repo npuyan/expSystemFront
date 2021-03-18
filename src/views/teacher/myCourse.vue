@@ -92,7 +92,7 @@ export default {
       columns,
       columnsName,
       dataIdName: 'courseId',
-      parameter: {'username': this.$route.query.user_name},
+      parameter: {'username': this.$store.state.userName},
       /* 完成1,2,3 */
       fetchUrl: 'api/getcoursebyteacher',
       delUrl: 'api/delcoursebyid',

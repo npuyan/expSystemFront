@@ -66,11 +66,10 @@ export default {
     selectthis: function (id) {
       console.log('selectthis!')
       console.log(id)
-      console.log(this.$route.query.user_name)
       var _this = this
       _this
         .postRequest('api/choosecourse', {
-          username: String(this.$route.query.user_name),
+          username: String(this.$store.state.userName),
           courseid: String(id)
         })
         .then((resp) => {
@@ -94,11 +93,10 @@ export default {
     dropthis: function (id) {
       console.log('drop this course!')
       console.log(id)
-      console.log(this.$route.query.user_name)
       var _this = this
       _this
         .postRequest('api/dropcourse', {
-          username: String(this.$route.query.user_name),
+          username: String(this.$store.state.userName),
           courseid: String(id)
         })
         .then((resp) => {

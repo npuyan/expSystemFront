@@ -188,7 +188,9 @@ export default {
 
   methods: {
     getImagelist() {
-      this.postRequest("api/getallcourseimage").then((resp) => {
+      this.postRequest("api/getimagebycreatorid", {
+        "creatorid": this.$store.state.userId
+      }).then((resp) => {
         console.log("返回数据");
         console.log(resp);
         this.imagelist = resp;

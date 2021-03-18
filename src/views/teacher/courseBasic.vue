@@ -31,7 +31,7 @@
               ]"
             />
           </a-form-item>
-          <a-form-item v-bind="formItemLayout" label="作者" has-feedback>
+          <!-- <a-form-item v-bind="formItemLayout" label="作者" has-feedback>
             <a-input
               v-decorator="[
                 'author',
@@ -41,7 +41,7 @@
                 },
               ]"
             />
-          </a-form-item>
+          </a-form-item> -->
           <a-form-item v-bind="formItemLayout" label="课程类别" has-feedback>
             <a-input
               v-decorator="[
@@ -187,6 +187,7 @@ export default {
       item["course_id"] = null;
       item["picture"] = null;
       item["create_time"] = null;
+      item["author"] = this.$store.state.userName;
     },
 
     next() {
