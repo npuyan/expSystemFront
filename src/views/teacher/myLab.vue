@@ -84,11 +84,6 @@ const columns = [
     scopedSlots: { customRender: 'delete' }
   },
   {
-    title: '编辑',
-    dataIndex: 'edit',
-    scopedSlots: { customRender: 'edit' }
-  },
-  {
     title: '详细信息',
     dataIndex: 'info',
     scopedSlots: {customRender: 'info'}

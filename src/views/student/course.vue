@@ -11,28 +11,76 @@
       />
     </div>
 
-    <a-list
-      :grid="{ gutter: 1, column: 4 }"
-      :data-source="courselist"
-      size="default"
-      :bordered="true"
-      position
-    >
-      <a-list-item slot="renderItem" slot-scope="item, index">
-        <img src="../../assets/logo.png" style="width: 100px; height: 100px" @click="gotoDetails(item.courseId)" />
-        <a-list-item-meta description="">
-          <a slot="title">{{ item.courseName }}</a>
+    <div>
+    <a-tabs default-active-key="1" @change="callback">
+      <a-tab-pane key="1" tab="未选课程">
+        <a-row>
+      <a-list
+        :grid="{ gutter: 1, column: 4 }"
+        :data-source="courselist"
+        size="default"
+        :bordered="true"
+        position
+      >
+        <a-list-item slot="renderItem" slot-scope="item, index">
+          <img
+            :src="imageUrl + item.picture"
+            style="width: 100px; height: 100px"
+            @click="gotoDetails(item.courseId)"
+          />
+          <a-list-item-meta description="">
+            <a slot="title">{{ item.courseName }}</a>
 
-          <!-- <a-avatar slot="avatar" src="../assets/logo.png" /> -->
-        </a-list-item-meta>
-        <a-button type="primary" @click="selectthis(item.courseId)"
-          >选课</a-button
-        >
-        <a-button type="primary" @click="dropthis(item.courseId)"
-          >退课</a-button
-        >
-      </a-list-item>
-    </a-list>
+            <!-- <a-avatar slot="avatar" src="../assets/logo.png" /> -->
+          </a-list-item-meta>
+          <a-button type="primary" @click="selectthis(item.courseId)"
+            >选课</a-button
+          >
+          <!-- <a-button type="primary" @click="dropthis(item.courseId)"
+            >退课</a-button
+          > -->
+        </a-list-item>
+      </a-list>
+    </a-row>
+      </a-tab-pane>
+      <a-tab-pane key="2" tab="已选课程" force-render>
+        <a-row>
+      <a-list
+        :grid="{ gutter: 1, column: 4 }"
+        :data-source="selectedCourseList"
+        size="default"
+        :bordered="true"
+        position
+      >
+        <a-list-item slot="renderItem" slot-scope="item, index">
+          <img
+            :src="imageUrl + item.picture"
+            style="width: 100px; height: 100px"
+            @click="gotoDetails(item.courseId)"
+          />
+          <a-list-item-meta description="">
+            <a slot="title">{{ item.courseName }}</a>
+
+            <!-- <a-avatar slot="avatar" src="../assets/logo.png" /> -->
+          </a-list-item-meta>
+          <!-- <a-button type="primary" @click="selectthis(item.courseId)"
+            >选课</a-button
+          > -->
+          <a-button type="primary" @click="dropthis(item.courseId)"
+            >退课</a-button
+          >
+        </a-list-item>
+      </a-list>
+    </a-row>
+      </a-tab-pane>
+    </a-tabs>
+    </div>
+
+
+    
+
+    
+    
 
     <a-icon type="up-circle" style="fontsize: 50px" @click="backtop()" />
     <p>返回顶部</p>
@@ -40,101 +88,128 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
-      courselist: []
-    }
+      courselist: [],
+      selectedCourseList: [],
+      imageUrl: "http://localhost:8081/api/downloadcoursepicture?filename=",
+    };
   },
 
-  mounted () {
-    console.log('mounted!')
+  mounted() {
+    console.log("mounted!");
 
-    var _this = this
-    _this.postRequest('api/getallcourse', {}).then((resp) => {
+    var _this = this;
+    _this.postRequest("api/getallcourse", {}).then((resp) => {
       if (resp) {
-        console.log('得到课程数据')
-        console.log(resp)
-        _this.courselist = resp
+        console.log("得到课程数据");
+        console.log(resp);
+        // _this.courselist = resp;
+        _this.setCourseList(resp);
       } else {
-        console.log(resp)
-        alert('连接服务器失败')
+        console.log(resp);
+        alert("连接服务器失败");
       }
-    })
+    });
   },
 
   methods: {
+    setCourseList(courselist_old) {
+      var i, j;
+      this.postRequest("api/getselectedcourses", {
+        username: this.$store.state.userName,
+      }).then((resp) => {
+        if (resp) {
+          console.log("已选课程数据", resp);
+          this.selectedCourseList = resp;
+          for (i = 0; i < courselist_old.length; i++) {
+            for (j = 0; j < this.selectedCourseList.length; j++) {
+              if (
+                courselist_old[i].courseId ==
+                this.selectedCourseList[j].courseId
+              ) {
+                courselist_old.splice(i, 1);
+                i--;
+                break;
+              }
+            }
+          }
+          this.courselist = courselist_old;
+        }
+      });
+    },
     selectthis: function (id) {
-      console.log('selectthis!')
-      console.log(id)
-      var _this = this
+      console.log("selectthis!");
+      console.log(id);
+      var _this = this;
       _this
-        .postRequest('api/choosecourse', {
+        .postRequest("api/choosecourse", {
           username: String(this.$store.state.userName),
-          courseid: String(id)
+          courseid: String(id),
         })
         .then((resp) => {
           if (resp.status === 200) {
-            console.log('请求成功，等待老师审批')
-            console.log(resp)
-            alert('请求成功，等待老师审批')
+            console.log("请求成功，等待老师审批");
+            console.log(resp);
+            alert("请求成功，等待老师审批");
           } else {
             if (resp.status === 500) {
-              alert(resp.msg)
+              alert(resp.msg);
             } else {
-              alert(resp.msg)
+              alert(resp.msg);
             }
-            console.log(resp)
+            console.log(resp);
           }
         })
         .catch((error) => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
     dropthis: function (id) {
-      console.log('drop this course!')
-      console.log(id)
-      var _this = this
+      console.log("drop this course!");
+      console.log(id);
+      var _this = this;
       _this
-        .postRequest('api/dropcourse', {
+        .postRequest("api/dropcourse", {
           username: String(this.$store.state.userName),
-          courseid: String(id)
+          courseid: String(id),
         })
         .then((resp) => {
           if (resp.status === 200) {
-            console.log('退课成功')
-            console.log(resp)
-            alert('退课成功')
+            console.log("退课成功");
+            console.log(resp);
+            alert("退课成功");
           } else {
             if (resp.status === 500) {
-              alert(resp.msg)
+              alert(resp.msg);
             } else {
-              alert(resp.msg)
+              alert(resp.msg);
             }
-            console.log(resp)
+            console.log(resp);
           }
         })
         .catch((error) => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
 
-    gotoDetails (id){
-      console.log("转到课程详情页")
+    gotoDetails(id) {
+      console.log("转到课程详情页");
       this.$router.push({
-        path: '/studentCourseDetails',
-        query: {course_id: id}
-      })
+        path: "/studentCourseDetails",
+        query: { course_id: id },
+      });
     },
 
-    backHistory () {
-      this.$router.go(-1) // 返回上一层
+    backHistory() {
+      this.$router.go(-1); // 返回上一层
     },
 
-    backtop () {
-      target.scrollIntoView()
-    }
-  }
-}
+    backtop() {
+      target.scrollIntoView();
+    },
+  },
+};
 </script>
 <style>
 </style>

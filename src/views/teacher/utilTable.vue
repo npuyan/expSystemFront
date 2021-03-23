@@ -42,11 +42,6 @@
               <a>取消</a>
             </a-popconfirm>
           </span>
-          <span v-else>
-            <a-button :disabled="editingKey!==''" @click="()=>edit(record.key)">
-              编辑
-            </a-button>
-          </span>
         </div>
       </template>
       <template slot="info" slot-scope="text,record,index">
@@ -112,13 +107,7 @@ export default {
       const pager = {...this.pagination}
       pager.current = pagination.current
       this.pagination = pager
-      this.fetch({
-        results: pagination.pageSize,
-        page: pagination.current,
-        sortField: sorter.field,
-        sortOrder: sorter.order,
-        ...filters
-      })
+      this.fetch(this.recvParam)
     },
     /* 发生更新添加操作时 */
     handleChange (value, key, column) {
@@ -174,16 +163,9 @@ export default {
                       "type": '',
                       "tag": '',
                       "time": null,
-                      "remark": ''}}})
-
-      // const {count, data} = this
-      // const newData = {
-      //   id: '自动生成',
-      //   userId: '--',
-      //   courseId: '--'
-      // }
-      // this.data = [...data, newData]
-      // this.count = count + 1
+                      "remark": '',
+                      "courseId": null,
+                      "createTime": null}}})
     },
     /* 根据key删除 */
     onDelete (key) {

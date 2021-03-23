@@ -123,7 +123,7 @@ export default {
       // this.$router.push({path: '/novnc', query: {port: 6080, doc_path: labitem.docPath}})
       this.postRequest('api/openlabenv', {
         //  TODO 传入课程，实验，用户名，打开对应的实验环境并返回启动的的端口
-        username: String(this.$route.query.user_name),
+        username: String(this.$store.state.userName),
         courselab: labitem
       }).then((resp) => {
         //  TODO 跳转到novnc并连接到返回的端口
