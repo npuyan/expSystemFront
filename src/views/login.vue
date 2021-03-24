@@ -76,35 +76,42 @@ export default {
             username: values.username,
             password: values.password
           }).then(resp => {
-            if (resp && resp.status === 200) {
-              console.log(resp.status)
-              var data = resp.data
-              // this.$store.commit('INIT_CURRENTHR', resp.obj)
-              let path = _this.$route.query.redirect
-              var user = resp.obj
-              console.log(user)
-              console.log('用户类型' + user.userType)
+            if(resp){
+              if ( resp.status === 200) {
+                console.log(resp.status)
+                var data = resp.data
+                // this.$store.commit('INIT_CURRENTHR', resp.obj)
+                let path = _this.$route.query.redirect
+                var user = resp.obj
+                console.log(user)
+                console.log('用户类型' + user.userType)
 
-              // 将用户名和ID写入全局变量
-              this.$store.commit('update', ['userName', user.username])
-              this.$store.commit('update', ['userId', user.userId])
+                // 将用户名和ID写入全局变量
+                this.$store.commit('update', ['userName', user.username])
+                this.$store.commit('update', ['userId', user.userId])
 
-              if (user.userType === '0') {
-                // 管理员登录
-                _this.$router.push({path: '/adminindex', query: {user_name: values.username}})
-              } else if (user.userType === '1') {
-                // 教师登录
-                console.log('教师登录')
-                _this.$router.push({path: '/teacherIndex'})
-              } else if (user.userType === '2') {
-                // 学生登录
-                console.log(user.userType)
-                _this.$router.push({path: '/lay'})
-                // _this.$router.replace((path == '/' || path == undefined) ? '/lay' : path)
+                if (user.userType === '0') {
+                  // 管理员登录
+                  _this.$router.push({path: '/adminindex', query: {user_name: values.username}})
+                } else if (user.userType === '1') {
+                  // 教师登录
+                  console.log('教师登录')
+                  _this.$router.push({path: '/teacherIndex'})
+                } else if (user.userType === '2') {
+                  // 学生登录
+                  console.log(user.userType)
+                  _this.$router.push({path: '/lay'})
+                  // _this.$router.replace((path == '/' || path == undefined) ? '/lay' : path)
+                }
+              } else if(resp.status === 500){
+
+                alert(resp.msg)
+                _this.vcUrl = '/verifyCode?time=' + new Date()
               }
-            } else {
-              alert('账号或密码错误')
-              _this.vcUrl = '/verifyCode?time=' + new Date()
+
+            }
+            else{
+              console.log("resp", resp)
             }
           })
         }

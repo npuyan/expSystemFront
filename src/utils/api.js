@@ -18,8 +18,8 @@ axios.interceptors.response.use(success => {
   } else if (error.response.status == 403) {
     Message.error({message: '权限不足，请联系管理员'})
   } else if (error.response.status == 401) {
-    // mymessage.error({message: error.response.data.msg ? error.response.data.msg : '尚未登录，请登录'})
-    router.replace('/')
+    Message.error({message: error.response.data.msg ? error.response.data.msg : '尚未登录，请登录'})
+    // router.replace('/')
   } else {
     if (error.response.data.msg) {
       Message.error({message: error.response.data.msg})
@@ -27,6 +27,7 @@ axios.interceptors.response.use(success => {
       Message.error({message: '未知错误!'})
     }
   }
+  return error.response.data
 })
 
 let base = ''
