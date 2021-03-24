@@ -123,6 +123,7 @@ export default {
       course_item: this.$route.query.obj,
       updateUrl: "api/updatecourse",
       addUrl: "api/addcourse",
+      statusUrl: "api/getcoursebyid",
       saveUrl: "",
     };
   },
@@ -149,16 +150,34 @@ export default {
         if (!err) {
           this.editAttribute(values);
           console.log("Received values of form: ", values);
-          this.postRequest(this.saveUrl, { course: values }).then((resp) => {
-            if (resp && resp.status === 200) {
-              alert("编辑成功");
-              console.log("recevied from backend : ", resp);
-              this.course_item = resp.obj;
-              this.next();
-            } else {
-              alert("编辑失败");
-            }
-          });
+
+          if (this.saveUrl == "api/updatecourse") {
+            this.postRequest(this.saveUrl, values).then((resp) => {
+              if (resp && resp.status === 200) {
+                alert("编辑成功");
+                console.log("recevied from backend : ", resp);
+                this.getNewStatus();
+
+                this.next();
+              } else {
+                alert("编辑失败");
+              }
+            });
+          } else {
+            this.postRequest(this.saveUrl, { course: values }).then((resp) => {
+              if (resp && resp.status === 200) {
+                alert("编辑成功");
+                console.log("recevied from backend : ", resp);
+                if (resp != null) {
+                  this.course_item = resp.obj;
+                }
+
+                this.next();
+              } else {
+                alert("编辑失败");
+              }
+            });
+          }
         }
       });
     },
@@ -184,10 +203,21 @@ export default {
     },
 
     editAttribute(item) {
-      item["course_id"] = null;
-      item["picture"] = null;
-      item["create_time"] = null;
+      item["course_id"] = this.course_item.courseId;
+      item["picture"] = this.course_item.picture;
+      item["create_time"] = this.course_item.createTime;
       item["author"] = this.$store.state.userName;
+    },
+
+    getNewStatus() {
+      this.postRequest(this.statusUrl, { id: this.course_item.courseId }).then(
+        (resp) => {
+          console.log("new course status = ", resp);
+          if (resp) {
+            this.course_item = resp;
+          }
+        }
+      );
     },
 
     next() {
@@ -200,13 +230,14 @@ export default {
     onChange(current) {
       console.log("onChange:", current);
       // this.current = current;
-      if (current === 1) {
-        this.next()
+      if (this.course_item.courseId != null) {
+        if (current === 1) {
+          this.next();
+        }
+      } else {
+        alert("请先提交课程基本信息");
       }
     },
-    // prev() {
-    //   this.current--;
-    // },
   },
 };
 </script>

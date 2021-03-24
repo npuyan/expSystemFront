@@ -15,7 +15,7 @@
           <a-form-item v-bind="formItemLayout" label="课程名称" has-feedback>
             <a-input
               v-decorator="[
-                'courseName',
+                'course_name',
                 { initialValue: course_item.courseName },
                 {
                   rules: [{ required: true, message: '请输入课程名称!' }],
@@ -26,7 +26,7 @@
           <a-form-item v-bind="formItemLayout" label="实验名称" has-feedback>
             <a-input
               v-decorator="[
-                'labName',
+                'lab_name',
                 { initialValue: course_item.labName },
                 {
                   rules: [{ required: true, message: '请输入实验名称!' }],
@@ -37,7 +37,7 @@
           <a-form-item v-bind="formItemLayout" label="第n次实验" has-feedback>
             <a-input
               v-decorator="[
-                'sectionId',
+                'section_id',
                 { initialValue: course_item.sectionId },
                 {
                   rules: [{ required: true, message: '请输入属于第几次实验!' }],
@@ -95,7 +95,7 @@
               <a-col :span="18">
                 <a-select
                   v-decorator="[
-                    'select',
+                    'env_id',
                     {
                       rules: [
                         {
@@ -108,11 +108,9 @@
                   placeholder="Please select a base Image"
                   @change="handleSelectChange"
                 >
-                  <a-select-option value="novnc"> novnc </a-select-option>
-
                   <a-select-option
                     v-for="imageItem in imagelist"
-                    :key="imageItem.imageId"
+                    :key="imageItem"
                   >
                     {{ imageItem.imageName }}
                   </a-select-option>
@@ -124,9 +122,9 @@
             </a-row>
           </a-form-item>
 
-          <!-- <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
+          <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
             <a-button type="primary" html-type="submit"> Submit </a-button>
-          </a-form-item> -->
+          </a-form-item>
         </a-form>
       </a-card>
     </div>
@@ -144,6 +142,7 @@
 
 <script>
 import pdf from "vue-pdf";
+// import { delete } from 'vue/types/umd';
 
 export default {
   name: "labdetails",
@@ -171,8 +170,22 @@ export default {
       },
       course_item: this.$route.query.obj,
       saveUrl: "api/updatecourselab",
+      addEnvUrl: "api/addcourseenv",
+      saveEnvUrl: "api/savecourseenvtoimage",
       imagelist: [],
       selected_image: null,
+      envPort: null,
+      envTemp: {
+          envId: 9,
+          envName: "test环境",
+          remark: "test",
+          nodeName: "Test",
+          cpu: 1,
+          memsize: 1000,
+          createTime: "",
+          creatorId: 1,
+          imageId: 1
+        },
     };
   },
 
@@ -183,13 +196,14 @@ export default {
   mounted() {
     this.fullUrl = "api/uploadfile?labid=" + String(this.course_item.labId);
     console.log("fullUrl == " + this.fullUrl);
+    console.log("lab_item =", this.course_item);
     this.getImagelist();
   },
 
   methods: {
     getImagelist() {
       this.postRequest("api/getimagebycreatorid", {
-        "creatorid": this.$store.state.userId
+        creatorid: this.$store.state.userId,
       }).then((resp) => {
         console.log("返回数据");
         console.log(resp);
@@ -212,6 +226,9 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
+          delete values.dragger;
+          this.editAttribute(values)
+
           console.log("Received values of form: ", values);
           this.postRequest(this.saveUrl, values).then((resp) => {
             if (resp && resp.status === 200) {
@@ -249,7 +266,6 @@ export default {
     },
 
     handleSelectChange(value) {
-      console.log(value);
       this.selected_image = value;
     },
 
@@ -263,6 +279,27 @@ export default {
 
     gotoNovnc() {
       console.log("the selected image is ", this.selected_image);
+      
+      this.postRequest(this.addEnvUrl, {
+        courselab: this.course_item,
+        courseimage: this.selected_image,
+        courseenv: this.envTemp,
+      }).then((resp) => {
+        if (resp.status === 200) {
+          console.log("创建环境成功");
+          console.log("返回数据 ", resp);
+          this.envPort = resp.obj;
+          this.$router.push({path: '/envVnc', 
+          query: {port: this.envPort, envObj: this.envTemp}})
+        }
+      });
+    },
+
+    editAttribute(item) {
+      item["course_id"] = this.course_item.courseId;
+      item["lab_id"] = this.course_item.labId;
+      item["env_id"] = 1;
+      item["doc_path"] = "";
     },
   },
 };

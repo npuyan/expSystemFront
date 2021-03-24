@@ -24,6 +24,7 @@ import teacherCourseDetails from '../views/teacher/courseDetails'
 import teacherCourseBasic from '../views/teacher/courseBasic'
 import teacherLabDetails from '../views/teacher/labDetails'
 import pendingApplications from '../views/teacher/pendingApplications'
+import envVnc from '../views/teacher/envVnc'
 
 Vue.use(Router)
 export default new Router({
@@ -132,10 +133,11 @@ export default new Router({
           path: '/teacherCourseBasic',
           name: teacherCourseBasic,
           component: teacherCourseBasic
-        }, 
-        
-        
-        {
+        }, {
+          path: '/envVnc',
+          name: envVnc,
+          component: envVnc
+        }, {
           path: '/pendingApplications',
           name: pendingApplications,
           component: pendingApplications

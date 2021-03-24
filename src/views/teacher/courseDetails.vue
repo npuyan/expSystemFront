@@ -43,6 +43,17 @@
           ]"
         />
       </a-form-item>
+      <a-form-item v-bind="formItemLayout" label="课程时长" has-feedback>
+            <a-input
+              v-decorator="[
+                'time',
+                { initialValue: course_item.time },
+                {
+                  rules: [{ required: true, message: '请输入课程时长!' }],
+                },
+              ]"
+            />
+      </a-form-item>
       <a-form-item v-bind="formItemLayout" label="课程描述" has-feedback>
         <a-input
           v-decorator="[
