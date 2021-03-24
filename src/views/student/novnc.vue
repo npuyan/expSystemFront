@@ -51,7 +51,7 @@ export default {
       port: this.$route.query.port,
       url: "http://124.70.84.98:",
       numPages: null, // pdf 总页数 
-      fileUrl: encodeURIComponent('http://localhost:8081/api/downloadfile?filename=' + this.$route.query.doc_path)
+      fileUrl: encodeURIComponent('http://localhost:8081/api/downloadfile?filename=' + this.$route.query.labObj.docPath)
     };
   },
   computed: {
@@ -63,22 +63,41 @@ export default {
     test: function () {
       alert(this.port);
     },
+    beforeunloadHandler (e) {
+      // debugger
+      this._beforeUnload_time = new Date().getTime()
+      console.log('this._beforeUnload_time：', this._beforeUnload_time)
+      e = e || window.event
+      if (e) {
+        e.returnValue = '关闭提示'
+      }
+      // debugger
+      return '关闭提示'
+    },
+    unloadHandler () {
+      console.log('this._beforeUnload_time2：', this._beforeUnload_time)
+      this._gap_time = new Date().getTime() - this._beforeUnload_time
+      console.log('this._gap_time：', this._gap_time)
+      // 判断是窗口关闭还是刷新
+        // 关闭前暂停容器进程
+      this.postRequest("api/pauselabenv", {
+        username: this.$store.state.userName,
+        courselab: this.$route.query.labObj
+      }).then((resp)=>{
+        if(resp){
+          console.log(resp.msg)
+        }
+      })
+     }
   },
   mounted() {
     let _this = this;
-    window.onbeforeunload = function (e) {
-      if (_this.$route.name == "novnc") {
-        e = e || window.event;
-        // 兼容IE8和Firefox 4之前的版本
-        if (e) {
-          e.returnValue = "关闭提示1111";
-        }
-        // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
-        return "关闭提示222";
-      } else {
-        window.onbeforeunload = null;
-      }
-    };
+    window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
+    window.addEventListener('unload', e => this.unloadHandler(e))
+  },
+  destroyed () {
+    window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e))
+    window.removeEventListener('unload', e => this.unloadHandler(e))
   },
 };
 </script>

@@ -120,7 +120,7 @@ export default {
     onJumpLab: function (labitem) {
       console.log('labitme')
       console.log(labitem)
-      // this.$router.push({path: '/novnc', query: {port: 6080, doc_path: labitem.docPath}})
+      // this.$router.push({path: '/novnc', query: {port: 6080, labObj: labitem}})
       this.postRequest('api/openlabenv', {
         //  TODO 传入课程，实验，用户名，打开对应的实验环境并返回启动的的端口
         username: String(this.$store.state.userName),
@@ -129,28 +129,10 @@ export default {
         //  TODO 跳转到novnc并连接到返回的端口
         if (resp && resp.status === 200) {
           console.log(resp)
-          this.$router.push({path: '/novnc', query: {port: resp.obj, doc_path: labitem.docPath}})
+          this.$router.push({path: '/novnc', query: {port: resp.obj, labObj: labitem}})
         }
       })
     },
-    // onJumpNewPort: function (a) {
-    //   console.log('new Port')
-    //   console.log(a)
-    //   var _this = this
-    //   alert('正在创建新的容器，请确定后等待5s')
-    //   _this
-    //     .postRequest('api/startNewPort', {
-    //       port: String(a)
-    //     })
-    //     .then((resp) => {
-    //       if (resp) {
-    //         alert('连接成功')
-    //         this.$router.push({path: '/novnc', query: {port: a}})
-    //       } else {
-    //         alert('连接服务器失败')
-    //       }
-    //     })
-    // },
     search: function () {
     },
     getlab: function ({item, key, selectedKeys}) {
