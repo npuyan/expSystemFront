@@ -253,7 +253,7 @@ export default {
         // 实验详情
         this.$router.push({
         path: '/teacherLabDetails',
-        query: {obj: record}
+        query: {obj: record, fromTable: true}
       })
       }
       else {

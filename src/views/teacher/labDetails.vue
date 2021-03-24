@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-steps :current="2" size="default" type="navigation" :style="stepStyle">
+    <a-steps :current="2" size="default" type="navigation" :style="stepStyle" @change="onChange">
       <a-step title="课程基本信息" />
       <a-step title="课程详细信息" />
       <a-step title="实验详细信息" />
@@ -201,6 +201,14 @@ export default {
   },
 
   methods: {
+    onChange(current) {
+      console.log("onChange:", current);
+      // this.current = current;
+      if (current === 1 && this.$route.query.fromTable === undefined) {
+        this.$router.back()
+      }
+    },
+
     getImagelist() {
       this.postRequest("api/getimagebycreatorid", {
         creatorid: this.$store.state.userId,

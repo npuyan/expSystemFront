@@ -110,40 +110,64 @@ export default new Router({
         }, {
           path: '/myCourse',
           name: myCourse,
-          component: myCourse
+          component: myCourse,
+          meta: {
+            keepAlive: false // 不需要缓存
+          }
         },
         {
           path: '/myStudent',
           name: myStudent,
-          component: myStudent
+          component: myStudent,
+          meta: {
+            keepAlive: false // 不需要缓存
+          }
         },
         {
           path: '/myLab',
           name: myLab,
-          component: myLab
+          component: myLab,
+          meta: {
+            keepAlive: false // 不需要缓存
+          }
         }, {
           path: '/teacherCourseDetails',
           name: teacherCourseDetails,
-          component: teacherCourseDetails
+          component: teacherCourseDetails,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
         }, {
           path: '/teacherLabDetails',
           name: teacherLabDetails,
-          component: teacherLabDetails
+          component: teacherLabDetails,
+          meta: {
+            keepAlive: false // 不需要缓存
+          }
         }, {
           path: '/teacherCourseBasic',
           name: teacherCourseBasic,
-          component: teacherCourseBasic
+          component: teacherCourseBasic,
+          meta: {
+            keepAlive: true // 不需要缓存
+          }
         }, {
           path: '/envVnc',
           name: envVnc,
-          component: envVnc
+          component: envVnc,
+          meta: {
+            keepAlive: false // 不需要缓存
+          }
         }, {
           path: '/pendingApplications',
           name: pendingApplications,
-          component: pendingApplications
+          component: pendingApplications,
+          meta: {
+            keepAlive: false // 不需要缓存
+          }
         }
 
-      ]
+      ],
 
     }, {
       path: '/course',

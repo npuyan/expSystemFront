@@ -36,7 +36,10 @@
         <div
           :style="{ padding: '24px', background: '#fff', minHeight: '360px' }"
         >
-          <router-view />
+        <keep-alive>
+          <router-view v-if="$route.meta.keepAlive"/>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
