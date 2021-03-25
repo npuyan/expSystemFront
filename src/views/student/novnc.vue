@@ -9,20 +9,23 @@
       <div v-if="!collapsed">
         <div id="buttongroup" style="margin: 2vh">
           <a-button-group :size="large">
-            <a-button type="primary" @click="">
+            <a-button v-if="prevIndex != null" type="primary" @click="prev()">
               <a-icon type="left" />
               上一节
             </a-button>
-            <a-button type="dash"> 章节一：熟悉系统 </a-button>
-            <a-button type="primary">
+            <a-button type="dash"> {{ labitem.labName }}</a-button>
+            <a-button v-if="nextIndex != null" type="primary" @click="next()">
               下一节
               <a-icon type="right" />
             </a-button>
           </a-button-group>
         </div>
-        <iframe :src="'/static/pdf/web/viewer.html?file=' + fileUrl" height="820" width="100%">
+        <iframe
+          :src="'/static/pdf/web/viewer.html?file=' + fileUrl"
+          height="820"
+          width="100%"
+        >
         </iframe>
-
       </div>
       <br /><br /><br />
     </a-layout-sider>
@@ -42,16 +45,21 @@
   </a-layout>
 </template>
 <script>
-
 export default {
-
   data() {
     return {
       collapsed: false,
       port: this.$route.query.port,
       url: "http://124.70.84.98:",
-      numPages: null, // pdf 总页数 
-      fileUrl: encodeURIComponent('http://localhost:8081/api/downloadfile?filename=' + this.$route.query.labObj.docPath)
+      numPages: null, // pdf 总页数
+      lablist: [],
+      prevIndex: null,
+      nextIndex: null,
+      labitem: this.$route.query.labObj,
+      fileUrl: encodeURIComponent(
+        "http://localhost:8081/api/downloadfile?filename=" +
+          this.$route.query.labObj.docPath
+      ),
     };
   },
   computed: {
@@ -60,44 +68,119 @@ export default {
     },
   },
   methods: {
+    prev() {
+      this.unloadHandler();
+      this.onJumpLab(this.lablist[this.prevIndex]);
+    },
+    next() {
+      this.unloadHandler();
+      this.onJumpLab(this.lablist[this.nextIndex]);
+    },
+
+    onJumpLab: function (labitem) {
+      console.log("labitme");
+      console.log(labitem);
+      // this.$router.push({path: '/novnc', query: {port: 6080, labObj: labitem}})
+      this.postRequest("api/openlabenv", {
+        //  TODO 传入课程，实验，用户名，打开对应的实验环境并返回启动的的端口
+        username: String(this.$store.state.userName),
+        courselab: labitem,
+      }).then((resp) => {
+        //  TODO 跳转到novnc并连接到返回的端口
+        if (resp && resp.status === 200) {
+          console.log(resp);
+          this.labitem = labitem;
+          this.fileUrl = encodeURIComponent(
+            "http://localhost:8081/api/downloadfile?filename=" +
+              this.labitem.docPath
+          );
+          this.port = resp.obj;
+          this.setPrevNext();
+        }
+      });
+    },
+
     test: function () {
       alert(this.port);
     },
-    beforeunloadHandler (e) {
+    beforeunloadHandler(e) {
       // debugger
-      this._beforeUnload_time = new Date().getTime()
-      console.log('this._beforeUnload_time：', this._beforeUnload_time)
-      e = e || window.event
+      this._beforeUnload_time = new Date().getTime();
+      console.log("this._beforeUnload_time：", this._beforeUnload_time);
+      e = e || window.event;
       if (e) {
-        e.returnValue = '关闭提示'
+        e.returnValue = "关闭提示";
       }
       // debugger
-      return '关闭提示'
+      return "关闭提示";
     },
-    unloadHandler () {
-      console.log('this._beforeUnload_time2：', this._beforeUnload_time)
-      this._gap_time = new Date().getTime() - this._beforeUnload_time
-      console.log('this._gap_time：', this._gap_time)
+    unloadHandler() {
+      console.log("this._beforeUnload_time2：", this._beforeUnload_time);
+      this._gap_time = new Date().getTime() - this._beforeUnload_time;
+      console.log("this._gap_time：", this._gap_time);
       // 判断是窗口关闭还是刷新
-        // 关闭前暂停容器进程
+      // 关闭前暂停容器进程
       this.postRequest("api/pauselabenv", {
         username: this.$store.state.userName,
-        courselab: this.$route.query.labObj
-      }).then((resp)=>{
-        if(resp){
-          console.log(resp.msg)
+        courselab: this.labitem,
+      }).then((resp) => {
+        if (resp) {
+          console.log(resp.msg);
         }
-      })
-     }
+      });
+    },
+
+    setPrevNext() {
+      var i;
+      for (i = 0; i < this.lablist.length; i++) {
+        console.log("this.lablist[i].labId  =", this.lablist[i].labId);
+        if (this.lablist[i].labId === this.labitem.labId) {
+          if (i > 0) {
+            this.prevIndex = i - 1;
+          }
+          break;
+        }
+      }
+
+      for (i = 0; i < this.lablist.length; i++) {
+        console.log("this.lablist[i].labId  =", this.lablist[i].labId);
+        if (this.lablist[i].labId === this.labitem.labId) {
+          if (i === this.lablist.length - 1) {
+          } else {
+            this.nextIndex = i + 1;
+          }
+          break;
+        }
+      }
+      console.log("previndex =", this.prevIndex);
+      console.log("nextindex =", this.nextIndex);
+    },
   },
   mounted() {
     let _this = this;
-    window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
-    window.addEventListener('unload', e => this.unloadHandler(e))
+    window.addEventListener("beforeunload", (e) => this.beforeunloadHandler(e));
+    window.addEventListener("unload", (e) => this.unloadHandler(e));
+
+    _this
+      .postRequest("api/getlabbycourseid", {
+        courseid: String(this.labitem.courseId),
+      })
+      .then((resp) => {
+        if (resp) {
+          console.log("得到课程实验数据");
+          console.log(resp);
+          _this.lablist = resp;
+          this.setPrevNext();
+        } else {
+          alert("连接服务器失败");
+        }
+      });
   },
-  destroyed () {
-    window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e))
-    window.removeEventListener('unload', e => this.unloadHandler(e))
+  destroyed() {
+    window.removeEventListener("beforeunload", (e) =>
+      this.beforeunloadHandler(e)
+    );
+    window.removeEventListener("unload", (e) => this.unloadHandler(e));
   },
 };
 </script>

@@ -111,12 +111,7 @@ export default {
   },
 
   methods: {
-    // onJump: function (a) {
-    //   console.log('submit!')
-    //   console.log(this.$router)
-    //   this.$router.push({path: '/novnc', query: {port: a}})
-    // },
-    
+   
     onJumpLab: function (labitem) {
       console.log('labitme')
       console.log(labitem)
