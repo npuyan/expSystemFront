@@ -1,6 +1,11 @@
 <template>
   <div>
-    <a-steps :current="2" size="default" type="navigation" :style="stepStyle" @change="onChange">
+    <a-steps
+      :current="2"
+      size="default"
+      type="navigation"
+      @change="onChange"
+    >
       <a-step title="课程基本信息" />
       <a-step title="课程详细信息" />
       <a-step title="实验详细信息" />
@@ -85,7 +90,7 @@
                 </div>
               </a-col>
               <a-col :span="4">
-                <a-button @click="pdfDlfg"> {{ preview }} </a-button>
+                <a-button @click="pdfDlfg"> 预览 </a-button>
               </a-col>
             </a-row>
           </a-form-item>
@@ -129,35 +134,30 @@
       </a-card>
     </div>
 
-    <!-- <a-col :span="8" :offset="8">
-      <a-button @click="pdfDlfg"> {{ preview }} </a-button>
-    </a-col> -->
-
-    <div v-if="this.preview == '关闭预览'" class="pdf" align="center" style="width: 60%">
-      <!-- <pdf ref="pdf" v-for="i in numPages" :key="i" :page="i" :src="pdfUrl">
-      </pdf> -->
-      <iframe
-          :src="'/static/pdf/web/viewer.html?file=' + pdfUrl"
-          height="820"
-          width="100%"
-        >
-        </iframe>
+    <div>
+      <pdf-view
+        ref="pdfview"
+        :visible="visible"
+        :pdf-url="pdfUrl"
+        @cancel="handleCancelView"
+        @create="handleCancelView"
+      />
     </div>
   </div>
 </template>
 
 <script>
-// import pdf from "vue-pdf";
-// import { delete } from 'vue/types/umd';
-
+import pdfView from "./pdfView";
 export default {
   name: "labdetails",
+  components: { pdfView },
   data() {
     return {
       pdfUrl: "http://localhost:8081/api/downloadfile?filename=",
+      visible: false,
       fullUrl: "",
       numPages: null, // pdf 总页数
-      preview: '点击预览',
+      preview: "点击预览",
       formItemLayout: {
         labelCol: {
           xs: { span: 24 },
@@ -179,16 +179,16 @@ export default {
       selected_image: null,
       envPort: null,
       envTemp: {
-          envId: 9,
-          envName: "test环境",
-          remark: "test",
-          nodeName: "Test",
-          cpu: 1,
-          memsize: 1000,
-          createTime: "",
-          creatorId: 1,
-          imageId: 1
-        },
+        envId: 9,
+        envName: "test环境",
+        remark: "test",
+        nodeName: "Test",
+        cpu: 1,
+        memsize: 1000,
+        createTime: "",
+        creatorId: 1,
+        imageId: 1,
+      },
     };
   },
 
@@ -199,18 +199,22 @@ export default {
   mounted() {
     this.fullUrl = "api/uploadfile?labid=" + String(this.course_item.labId);
     var filename = this.course_item.docPath;
-    this.pdfUrl = encodeURIComponent(this.pdfUrl+ filename);
+    this.pdfUrl = encodeURIComponent(this.pdfUrl + filename);
     console.log("fullUrl == " + this.fullUrl);
     console.log("lab_item =", this.course_item);
     this.getImagelist();
   },
 
   methods: {
+    handleCancelView() {
+      this.visible = false;
+    },
+
     onChange(current) {
       console.log("onChange:", current);
       // this.current = current;
       if (current === 1 && this.$route.query.fromTable === undefined) {
-        this.$router.back()
+        this.$router.back();
       }
     },
 
@@ -223,24 +227,13 @@ export default {
         this.imagelist = resp;
       });
     },
-    // 计算pdf页码总数
-    // getNumPages() {
-    //   let loadingTask = pdf.createLoadingTask(this.pdfUrl);
-    //   loadingTask.promise
-    //     .then((pdf) => {
-    //       this.numPages = pdf.numPages;
-    //     })
-    //     .catch((err) => {
-    //       console.error("pdf 加载失败", err);
-    //     });
-    // },
 
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
           delete values.dragger;
-          this.editAttribute(values)
+          this.editAttribute(values);
 
           console.log("Received values of form: ", values);
           this.postRequest(this.saveUrl, values).then((resp) => {
@@ -255,13 +248,8 @@ export default {
     },
 
     pdfDlfg: function () {
-      /* 得到通过lab得到doc_path ,然后绑定到pdfurl即可 */
-      
-      if (this.preview === '点击预览') {
-        this.preview = '关闭预览';
-      } else {
-        this.preview = '点击预览';
-      }
+      console.log("pdfUrl=", this.pdfUrl)
+      this.visible = true;
     },
     handleChange(info) {
       console.log(this.fullUrl);
@@ -289,7 +277,7 @@ export default {
 
     gotoNovnc() {
       console.log("the selected image is ", this.selected_image);
-      
+
       this.postRequest(this.addEnvUrl, {
         courselab: this.course_item,
         courseimage: this.selected_image,
@@ -299,8 +287,10 @@ export default {
           console.log("创建环境成功");
           console.log("返回数据 ", resp);
           this.envPort = resp.obj;
-          this.$router.push({path: '/envVnc', 
-          query: {port: this.envPort, envObj: this.envTemp}})
+          this.$router.push({
+            path: "/envVnc",
+            query: { port: this.envPort, envObj: this.envTemp },
+          });
         }
       });
     },
