@@ -87,7 +87,7 @@ export default {
       courselist: [],
       course_name: null,
       lablist: [],
-      imageUrl: 'http://localhost:8081/api/downloadcoursepicture?filename='
+      imageUrl: 'api/downloadcoursepicture?filename='
     }
   },
 
@@ -125,6 +125,9 @@ export default {
         if (resp && resp.status === 200) {
           console.log(resp)
           this.$router.push({path: '/novnc', query: {port: resp.obj, labObj: labitem}})
+        }
+        else{
+          this.$router.push({path: '/novnc', query: {port: 6080, labObj: labitem}})
         }
       })
     },

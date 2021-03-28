@@ -92,7 +92,7 @@ export default {
     return {
       courselist: [],
       selectedCourseList: [],
-      imageUrl: "http://localhost:8081/api/downloadcoursepicture?filename=",
+      imageUrl: "api/downloadcoursepicture?filename=",
     };
   },
 

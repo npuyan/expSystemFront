@@ -133,28 +133,31 @@
       <a-button @click="pdfDlfg"> {{ preview }} </a-button>
     </a-col> -->
 
-    <div class="pdf" align="center" style="width: 60%">
-      <pdf ref="pdf" v-for="i in numPages" :key="i" :page="i" :src="pdfUrl">
-      </pdf>
+    <div v-if="this.preview == '关闭预览'" class="pdf" align="center" style="width: 60%">
+      <!-- <pdf ref="pdf" v-for="i in numPages" :key="i" :page="i" :src="pdfUrl">
+      </pdf> -->
+      <iframe
+          :src="'/static/pdf/web/viewer.html?file=' + pdfUrl"
+          height="820"
+          width="100%"
+        >
+        </iframe>
     </div>
   </div>
 </template>
 
 <script>
-import pdf from "vue-pdf";
+// import pdf from "vue-pdf";
 // import { delete } from 'vue/types/umd';
 
 export default {
   name: "labdetails",
-  components: {
-    pdf,
-  },
   data() {
     return {
-      pdfUrl: "",
+      pdfUrl: "http://localhost:8081/api/downloadfile?filename=",
       fullUrl: "",
       numPages: null, // pdf 总页数
-      preview: "点击预览",
+      preview: '点击预览',
       formItemLayout: {
         labelCol: {
           xs: { span: 24 },
@@ -195,6 +198,8 @@ export default {
 
   mounted() {
     this.fullUrl = "api/uploadfile?labid=" + String(this.course_item.labId);
+    var filename = this.course_item.docPath;
+    this.pdfUrl = encodeURIComponent(this.pdfUrl+ filename);
     console.log("fullUrl == " + this.fullUrl);
     console.log("lab_item =", this.course_item);
     this.getImagelist();
@@ -219,16 +224,16 @@ export default {
       });
     },
     // 计算pdf页码总数
-    getNumPages() {
-      let loadingTask = pdf.createLoadingTask(this.pdfUrl);
-      loadingTask.promise
-        .then((pdf) => {
-          this.numPages = pdf.numPages;
-        })
-        .catch((err) => {
-          console.error("pdf 加载失败", err);
-        });
-    },
+    // getNumPages() {
+    //   let loadingTask = pdf.createLoadingTask(this.pdfUrl);
+    //   loadingTask.promise
+    //     .then((pdf) => {
+    //       this.numPages = pdf.numPages;
+    //     })
+    //     .catch((err) => {
+    //       console.error("pdf 加载失败", err);
+    //     });
+    // },
 
     handleSubmit(e) {
       e.preventDefault();
@@ -251,14 +256,11 @@ export default {
 
     pdfDlfg: function () {
       /* 得到通过lab得到doc_path ,然后绑定到pdfurl即可 */
-      var filename = this.course_item.docPath;
-      if (this.pdfUrl === "") {
-        this.pdfUrl = "api/downloadfile?filename=" + filename;
-        this.getNumPages();
-        this.preview = "关闭预览";
+      
+      if (this.preview === '点击预览') {
+        this.preview = '关闭预览';
       } else {
-        this.pdfUrl = "";
-        this.preview = "点击预览";
+        this.preview = '点击预览';
       }
     },
     handleChange(info) {

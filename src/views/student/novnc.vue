@@ -56,10 +56,8 @@ export default {
       prevIndex: null,
       nextIndex: null,
       labitem: this.$route.query.labObj,
-      fileUrl: encodeURIComponent(
-        "http://localhost:8081/api/downloadfile?filename=" +
-          this.$route.query.labObj.docPath
-      ),
+      baseFileUrl: "http://localhost:8081/api/downloadfile?filename=",
+      fileUrl: "",
     };
   },
   computed: {
@@ -89,14 +87,14 @@ export default {
         //  TODO 跳转到novnc并连接到返回的端口
         if (resp && resp.status === 200) {
           console.log(resp);
-          this.labitem = labitem;
-          this.fileUrl = encodeURIComponent(
-            "http://localhost:8081/api/downloadfile?filename=" +
-              this.labitem.docPath
-          );
           this.port = resp.obj;
-          this.setPrevNext();
         }
+
+        this.labitem = labitem;
+        this.fileUrl = encodeURIComponent(
+          this.baseFileUrl + this.labitem.docPath
+        );
+        this.setPrevNext();
       });
     },
 
@@ -157,6 +155,7 @@ export default {
     },
   },
   mounted() {
+    this.fileUrl = encodeURIComponent(this.baseFileUrl + this.labitem.docPath);
     let _this = this;
     window.addEventListener("beforeunload", (e) => this.beforeunloadHandler(e));
     window.addEventListener("unload", (e) => this.unloadHandler(e));
