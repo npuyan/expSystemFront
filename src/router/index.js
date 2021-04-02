@@ -24,7 +24,10 @@ import teacherCourseDetails from '../views/teacher/courseDetails'
 import teacherCourseBasic from '../views/teacher/courseBasic'
 import teacherLabDetails from '../views/teacher/labDetails'
 import pendingApplications from '../views/teacher/pendingApplications'
+import teacherStudentCourseDetails from '../views/student/courseDetails'
+
 import envVnc from '../views/teacher/envVnc'
+import courseGrade from '../views/teacher/courseGrade'
 
 Vue.use(Router)
 export default new Router({
@@ -49,6 +52,12 @@ export default new Router({
           path: 'novnc',
           name: 'novnc',
           component: novnc
+        },
+        {
+          path: '/studentCourseDetails',
+          name: studentCourseDetails,
+          component: studentCourseDetails
+    
         }
       ]
     }, {
@@ -165,6 +174,17 @@ export default new Router({
           meta: {
             keepAlive: false // 不需要缓存
           }
+        }, {
+          path: '/courseGrade',
+          name: courseGrade,
+          component: courseGrade,
+          meta: {
+            keepAlive: false
+          }
+        }, {
+          path: '/teacherStudentCourseDetails',
+          name: teacherStudentCourseDetails,
+          component: teacherStudentCourseDetails
         }
 
       ],
@@ -173,11 +193,6 @@ export default new Router({
       path: '/course',
       name: 'course',
       component: course
-    }, {
-      path: '/studentCourseDetails',
-      name: studentCourseDetails,
-      component: studentCourseDetails
-
-    }
+    }, 
   ]
 })

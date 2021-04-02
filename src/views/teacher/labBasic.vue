@@ -50,7 +50,7 @@
           />
         </a-form-item>
         <a-form-item  label="实验描述" has-feedback>
-          <a-input
+          <a-textarea
             v-decorator="[
               'remarks',
               {

@@ -89,6 +89,7 @@ export default {
                 // 将用户名和ID写入全局变量
                 this.$store.commit('update', ['userName', user.username])
                 this.$store.commit('update', ['userId', user.userId])
+                this.$store.commit('update', ['userType', user.userType])
 
                 if (user.userType === '0') {
                   // 管理员登录

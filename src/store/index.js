@@ -7,6 +7,7 @@ const store = new Vuex.Store({
     state: {
         userName: "",
 		    userId: null,
+        userType: 0,
     },
     mutations: {
 		update(state,[key,value]){

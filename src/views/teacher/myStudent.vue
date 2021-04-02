@@ -41,12 +41,6 @@ const columns = [
     sorter: false,
     scopedSlots: { customRender: 'username' }
   },
-  // {
-  //   title: '密码',
-  //   dataIndex: 'password',
-  //   sorter: false,
-  //   scopedSlots: {customRender: 'password'}
-  // },
   {
     title: '电话',
     dataIndex: 'phone',
@@ -77,9 +71,9 @@ const columns = [
     scopedSlots: { customRender: 'delete' }
   },
   {
-    title: '编辑',
-    dataIndex: 'edit',
-    scopedSlots: { customRender: 'edit' }
+    title: '学习详情',
+    dataIndex: 'info',
+    scopedSlots: { customRender: 'info' }
   }
 ]
 export default {
@@ -100,7 +94,7 @@ export default {
       parameter: { courseid: 0 },
       fetchUrl: 'api/getallstudentbycourse',
       delUrl: 'api/delUserById',
-      saveUrl: 'api/updateuser'
+      saveUrl: 'api/updateuser',
     }
   },
   methods: {

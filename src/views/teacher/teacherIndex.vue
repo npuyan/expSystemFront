@@ -70,6 +70,10 @@ export default {
           path: '/myLab'
         },
         {
+          title: '成绩管理',
+          path: '/courseGrade'
+        },
+        {
           title: '待处理申请',
           path: '/pendingApplications'
         }

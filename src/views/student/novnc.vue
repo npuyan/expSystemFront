@@ -50,7 +50,8 @@ export default {
     return {
       collapsed: false,
       port: this.$route.query.port,
-      url: "http://124.70.84.98:",
+      // url: "http://124.70.84.98:",
+      url: 'http://202.117.249.18:',
       numPages: null, // pdf 总页数
       lablist: [],
       prevIndex: null,

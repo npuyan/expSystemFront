@@ -11,13 +11,13 @@
     >
       <!--  选课按钮    -->
       <div>
-        <br/>
-        <br/>
+        <br />
+        <br />
         <a-button type="primary" size="large" @click="selectcourse()">
           进入选课
         </a-button>
-        <br/>
-        <br/>
+        <br />
+        <br />
       </div>
       <!--搜索栏-->
       <div class="logo">
@@ -27,13 +27,15 @@
         ></a-input-search>
       </div>
       <!-- 左侧课程名称-->
-      <a-menu theme="dark"
-              mode="inline"
-              :default-selected-keys="[courselist[0].courseId]"
-              @select="getlab">
-        <a-menu-item v-for="item in courselist" :key="item.courseId" >
+      <a-menu
+        theme="dark"
+        mode="inline"
+        :default-selected-keys="[courselist[0].courseId]"
+        @select="gotolab"
+      >
+        <a-menu-item v-for="item in courselist" :key="item.courseId">
           <!--                     @click="getlab(key, courseitem.courseName)"-->
-          <span>  {{ item.courseName }}</span>
+          <span> {{ item.courseName }}</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
@@ -45,21 +47,26 @@
       </a-layout-header>
 
       <a-layout-content style="margin: 0 16px">
-
         <!--    右侧crumb    -->
         <a-breadcrumb style="margin: 16px 0">
           <a-breadcrumb-item>学生</a-breadcrumb-item>
           <a-breadcrumb-item>{{ course_name }}</a-breadcrumb-item>
         </a-breadcrumb>
 
-        <!--右侧实验列表        -->
-        <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
+        <div
+          :style="{ padding: '24px', background: '#fff', minHeight: '360px' }"
+        >
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
+        </div>
+
+        <!-- <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
           <a-list :grid="{ gutter: 16, column: 4 }" :data-source="lablist">
             <a-list-item
               slot="renderItem"
               slot-scope="item, index"
               @click="onJumpLab(item)">
-              <!--          容器显示卡片    -->
               <a-card>
                 <img :src="imageUrl" style="width: 100px; height: 100px"/>
                 <a-list-item-meta description="容器镜像">
@@ -69,7 +76,7 @@
             </a-list-item>
             <br/>
           </a-list>
-        </div>
+        </div> -->
       </a-layout-content>
       <a-layout-footer style="text-align: center">
         Ant Design @ZTY
@@ -79,7 +86,7 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     // todos
 
     return {
@@ -87,97 +94,73 @@ export default {
       courselist: [],
       course_name: null,
       lablist: [],
-      imageUrl: 'api/downloadcoursepicture?filename='
-    }
+      imageBaseUrl: "api/downloadcoursepicture?filename=",
+      imageUrl: '',
+    };
   },
 
-  mounted () {
-    console.log('mounted!')
+  mounted() {
+    console.log("mounted!");
 
-    var _this = this
-    _this.postRequest('api/getselectedcourses', {
-      username: this.$store.state.userName
-    }).then((resp) => {
-      if (resp) {
-        console.log('得到课程数据')
-        console.log(resp)
-        this.courselist = resp
-        this.course_name = this.courselist[0].courseName
-        this.getlab({item: 0, key: this.courselist[0].courseId, selectedKeys: 0})
-      } else {
-        alert('连接服务器失败')
-      }
-    })
+    var _this = this;
+    _this
+      .postRequest("api/getselectedcourses", {
+        username: this.$store.state.userName,
+      })
+      .then((resp) => {
+        if (resp) {
+          console.log("得到课程数据");
+          console.log(resp);
+          this.courselist = resp;
+          // this.course_name = this.courselist[0].courseName
+          this.gotolab({item: 0, key: this.courselist[0].courseId, selectedKeys: 0})
+        } else {
+          alert("连接服务器失败");
+        }
+      });
   },
 
   methods: {
-   
-    onJumpLab: function (labitem) {
-      console.log('labitme')
-      console.log(labitem)
-      // this.$router.push({path: '/novnc', query: {port: 6080, labObj: labitem}})
-      this.postRequest('api/openlabenv', {
-        //  TODO 传入课程，实验，用户名，打开对应的实验环境并返回启动的的端口
-        username: String(this.$store.state.userName),
-        courselab: labitem
-      }).then((resp) => {
-        //  TODO 跳转到novnc并连接到返回的端口
-        if (resp && resp.status === 200) {
-          console.log(resp)
-          this.$router.push({path: '/novnc', query: {port: resp.obj, labObj: labitem}})
-        }
-        else{
-          this.$router.push({path: '/novnc', query: {port: 6080, labObj: labitem}})
-        }
-      })
-    },
-    search: function () {
-    },
-    getlab: function ({item, key, selectedKeys}) {
-      console.log('key' + key)
-      var i = 0
+    search: function () {},
+    gotolab: function ({ item, key, selectedKeys }) {
+      console.log("key" + key);
+      var i = 0;
 
-      for (i = 0; i < this.courselist.length; i++) { 
-        if(this.courselist[i].courseId === key){
-                this.imageUrl = this.imageUrl + this.courselist[i].picture
+      for (i = 0; i < this.courselist.length; i++) {
+        if (this.courselist[i].courseId === key) {
+          this.imageUrl = this.imageBaseUrl + this.courselist[i].picture;
         }
       }
-      var course = this.courselist.filter(it => key === it.courseId)[0]
-      var id = course.courseId
-      var name = course.courseName
-      console.log('getlab', id, name)
-      this.course_name = name
-      var _this = this
-      _this
-        .postRequest('api/getlabbycourseid', {
-          courseid: String(id)
-        })
-        .then((resp) => {
-          if (resp) {
-            console.log('得到课程实验数据')
-            console.log(resp)
-            _this.lablist = resp
-          } else {
-            alert('连接服务器失败')
-          }
-        })
+
+      var course = this.courselist.filter((it) => key === it.courseId)[0];
+      var id = course.courseId;
+      var name = course.courseName;
+      console.log("gotolab", id, name,this.imageUrl);
+      this.$router.push({
+        path: "/studentCourseDetails",
+        query: {
+          studentName: this.$store.state.userName,
+          studentId: this.$store.state.userId,
+          courseId: id,
+          imageUrl: this.imageUrl,
+        },
+      });
     },
 
     selectcourse: function () {
-      console.log('step in select course page!')
+      console.log("step in select course page!");
       // eslint-disable-next-line no-unused-vars
-      console.log(this.$router)
+      console.log(this.$router);
 
       this.$router.push({
-        path: '/course'
-      })
-    }
-  }
-}
+        path: "/course",
+      });
+    },
+  },
+};
 </script>
 
 <style>
-
 #components-layout-demo-side .logo {
   height: 32px;
   background: rgba(255, 255, 255, 0.2);

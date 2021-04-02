@@ -76,7 +76,7 @@
             />
           </a-form-item>
           <a-form-item v-bind="formItemLayout" label="课程描述" has-feedback>
-            <a-input
+            <a-textarea
               v-decorator="[
                 'remark',
                 { initialValue: course_item.remark },

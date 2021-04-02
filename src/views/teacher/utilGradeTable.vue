@@ -1,55 +1,48 @@
 <template>
   <div>
-    <a-button class="editable-add-btn" @click="handleAdd"> 添加 </a-button>
     <a-table
       bordered
       :columns="columns"
       :data-source="data"
       :loading="loading"
-      @change="handleTableChange"
-    >
+      @change="handleTableChange">
       <!--      <a-input>你好</a-input>-->
-      <template
-        v-for="col in columnsName"
-        :slot="col"
-        slot-scope="text, record, index"
-      >
+      <template v-for="col in columnsName"
+                :slot="col"
+                slot-scope="text,record,index">
         <div :key="col">
-          <a-input
-            v-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            @change="(e) => handleChange(e.target.value, record.key, col)"
-          />
+          <a-input v-if="record.editable"
+                   style="margin: -5px 0"
+                   :value="text"
+                   @change="e=>handleChange(e.target.value, record.key, col)"/>
           <template v-else>
             {{ text }}
           </template>
         </div>
       </template>
-      <template slot="delete" slot-scope="text, record, index">
-        <a-popconfirm
-          v-if="data.length"
-          title="确定删除吗？"
-          @confirm="() => onDelete(record.key)"
+      <template slot="delete" slot-scope="text, record,index">
+        <a-popconfirm v-if="data.length"
+                      title="确定删除吗？"
+                      @confirm="() => onDelete(record.key)"
         >
           <a-button>删除</a-button>
         </a-popconfirm>
       </template>
-      <template slot="edit" slot-scope="text, record, index">
+      <template slot="edit" slot-scope="text,record,index">
         <div class="editable-row-operations">
           <span v-if="record.editable">
-            <a @click="() => save(record.key)"> 保存 </a>
-            <a-popconfirm
-              title="确定取消吗?"
-              @confirm="() => cancel(record.key)"
-            >
+            <a @click="()=>save(record.key)">
+              保存
+            </a>
+            <a-popconfirm title="确定取消吗?"
+                          @confirm="()=>cancel(record.key)">
               <a>取消</a>
             </a-popconfirm>
           </span>
         </div>
       </template>
-      <template slot="info" slot-scope="text, record, index">
-        <a-button @click="Details(record)">详细信息</a-button>
+      <template slot="info" slot-scope="text,record,index">
+        <a-button @click="Details(record)">成绩详情</a-button>
       </template>
     </a-table>
   </div>
@@ -157,20 +150,7 @@ export default {
       item[this.dataIdName] = item.key
       delete item.key
     },
-    /* 添加一个空行 */
-    handleAdd () {
 
-      this.$router.push({
-        path: '/teacherCourseBasic',
-        query: {obj: {"courseName": '',
-                      "author": '',
-                      "type": '',
-                      "tag": '',
-                      "time": null,
-                      "remark": '',
-                      "courseId": null,
-                      "createTime": null}}})
-    },
     /* 根据key删除 */
     onDelete (key) {
       this.loading = true
@@ -260,23 +240,11 @@ export default {
         query: {obj: record, fromTable: true}
       })
       }
-      else if(record.hasOwnProperty('picture')){
+      else {
         // 课程详情
         this.$router.push({
         path: '/teacherCourseBasic',
         query: {obj: record}
-      })
-      }
-      else{
-         // 学生学习详情
-        console.log("gotocourseDetials", record.userId, record.username,this.recvParam.courseid);
-        this.$router.push({
-        path: '/teacherStudentCourseDetails',
-        query: {
-          studentName: record.username,
-          studentId: record.userId,
-          courseId: this.recvParam.courseid,
-          imageUrl: '',}
       })
       }
       
