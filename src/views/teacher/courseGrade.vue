@@ -6,13 +6,13 @@
         :tab="courseitem.courseName"
         v-for="courseitem in courselist"
       >
-        <a-tabs @tabClick="callbacklab" tabPosition="left" type="card">
+        <a-tabs @tabClick="callbacklab" tabPosition="left" type="line">
           <a-tab-pane
             :key="labitem.labId"
             :tab="labitem.labName"
             v-for="labitem in lablist"
           >
-            <!-- <div v-if="clickflag == 1">
+            <div v-if="clickflag == 1">
               <util-table
                 :data="data"
                 :columns="columns"
@@ -24,7 +24,7 @@
                 :save-url="saveUrl"
               >
               </util-table>
-            </div> -->
+            </div>
           </a-tab-pane>
         </a-tabs>
       </a-tab-pane>
@@ -35,67 +35,39 @@
 <script>
 import UtilTable from "../teacher/utilGradeTable";
 const columnsName = [
-  "labName",
-  "courseId",
-  "courseName",
-  "envId",
-  "docPath",
-  "remarks",
-  "sectionId",
+  "user_name",
+  "homework_time",
+  "score",
 ];
 const columns = [
   {
-    title: "实验名称",
-    dataIndex: "labName",
+    title: "学生姓名",
+    dataIndex: "user_name",
     sorter: false,
-    scopedSlots: { customRender: "labName" },
+    scopedSlots: { customRender: "user_name" },
   },
   {
-    title: "关联课程id",
-    dataIndex: "courseId",
+    title: "提交时间",
+    dataIndex: "homework_time",
     sorter: false,
-    scopedSlots: { customRender: "courseId" },
+    scopedSlots: { customRender: "homework_time" },
   },
   {
-    title: "课程名称",
-    dataIndex: "courseName",
+    title: "分数",
+    dataIndex: "score",
     sorter: false,
-    scopedSlots: { customRender: "courseName" },
+    scopedSlots: { customRender: "score" },
   },
   {
-    title: "环境Id",
-    dataIndex: "envId",
-    sorter: false,
-    scopedSlots: { customRender: "envId" },
+    title: "作业操作",
+    dataIndex: "aboutHomework",
+    scopedSlots: { customRender: "aboutHomework" },
   },
   {
-    title: "实验文档路径",
-    dataIndex: "docPath",
-    sorter: false,
-    scopedSlots: { customRender: "docPath" },
-  },
-  {
-    title: "实验描述",
-    dataIndex: "remarks",
-    sorter: false,
-    scopedSlots: { customRender: "remarks" },
-  },
-  {
-    title: "第几次实验",
-    dataIndex: "sectionId",
-    sorter: false,
-    scopedSlots: { customRender: "sectionId" },
-  },
-  {
-    title: "删除",
-    dataIndex: "delete",
-    scopedSlots: { customRender: "delete" },
-  },
-  {
-    title: "详细信息",
-    dataIndex: "info",
-    scopedSlots: { customRender: "info" },
-  },
+    title: "成绩操作",
+    dataIndex: "gradeOpt",
+    scopedSlots: {customRender: "gradeOpt"}
+  }
 ];
 export default {
   name: "labManage",
@@ -113,10 +85,10 @@ export default {
       columns,
       columnsName,
       /* 此处必须是后端传过来的数据的逐渐名称，否则前端无法进行识别 */
-      dataIdName: "labId",
-      parameter: { courseid: 0 },
+      dataIdName: "user_id",
+      parameter: { labid: 0 },
       /* 已完成1,2,3 */
-      fetchUrl: "api/getlabbycourseid",
+      fetchUrl: "api/getscoresbylabid",
       delUrl: "api/delcourselabbyid",
       saveUrl: "api/updatecourselab",
     };
@@ -127,7 +99,7 @@ export default {
       console.log(key);
        var _this = this;
       _this
-        .postRequest(this.fetchUrl, {
+        .postRequest("api/getlabbycourseid", {
           courseid: key,
         })
         .then((resp) => {
@@ -135,14 +107,23 @@ export default {
           console.log(resp);
           this.lablist = resp;
           // this.clickflag = 1;
-          // if (this.courselist.length > 0) {
-          //   this.parameter.courseid = this.courselist[0].courseId;
-          // }
+          if (this.lablist.length > 0) {
+            this.callbacklab(this.lablist[0].labId)
+          }
         });
 
     },
     callbacklab(key) {
       console.log("callbacklab", key);
+      this.postRequest("api/getscoresbylabid", {
+        labid: key
+      }).then((resp)=>{
+        if(resp){
+          console.log("得到成绩列表", resp)
+        }
+      })
+      this.clickflag = 1;
+      this.parameter.labid = key
      
     },
   },
@@ -158,9 +139,10 @@ export default {
         console.log("返回数据");
         console.log(resp);
         this.courselist = resp;
-        this.clickflag = 1;
+        
+        // this.clickflag = 1;
         if (this.courselist.length > 0) {
-          this.parameter.courseid = this.courselist[0].courseId;
+          this.callback(this.courselist[0].courseId)
         }
       });
   },

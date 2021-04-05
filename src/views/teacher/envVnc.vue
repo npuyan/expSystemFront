@@ -10,7 +10,8 @@
 export default {
   data() {
     return {
-      fullUrl: "http://124.70.84.98:" + this.$route.query.port,
+      // fullUrl: "http://124.70.84.98:" + this.$route.query.port,
+      fullUrl: "http://202.117.249.18:" + this.$route.query.port,
       envObj: this.$route.query.envObj,
       saveEnvUrl: "api/savecourseenvtoimage",
     };

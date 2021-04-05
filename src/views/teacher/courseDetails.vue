@@ -167,7 +167,7 @@ export default {
           uid: '-1',
           name: String(this.course_item.picture),
           status: 'done',
-          url: 'http://localhost:8081/api/downloadcoursepicture?filename=' + this.course_item.picture
+          url: 'api/downloadcoursepicture?filename=' + this.course_item.picture
       })
     }
     this.getLab();
