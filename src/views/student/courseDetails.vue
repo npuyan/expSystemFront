@@ -92,7 +92,7 @@
       />
     </div>
     <div style="width: 50%">
-      <h1>课程评价</h1>
+      <h2>课程评价</h2>
       <a-comment v-if="userType === '2'">
         <a-avatar
           slot="avatar"
@@ -246,11 +246,17 @@ export default {
       })
     },
     setvalues() {
+      console.log("studentID = ", this.$route.query.studentId)
       this.imageUrl = this.$route.query.imageUrl;
       this.courseId = this.$route.query.courseId;
       this.userName = this.$route.query.studentName;
       this.userId = this.$route.query.studentId;
       this.userType = this.$store.state.userType;
+      if(this.userId == -1){
+        this.guest = true
+        this.userType = 0
+      }
+      
 
       console.log("userType = ", this.userType)
 
@@ -304,7 +310,9 @@ export default {
             console.log("得到课程实验数据");
             console.log(resp);
             _this.lablist = resp;
-            this.getlabscore();
+            if(this.guest === false){
+              this.getlabscore();
+            }
           } else {
             alert("连接服务器失败");
           }

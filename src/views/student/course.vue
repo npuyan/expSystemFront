@@ -26,7 +26,7 @@
           <img
             :src="imageUrl + item.picture"
             style="width: 100px; height: 100px"
-            @click="gotoDetails(item.courseId)"
+            @click="gotoDetails(item.courseId, false, imageUrl + item.picture)"
           />
           <a-list-item-meta description="">
             <a slot="title">{{ item.courseName }}</a>
@@ -56,7 +56,7 @@
           <img
             :src="imageUrl + item.picture"
             style="width: 100px; height: 100px"
-            @click="gotoDetails(item.courseId)"
+            @click="gotoDetails(item.courseId, true, imageUrl + item.picture)"
           />
           <a-list-item-meta description="">
             <a slot="title">{{ item.courseName }}</a>
@@ -193,12 +193,35 @@ export default {
         });
     },
 
-    gotoDetails(id) {
-      console.log("转到课程详情页");
-      this.$router.push({
-        path: "/studentCourseDetails",
-        query: { course_id: id },
-      });
+    gotoDetails(id, selected_sign, imageurl) {
+      
+
+      if(selected_sign === true){
+        console.log("转到课程详情页, sign = ",selected_sign);
+      
+        this.$router.push({
+        path: "/guestCourseDetails",
+        query: {
+          studentName: this.$store.state.userName,
+          studentId: this.$store.state.userId,
+          courseId: id,
+          imageUrl: imageurl,
+          },
+        });
+      }
+      else{
+        console.log("转到课程详情页,  = ",selected_sign);
+        this.$router.push({
+        path: "/guestCourseDetails",
+        query: {
+          studentName: '',
+          studentId: -1,
+          courseId: id,
+          imageUrl: imageurl,
+          },
+        });
+      }
+
     },
 
     backHistory() {
