@@ -7,7 +7,7 @@
       <div style="width: 50%">
         <a-descriptions title="课程详情" bordered :column="1">
           <a-descriptions-item label="课程名称">
-            {{ courseitem.courseName }}
+            <h2>{{ courseitem.courseName }}</h2>
           </a-descriptions-item>
           <a-descriptions-item label="课程描述">
             {{ courseitem.remark }}
@@ -17,7 +17,9 @@
         <br />
       </div>
 
+      <h2>实验详情</h2>
       <a-row type="flex" justify="center" align="top">
+        
         <a-timeline>
           <a-timeline-item v-for="item in lablist" :key="item.labId">
             <a-card hoverable style="width: 600px">
@@ -164,7 +166,7 @@ export default {
       userType: 0,
       guest: false,
       visible: false,
-      baseUrl: "http://localhost:8081/api/", //http://localhost:8800/downloadhomework?userid=12&labid=1
+      baseUrl: this.$store.state.baseUrl +"/api/", //http://localhost:8800/downloadhomework?userid=12&labid=1
       pdfUrl: "",
       uploadUrl: "",
       newScore: null,

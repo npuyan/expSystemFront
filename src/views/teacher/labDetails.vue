@@ -153,7 +153,7 @@ export default {
   components: { pdfView },
   data() {
     return {
-      pdfUrl: "http://localhost:8081/api/downloadfile?filename=",
+      pdfUrl: this.$store.state.baseUrl + "/api/downloadfile?filename=",
       visible: false,
       fullUrl: "",
       numPages: null, // pdf 总页数

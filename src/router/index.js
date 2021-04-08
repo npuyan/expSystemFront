@@ -25,6 +25,7 @@ import teacherCourseBasic from '../views/teacher/courseBasic'
 import teacherLabDetails from '../views/teacher/labDetails'
 import pendingApplications from '../views/teacher/pendingApplications'
 import teacherStudentCourseDetails from '../views/student/courseDetails'
+import guestCourseDetails from '../views/student/courseDetails'
 
 import envVnc from '../views/teacher/envVnc'
 import courseGrade from '../views/teacher/courseGrade'
@@ -193,6 +194,10 @@ export default new Router({
       path: '/course',
       name: 'course',
       component: course
-    }, 
+    }, {
+      path: '/guestCourseDetails',
+      name: 'guestCourseDetails',
+      component: guestCourseDetails
+    }
   ]
 })

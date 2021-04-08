@@ -7,18 +7,28 @@
       collapsible
     >
       <div v-if="!collapsed">
+        
         <div id="buttongroup" style="margin: 2vh">
-          <a-button-group :size="large">
+          <!-- <a-button-group :size="large"> -->
+            <a-button @click="backIndexPage">返回上一级</a-button>
             <a-button v-if="prevIndex != null" type="primary" @click="prev()">
               <a-icon type="left" />
               上一节
             </a-button>
-            <a-button type="dash"> {{ labitem.labName }}</a-button>
+            <a-dropdown-button>
+              {{ labitem.labName }}
+              <a-menu slot="overlay" @click="handleMenuClick">
+                <a-menu-item v-for="item in lablist" :key="item"> <a-icon type="desktop" /> {{item.labName}}</a-menu-item>
+                
+              </a-menu>
+            </a-dropdown-button>
+
+            <!-- <a-button type="dash"> {{ labitem.labName }}</a-button> -->
             <a-button v-if="nextIndex != null" type="primary" @click="next()">
               下一节
               <a-icon type="right" />
             </a-button>
-          </a-button-group>
+          <!-- </a-button-group> -->
         </div>
         <iframe
           :src="'/static/pdf/web/viewer.html?file=' + fileUrl"
@@ -43,6 +53,7 @@
       </a-layout-footer>
     </a-layout>
   </a-layout>
+  </div>
 </template>
 <script>
 export default {
@@ -57,7 +68,7 @@ export default {
       prevIndex: null,
       nextIndex: null,
       labitem: this.$route.query.labObj,
-      baseFileUrl: "http://localhost:8081/api/downloadfile?filename=",
+      baseFileUrl: this.$store.state.baseUrl + "/api/downloadfile?filename=",
       fileUrl: "",
     };
   },
@@ -77,7 +88,7 @@ export default {
     },
 
     onJumpLab: function (labitem) {
-      console.log("labitme");
+      console.log("labitem");
       console.log(labitem);
       // this.$router.push({path: '/novnc', query: {port: 6080, labObj: labitem}})
       this.postRequest("api/openlabenv", {
@@ -97,6 +108,12 @@ export default {
         );
         this.setPrevNext();
       });
+    },
+
+    handleMenuClick: function({ item, key, selectedKeys }){
+      console.log("handleclick: ", key)
+      this.unloadHandler();
+      this.onJumpLab(key)
     },
 
     test: function () {
@@ -154,6 +171,10 @@ export default {
       console.log("previndex =", this.prevIndex);
       console.log("nextindex =", this.nextIndex);
     },
+    backIndexPage() {
+      this.unloadHandler()
+      this.$router.back();
+    }
   },
   mounted() {
     this.fileUrl = encodeURIComponent(this.baseFileUrl + this.labitem.docPath);

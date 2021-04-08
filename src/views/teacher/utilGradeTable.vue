@@ -102,7 +102,7 @@ export default {
       visible_form: false,
       form_param: {username: '', labid: null, score: null},
       form_list: [],
-      baseUrl: "http://localhost:8081/api/", //http://localhost:8800/downloadhomework?userid=12&labid=1
+      baseUrl: this.$store.state.baseUrl + "/api/", //http://localhost:8800/downloadhomework?userid=12&labid=1
       pdfUrl: "",
     };
   },
