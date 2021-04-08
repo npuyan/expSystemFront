@@ -25,8 +25,13 @@
         </div>
       </template>
       <template slot="aboutHomework" slot-scope="text, record, index">
+        <div v-if="record.homework_time !=null">
         <a-button @click="downloadHomework(record)">下载作业</a-button>
         <a-button @click="preview(record)"> 预览作业</a-button>
+        </div>
+        <div v-if="record.homework_time == null">
+          作业未交
+        </div>
         
         <!-- <a-modal v-model="visible_form" title="设置分数" @ok="handleOk(record)">
           <a-input-number :min="0" :max="100" :step="0.1" @change="onChangeGrade" />
@@ -160,17 +165,19 @@ export default {
       delete item[this.dataIdName];
     },
     msToDate: function (item) {
-      var t_obj = new Date(item.homework_time);
-      item["homework_time"] =
-        t_obj.getFullYear() +
-        "/" +
-        (t_obj.getMonth() + 1) +
-        "/" +
-        t_obj.getDay() +
-        " " +
-        t_obj.getHours() +
-        ":" +
-        t_obj.getMinutes();
+      if(item.homework_time != null ){
+        var t_obj = new Date(item.homework_time);
+        item["homework_time"] =
+          t_obj.getFullYear() +
+          "/" +
+          (t_obj.getMonth() + 1) +
+          "/" +
+          t_obj.getDay() +
+          " " +
+          t_obj.getHours() +
+          ":" +
+          t_obj.getMinutes();
+      }
       console.log("homework_time =", item["homework_time"]);
     },
     renameBackId: function (item) {

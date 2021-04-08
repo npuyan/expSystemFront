@@ -3,9 +3,10 @@
     <a-layout id="components-layout-demo-side" style="min-height: 100vh">
       <a-layout-sider
         width="35vw"
-        :style="{ overflow: 'auto', height: '100vh', background: '#fff' }"
+        :style="{ overflow: 'auto', height: '100vh', background: '#fff'}"
         v-model="collapsed"
         collapsible
+        theme="light"
       >
       <a-breadcrumb style="margin: 16px 0">
               <a-breadcrumb-item><a @click="backIndexPage">学生</a></a-breadcrumb-item>
