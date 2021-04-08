@@ -90,7 +90,7 @@
                 </div>
               </a-col>
               <a-col :span="4">
-                <a-button @click="pdfDlfg"> 预览 </a-button>
+                <a-button v-if="course_item.docPath != ''" @click="pdfDlfg"> 预览 </a-button>
               </a-col>
             </a-row>
           </a-form-item>

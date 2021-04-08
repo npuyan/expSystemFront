@@ -98,8 +98,13 @@ export default {
 
   mounted() {
     console.log("mounted!");
+    this.fetchData()
+    
+  },
 
-    var _this = this;
+  methods: {
+    fetchData(){
+      var _this = this;
     _this.postRequest("api/getallcourse", {}).then((resp) => {
       if (resp) {
         console.log("得到课程数据");
@@ -111,9 +116,7 @@ export default {
         alert("连接服务器失败");
       }
     });
-  },
-
-  methods: {
+    },
     setCourseList(courselist_old) {
       var i, j;
       this.postRequest("api/getselectedcourses", {
@@ -178,6 +181,7 @@ export default {
           if (resp.status === 200) {
             console.log("退课成功");
             console.log(resp);
+            this.fetchData()
             alert("退课成功");
           } else {
             if (resp.status === 500) {

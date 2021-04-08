@@ -1,4 +1,5 @@
 <template>
+<keep-alive>
   <a-layout id="components-layout-demo-side" style="min-height: 100vh">
     <a-layout-sider
       :style="{
@@ -83,6 +84,7 @@
       </a-layout-footer>
     </a-layout>
   </a-layout>
+</keep-alive>
 </template>
 <script>
 export default {
@@ -112,7 +114,7 @@ export default {
           console.log("得到课程数据");
           console.log(resp);
           this.courselist = resp;
-          // this.course_name = this.courselist[0].courseName
+          this.course_name = this.courselist[0].courseName
           this.gotolab({item: 0, key: this.courselist[0].courseId, selectedKeys: 0})
         } else {
           alert("连接服务器失败");
@@ -129,6 +131,7 @@ export default {
       for (i = 0; i < this.courselist.length; i++) {
         if (this.courselist[i].courseId === key) {
           this.imageUrl = this.imageBaseUrl + this.courselist[i].picture;
+          this.course_name = this.courselist[i].courseName
         }
       }
 

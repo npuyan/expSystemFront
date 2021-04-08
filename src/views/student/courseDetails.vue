@@ -1,4 +1,14 @@
 <template>
+<div>
+  <div v-if="guest === true" style="background-color: #f5f5f5; padding: 15px">
+      <!-- style="border: 2px solid rgb(50, 50, 24)" -->
+      <a-page-header
+        :ghost="true"
+        :title="courseitem.courseName"
+        sub-title="课程详细信息"
+        @back="backHistory"
+      />
+    </div>
   <div align="center">
     <div
       :style="{ padding: '24px', background: '#fff', minHeight: '360px' }"
@@ -147,6 +157,7 @@
       </a-list>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -389,6 +400,9 @@ export default {
     onChangeGrade(value) {
       console.log("changed", value);
       this.newScore = value;
+    },
+    backHistory() {
+      this.$router.go(-1); // 返回上一层
     },
   },
 };

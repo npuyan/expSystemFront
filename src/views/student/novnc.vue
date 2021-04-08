@@ -1,16 +1,23 @@
 <template>
-  <a-layout id="components-layout-demo-side" style="min-height: 100vh">
-    <a-layout-sider
-      width="35vw"
-      :style="{ overflow: 'auto', height: '100vh', background: '#fff' }"
-      v-model="collapsed"
-      collapsible
-    >
-      <div v-if="!collapsed">
-        
-        <div id="buttongroup" style="margin: 2vh">
-          <!-- <a-button-group :size="large"> -->
-            <a-button @click="backIndexPage">返回上一级</a-button>
+  <div>
+    <a-layout id="components-layout-demo-side" style="min-height: 100vh">
+      <a-layout-sider
+        width="35vw"
+        :style="{ overflow: 'auto', height: '100vh', background: '#fff' }"
+        v-model="collapsed"
+        collapsible
+      >
+      <a-breadcrumb style="margin: 16px 0">
+              <a-breadcrumb-item><a @click="backIndexPage">学生</a></a-breadcrumb-item>
+              <a-breadcrumb-item ><a @click="backIndexPage">{{ labitem.courseName }}</a></a-breadcrumb-item>
+              <a-breadcrumb-item><a>{{ labitem.labName }}</a></a-breadcrumb-item>
+            </a-breadcrumb>
+        <div v-if="!collapsed">
+
+          <div id="buttongroup" style="margin: 2vh">
+            <!-- <a-button-group :size="large"> -->
+            
+            <!-- <a-button @click="backIndexPage">返回上一级</a-button> -->
             <a-button v-if="prevIndex != null" type="primary" @click="prev()">
               <a-icon type="left" />
               上一节
@@ -18,8 +25,9 @@
             <a-dropdown-button>
               {{ labitem.labName }}
               <a-menu slot="overlay" @click="handleMenuClick">
-                <a-menu-item v-for="item in lablist" :key="item"> <a-icon type="desktop" /> {{item.labName}}</a-menu-item>
-                
+                <a-menu-item v-for="item in lablist" :key="item">
+                  <a-icon type="desktop" /> {{ item.labName }}</a-menu-item
+                >
               </a-menu>
             </a-dropdown-button>
 
@@ -28,31 +36,31 @@
               下一节
               <a-icon type="right" />
             </a-button>
-          <!-- </a-button-group> -->
+            <!-- </a-button-group> -->
+          </div>
+          <iframe
+            :src="'/static/pdf/web/viewer.html?file=' + fileUrl"
+            height="820"
+            width="100%"
+          >
+          </iframe>
         </div>
-        <iframe
-          :src="'/static/pdf/web/viewer.html?file=' + fileUrl"
-          height="820"
-          width="100%"
-        >
-        </iframe>
-      </div>
-      <br /><br /><br />
-    </a-layout-sider>
-    <a-layout>
-      <a-layout-content style="margin: 0 16px">
-        <div
-          :id="this.$route.params.port"
-          :style="{ padding: '2vh', background: '#fff', height: '100vh' }"
-        >
-          <iframe id="novncframe" class="novnc" :src="fullUrl"> </iframe>
-        </div>
-      </a-layout-content>
-      <a-layout-footer style="text-align: center">
-        Ant Design ©ZTY
-      </a-layout-footer>
+        <br /><br /><br />
+      </a-layout-sider>
+      <a-layout>
+        <a-layout-content style="margin: 0 16px">
+          <div
+            :id="this.$route.params.port"
+            :style="{ padding: '2vh', background: '#fff', height: '100vh' }"
+          >
+            <iframe id="novncframe" class="novnc" :src="fullUrl"> </iframe>
+          </div>
+        </a-layout-content>
+        <a-layout-footer style="text-align: center">
+          Ant Design ©ZTY
+        </a-layout-footer>
+      </a-layout>
     </a-layout>
-  </a-layout>
   </div>
 </template>
 <script>
@@ -62,7 +70,7 @@ export default {
       collapsed: false,
       port: this.$route.query.port,
       // url: "http://124.70.84.98:",
-      url: 'http://202.117.249.18:',
+      url: "http://202.117.249.18:",
       numPages: null, // pdf 总页数
       lablist: [],
       prevIndex: null,
@@ -70,6 +78,7 @@ export default {
       labitem: this.$route.query.labObj,
       baseFileUrl: this.$store.state.baseUrl + "/api/downloadfile?filename=",
       fileUrl: "",
+      pageCount: 1,
     };
   },
   computed: {
@@ -88,6 +97,7 @@ export default {
     },
 
     onJumpLab: function (labitem) {
+      this.pageCount ++;
       console.log("labitem");
       console.log(labitem);
       // this.$router.push({path: '/novnc', query: {port: 6080, labObj: labitem}})
@@ -110,10 +120,10 @@ export default {
       });
     },
 
-    handleMenuClick: function({ item, key, selectedKeys }){
-      console.log("handleclick: ", key)
+    handleMenuClick: function ({ item, key, selectedKeys }) {
+      console.log("handleclick: ", key);
       this.unloadHandler();
-      this.onJumpLab(key)
+      this.onJumpLab(key);
     },
 
     test: function () {
@@ -148,6 +158,8 @@ export default {
 
     setPrevNext() {
       var i;
+      this.prevIndex = null;
+      this.nextIndex = null;
       for (i = 0; i < this.lablist.length; i++) {
         console.log("this.lablist[i].labId  =", this.lablist[i].labId);
         if (this.lablist[i].labId === this.labitem.labId) {
@@ -172,9 +184,12 @@ export default {
       console.log("nextindex =", this.nextIndex);
     },
     backIndexPage() {
-      this.unloadHandler()
-      this.$router.back();
-    }
+      this.unloadHandler();
+      var i;
+      for(i=0;i<this.pageCount;i++){
+        this.$router.back();
+      }
+    },
   },
   mounted() {
     this.fileUrl = encodeURIComponent(this.baseFileUrl + this.labitem.docPath);
