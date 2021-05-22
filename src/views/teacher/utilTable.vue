@@ -8,7 +8,6 @@
       :loading="loading"
       @change="handleTableChange"
     >
-      <!--      <a-input>你好</a-input>-->
       <template
         v-for="col in columnsName"
         :slot="col"
@@ -33,6 +32,13 @@
           @confirm="() => onDelete(record.key)"
         >
           <a-button>删除</a-button>
+        </a-popconfirm>
+        <a-popconfirm
+          v-if="data.length"
+          title="确定结束课程吗？"
+          @confirm="() => onClear(record.key)"
+        >
+          <a-button>结束</a-button>
         </a-popconfirm>
       </template>
       <template slot="edit" slot-scope="text, record, index">
@@ -189,6 +195,19 @@ export default {
           alert('删除失败')
         }
         this.loading = false
+      })
+    },
+    /*根据key结束课程, 就是删除学生实验过程中开启的容器POD*/
+    onClear(key) {
+      this.postRequest("api/finishcourse", {
+        id:key
+      }).then(resp=>{
+        if(resp){
+          alert('清理成功')
+        }
+        else{
+          alert('清理失败')
+        }
       })
     },
     /* 根据key打开编辑 */

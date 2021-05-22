@@ -29,6 +29,7 @@
       </div>
       <!-- 左侧课程名称-->
       <a-menu
+        v-if="courselist.length != 0"
         theme="dark"
         mode="inline"
         :default-selected-keys="[courselist[0].courseId]"

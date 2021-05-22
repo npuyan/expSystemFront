@@ -66,7 +66,7 @@ const columns = [
     scopedSlots: {customRender: 'createTime'}
   },
   {
-    title: '删除',
+    title: '操作',
     dataIndex: 'delete',
     scopedSlots: {customRender: 'delete'}
   }, {

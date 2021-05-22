@@ -117,14 +117,14 @@ export default {
           username: this.$store.state.userName,
         })
         .then((resp) => {
-          console.log("返回数据");
+          console.log("返回数据quene");
           console.log(resp);
           resp.forEach((item) => {
             if (item.checkUserId == this.myId) {
               newList.push(item);
             }
           });
-
+          newList.reverse();
           this.data = newList;
         });
 

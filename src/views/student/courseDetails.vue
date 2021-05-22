@@ -79,6 +79,7 @@
                   </a-button>
                 </div>
               </template>
+              
               <a-card-meta
                 :title="item.labName"
                 :description="item.remarks"
@@ -86,6 +87,9 @@
               >
                 <a-avatar slot="avatar" :src="imageUrl" />
               </a-card-meta>
+              <div v-if="loadingflag === true">
+                <a-spin tip="Loading..." size="large"/>
+              </div>
             </a-card>
           </a-timeline-item>
         </a-timeline>
@@ -185,6 +189,7 @@ export default {
       momentdata: [],
       commentValue: "",
       moment,
+      loadingflag: false,
     };
   },
 
@@ -288,6 +293,7 @@ export default {
     onJumpLab: function (labitem) {
       console.log("labitme");
       console.log(labitem);
+      this.loadingflag = true;
       // this.$router.push({path: '/novnc', query: {port: 6080, labObj: labitem}})
       this.postRequest("api/openlabenv", {
         //  TODO 传入课程，实验，用户名，打开对应的实验环境并返回启动的的端口
@@ -295,6 +301,7 @@ export default {
         courselab: labitem,
       }).then((resp) => {
         //  TODO 跳转到novnc并连接到返回的端口
+        this.loadingflag = false;
         if (resp && resp.status === 200) {
           console.log(resp);
           this.$router.push({

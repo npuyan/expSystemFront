@@ -72,6 +72,7 @@ export default {
       port: this.$route.query.port,
       // url: "http://124.70.84.98:",
       url: "http://202.117.249.18:",
+      // url: "http://10.168.4.167:",
       numPages: null, // pdf 总页数
       lablist: [],
       prevIndex: null,
@@ -79,7 +80,7 @@ export default {
       labitem: this.$route.query.labObj,
       baseFileUrl: this.$store.state.baseUrl + "/api/downloadfile?filename=",
       fileUrl: "",
-      pageCount: 1,
+      pageCount: 2,
     };
   },
   computed: {
@@ -98,10 +99,10 @@ export default {
     },
 
     onJumpLab: function (labitem) {
-      this.pageCount ++;
+      this.pageCount += 2;
       console.log("labitem");
       console.log(labitem);
-      // this.$router.push({path: '/novnc', query: {port: 6080, labObj: labitem}})
+      console.log("pageCount = ",this.pageCount);
       this.postRequest("api/openlabenv", {
         //  TODO 传入课程，实验，用户名，打开对应的实验环境并返回启动的的端口
         username: String(this.$store.state.userName),
@@ -188,6 +189,7 @@ export default {
       this.unloadHandler();
       var i;
       for(i=0;i<this.pageCount;i++){
+        console.log("back i = ", i)
         this.$router.back();
       }
     },

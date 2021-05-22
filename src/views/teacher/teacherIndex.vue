@@ -11,7 +11,7 @@
         theme="dark"
         :default-selected-keys="['/mycourse']"
         mode="inline"
-        @select="meunitemselect"
+        @click="meunitemselect"
       >
         <a-menu-item
           v-for="item in menuList"
@@ -19,7 +19,7 @@
           :key="item.path"
           :title="item.title"
         >
-          <span>{{ item.title }}</span>
+          <span>{{ item.title }}</span> 
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
@@ -36,10 +36,11 @@
         <div
           :style="{ padding: '24px', background: '#fff', minHeight: '360px' }"
         >
-        <keep-alive>
+        <!-- <keep-alive>
           <router-view v-if="$route.meta.keepAlive"/>
-        </keep-alive>
-        <router-view v-if="!$route.meta.keepAlive"></router-view>
+        </keep-alive> -->
+        <!-- <router-view v-if="!$route.meta.keepAlive"></router-view> -->
+        <router-view />
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">

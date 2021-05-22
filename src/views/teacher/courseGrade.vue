@@ -12,12 +12,6 @@
             :tab="labitem.labName"
             v-for="labitem in lablist"
           >
-            <!-- <a-tabs default-active-key="1">
-              <a-tab-pane key="1">
-                <span slot="tab">
-                  <a-icon type="apple" />
-                  已交作业
-                </span> -->
                 <div v-if="clickflag == 1">
                   <util-table
                     :data="data"
@@ -31,43 +25,6 @@
                   >
                   </util-table>
                 </div>
-              <!-- </a-tab-pane> -->
-              <!-- <a-tab-pane key="2">
-                <span slot="tab">
-                  <a-icon type="android" />
-                  未交作业
-                </span>
-                <a-table
-                  bordered
-                  :columns="columns_2"
-                  :data-source="noHandUp_list"
-                  :loading="loading"
-                >
-                  <template
-                    v-for="col in columnsName_2"
-                    :slot="col"
-                    slot-scope="text, record, index"
-                  >
-                    <div :key="col">
-                      <a-input
-                        v-if="record.editable"
-                        style="margin: -5px 0"
-                        :value="text"
-                        @change="
-                          (e) => handleChange(e.target.value, record.key, col)
-                        "
-                      />
-                      <template v-else>
-                        {{ text }}
-                      </template>
-                    </div>
-                  </template>
-                  <template slot="info" slot-scope="text, record, index">
-                    <a-button @click="Details(record)">详细信息</a-button>
-                  </template>
-                </a-table>
-              </a-tab-pane> -->
-            <!-- </a-tabs> -->
           </a-tab-pane>
         </a-tabs>
       </a-tab-pane>

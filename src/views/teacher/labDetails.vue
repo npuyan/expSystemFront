@@ -277,6 +277,7 @@ export default {
 
     gotoNovnc() {
       console.log("the selected image is ", this.selected_image);
+      console.log("the selected lab is ", this.course_item);
 
       this.postRequest(this.addEnvUrl, {
         courselab: this.course_item,
@@ -289,7 +290,7 @@ export default {
           this.envPort = resp.obj;
           this.$router.push({
             path: "/envVnc",
-            query: { port: this.envPort, envObj: this.envTemp },
+            query: { port: this.envPort, envObj: this.envTemp, labObj: this.course_item },
           });
         }
       });

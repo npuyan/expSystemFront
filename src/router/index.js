@@ -29,14 +29,195 @@ import guestCourseDetails from '../views/student/courseDetails'
 
 import envVnc from '../views/teacher/envVnc'
 import courseGrade from '../views/teacher/courseGrade'
+import mainPage from '../views/mainPage'
+import defaultPage from '../views/defaultPage'
 
 Vue.use(Router)
 export default new Router({
   // mode: 'history',
   // base:'/myvueproject/'
+  // routes: [
+  //   {
+  //     path: '/',
+  //     name: login,
+  //     component: login
+  //   },
+  //   {
+  //     path: '/logup',
+  //     name: logup,
+  //     component: logup
+  //   }, {
+  //     path: '/lay',
+  //     name: 'lay',
+  //     component: lay,
+  //     children: [
+  //       {
+  //         path: 'novnc',
+  //         name: 'novnc',
+  //         component: novnc
+  //       },
+  //       {
+  //         path: '/studentCourseDetails',
+  //         name: studentCourseDetails,
+  //         component: studentCourseDetails
+    
+  //       }
+  //     ]
+  //   }, {
+  //     path: '/novnc',
+  //     name: 'novnc',
+  //     component: novnc
+  //   }, {
+  //     path: '/adminindex',
+  //     name: 'adminindex',
+  //     component: adminIndex,
+  //     children: [
+  //       {
+  //         // 默认打开跳到集群管理
+  //         path: '/',
+  //         redirect: '/clusterManage'
+  //       }, {
+  //         path: '/chooseCourseManage',
+  //         name: chooseCourseManage,
+  //         component: chooseCourseManage
+  //       }, {
+  //         path: '/clusterManage',
+  //         name: clusterManage,
+  //         component: clusterManage
+  //       }, {
+  //         path: '/courseManage',
+  //         name: courseManage,
+  //         component: courseManage
+  //       }, {
+  //         path: '/envManage',
+  //         name: envManage,
+  //         component: envManage
+  //       }, {
+  //         path: '/imageManage',
+  //         name: imageManage,
+  //         component: imageManage
+  //       }, {
+  //         path: '/labManage',
+  //         name: labManage,
+  //         component: labManage
+  //       }, {
+  //         path: '/studentManage',
+  //         name: studentManage,
+  //         component: studentManage
+  //       }, {
+  //         path: '/teacherManage',
+  //         name: teacherManage,
+  //         component: teacherManage
+  //       }
+  //     ]
+  //   }, {
+  //     path: '/teacherIndex',
+  //     name: teacherIndex,
+  //     component: teacherIndex,
+  //     children: [
+  //       {
+  //         // 默认打开跳到课程管理
+  //         path: '/',
+  //         redirect: '/myCourse'
+  //       }, {
+  //         path: '/myCourse',
+  //         name: myCourse,
+  //         component: myCourse,
+  //         meta: {
+  //           keepAlive: false // 不需要缓存
+  //         }
+  //       },
+  //       {
+  //         path: '/myStudent',
+  //         name: myStudent,
+  //         component: myStudent,
+  //         meta: {
+  //           keepAlive: false // 不需要缓存
+  //         }
+  //       },
+  //       {
+  //         path: '/myLab',
+  //         name: myLab,
+  //         component: myLab,
+  //         meta: {
+  //           keepAlive: false // 不需要缓存
+  //         }
+  //       }, {
+  //         path: '/teacherCourseDetails',
+  //         name: teacherCourseDetails,
+  //         component: teacherCourseDetails,
+  //         meta: {
+  //           keepAlive: true // 需要缓存
+  //         }
+  //       }, {
+  //         path: '/teacherLabDetails',
+  //         name: teacherLabDetails,
+  //         component: teacherLabDetails,
+  //         meta: {
+  //           keepAlive: false // 不需要缓存
+  //         }
+  //       }, {
+  //         path: '/teacherCourseBasic',
+  //         name: teacherCourseBasic,
+  //         component: teacherCourseBasic,
+  //         meta: {
+  //           keepAlive: true // 不需要缓存
+  //         }
+  //       }, {
+  //         path: '/envVnc',
+  //         name: envVnc,
+  //         component: envVnc,
+  //         meta: {
+  //           keepAlive: false // 不需要缓存
+  //         }
+  //       }, {
+  //         path: '/pendingApplications',
+  //         name: pendingApplications,
+  //         component: pendingApplications,
+  //         meta: {
+  //           keepAlive: false // 不需要缓存
+  //         }
+  //       }, {
+  //         path: '/courseGrade',
+  //         name: courseGrade,
+  //         component: courseGrade,
+  //         meta: {
+  //           keepAlive: false
+  //         }
+  //       }, {
+  //         path: '/teacherStudentCourseDetails',
+  //         name: teacherStudentCourseDetails,
+  //         component: teacherStudentCourseDetails
+  //       }
+
+  //     ],
+
+  //   }, {
+  //     path: '/course',
+  //     name: 'course',
+  //     component: course
+  //   }, {
+  //     path: '/guestCourseDetails',
+  //     name: 'guestCourseDetails',
+  //     component: guestCourseDetails
+  //   }
+  // ]
   routes: [
     {
       path: '/',
+      name: mainPage,
+      component: mainPage,
+      children: [
+        {
+          path: 'defaultPage',
+          name: defaultPage,
+          component: defaultPage
+        },
+        
+      ]
+    },
+    {
+      path: '/login',
       name: login,
       component: login
     },
@@ -44,13 +225,14 @@ export default new Router({
       path: '/logup',
       name: logup,
       component: logup
-    }, {
+    }, 
+    {
       path: '/lay',
       name: 'lay',
       component: lay,
       children: [
         {
-          path: 'novnc',
+          path: '/lay/novnc',
           name: 'novnc',
           component: novnc
         },
@@ -61,7 +243,8 @@ export default new Router({
     
         }
       ]
-    }, {
+    },
+     {
       path: '/novnc',
       name: 'novnc',
       component: novnc
