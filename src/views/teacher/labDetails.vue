@@ -115,7 +115,7 @@
                 >
                   <a-select-option
                     v-for="imageItem in imagelist"
-                    :key="imageItem"
+                    :key="imageItem.id"
                   >
                     {{ imageItem.imageName }}
                   </a-select-option>
@@ -178,17 +178,6 @@ export default {
       imagelist: [],
       selected_image: null,
       envPort: null,
-      envTemp: {
-        envId: 9,
-        envName: "test环境",
-        remark: "test",
-        nodeName: "Test",
-        cpu: 1,
-        memsize: 1000,
-        createTime: "",
-        creatorId: 1,
-        imageId: 1,
-      },
     };
   },
 
@@ -263,8 +252,17 @@ export default {
       }
     },
 
-    handleSelectChange(value) {
-      this.selected_image = value;
+    handleSelectChange(index) {
+      var i;
+
+      for(i=0; i< this.imagelist.length; i++)
+      {
+        if(this.imagelist[i].id === index){
+          this.selected_image = this.imagelist[i];
+
+        }
+      }
+      console.log(this.selected_image)
     },
 
     normFile(e) {
@@ -281,8 +279,7 @@ export default {
 
       this.postRequest(this.addEnvUrl, {
         courselab: this.course_item,
-        courseimage: this.selected_image,
-        courseenv: this.envTemp,
+        courseimage: this.selected_image
       }).then((resp) => {
         if (resp.status === 200) {
           console.log("创建环境成功");
@@ -290,7 +287,7 @@ export default {
           this.envPort = resp.obj;
           this.$router.push({
             path: "/envVnc",
-            query: { port: this.envPort, envObj: this.envTemp, labObj: this.course_item },
+            query: { port: this.envPort, labObj: this.course_item },
           });
         }
       });
