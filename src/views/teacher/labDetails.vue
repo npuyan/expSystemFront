@@ -16,7 +16,7 @@
 
     <div>
       <a-card title="实验详情" class="coursepage" style="text-align: center">
-        <a-form :form="form" @submit="handleSubmit">
+        <a-form :form="form" >
           <a-form-item v-bind="formItemLayout" label="课程名称" has-feedback>
             <a-input
               v-decorator="[
@@ -128,7 +128,7 @@
           </a-form-item>
 
           <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
-            <a-button type="primary" html-type="submit"> Submit </a-button>
+            <a-button type="primary" @click="handleSubmit"> Submit </a-button>
           </a-form-item>
         </a-form>
       </a-card>
@@ -218,22 +218,41 @@ export default {
     },
 
     handleSubmit(e) {
-      e.preventDefault();
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          delete values.dragger;
-          this.editAttribute(values);
+      // e.preventDefault();
+      // this.form.validateFields((err, values) => {
+      //   if (!err) {
+      //     delete values.dragger;
+      //     this.editAttribute(values);
 
-          console.log("Received values of form: ", values);
-          this.postRequest(this.saveUrl, values).then((resp) => {
-            if (resp && resp.status === 200) {
-              alert("编辑成功");
-            } else {
-              alert("编辑失败");
-            }
-          });
+      //     console.log("Received values of form: ", values);
+      //     this.postRequest(this.saveUrl, values).then((resp) => {
+      //       if (resp && resp.status === 200) {
+      //         alert("编辑成功");
+      //       } else {
+      //         alert("编辑失败");
+      //       }
+      //     });
+      //   }
+      // });
+
+      console.log("使用已经存在的镜像发送数据")
+      console.log({
+        courselab: this.course_item,
+        courseimage: this.selected_image
+      })
+      this.postRequest("api/usealreadyimage", {
+        courselab: this.course_item,
+        courseimage: this.selected_image
+      }).then((resp) => {
+        if(resp.status === 200){
+          console.log(resp)
+          this.$message.success(resp.msg)
         }
-      });
+        else{
+          this.$message.error(resp.msg)
+        }
+      })
+
     },
 
     pdfDlfg: function () {
