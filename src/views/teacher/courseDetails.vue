@@ -1,6 +1,12 @@
 <template>
   <div>
-    <a-steps :current="1" size="default" type="navigation" :style="stepStyle" @change="onChange">
+    <a-steps
+      :current="1"
+      size="default"
+      type="navigation"
+      :style="stepStyle"
+      @change="onChange"
+    >
       <a-step title="课程基本信息" />
       <a-step title="课程详细信息" />
       <a-step title="实验详细信息" />
@@ -10,97 +16,81 @@
     <br />
     <a-card title="课程详情" class="coursepage">
       <a-form :form="form">
-      <a-form-item v-bind="formItemLayout" label="课程名称" has-feedback>
-        <a-input
-          v-decorator="[
-            'course_name',
-            { initialValue: course_item.courseName },
-            {
-              rules: [{ required: true, message: '请输入课程名称!' }],
-            },
-          ]"
-        />
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="课程类别" has-feedback>
-        <a-input
-          v-decorator="[
-            'type',
-            { initialValue: course_item.type },
-            {
-              rules: [{ required: true, message: '请输入课程类别!' }],
-            },
-          ]"
-        />
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="课程标签" has-feedback>
-        <a-input
-          v-decorator="[
-            'tag',
-            { initialValue: course_item.tag },
-            {
-              rules: [{ required: true, message: '请输入课程标签!' }],
-            },
-          ]"
-        />
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="课程时长" has-feedback>
-            <a-input
-              v-decorator="[
-                'time',
-                { initialValue: course_item.time },
-                {
-                  rules: [{ required: true, message: '请输入课程时长!' }],
-                },
-              ]"
-            />
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="课程描述" has-feedback>
-        <a-input
-          v-decorator="[
-            'remark',
-            { initialValue: course_item.remark },
-            {
-              rules: [{ required: true, message: '请输入课程描述!' }],
-            },
-          ]"
-        />
-      </a-form-item>
+        <a-form-item v-bind="formItemLayout" label="课程名称" has-feedback>
+          <span class="ant-form-text">
+            {{ course_item.courseName }}
+          </span>
+          
 
-      <a-form-item v-bind="formItemLayout" label="课程图片" has-feedback>
-        <div class="clearfix">
-          <a-upload
-            name="file"
-            :action="fullUrl"
-            list-type="picture-card"
-            :file-list="fileList"
-            @preview="handlePreview"
-            @change="handleChange"
-          >
-            <div v-if="fileList.length < 1">
-              <a-icon type="plus" />
-              <div class="ant-upload-text">Upload Picture</div>
+          <!-- <a-input
+            v-decorator="[
+              'course_name',
+              { initialValue: course_item.courseName },
+              {
+                rules: [{ required: true, message: '请输入课程名称!' }],
+              },
+            ]"
+          /> -->
+        </a-form-item>
+        <a-form-item v-bind="formItemLayout" label="课程类别" has-feedback>
+          <span class="ant-form-text">
+            {{ course_item.type }}
+          </span>
+          
+        </a-form-item>
+        <a-form-item v-bind="formItemLayout" label="课程标签" has-feedback>
+          <span class="ant-form-text">
+            {{ course_item.tag }}
+          </span>
+          
+        </a-form-item>
+        <a-form-item v-bind="formItemLayout" label="课程时长" has-feedback>
+          <span class="ant-form-text">
+            {{ course_item.time }}
+          </span>
+          
+        </a-form-item>
+        <a-form-item v-bind="formItemLayout" label="课程描述" has-feedback>
+          <span class="ant-form-text">
+            {{ course_item.remark }}
+          </span>
+          
+        </a-form-item>
+
+        <a-form-item v-bind="formItemLayout" label="课程图片" has-feedback>
+          <div class="clearfix">
+            <a-upload
+              name="file"
+              :action="fullUrl"
+              list-type="picture-card"
+              :file-list="fileList"
+              @preview="handlePreview"
+              @change="handleChange"
+            >
+              <div v-if="fileList.length < 1">
+                <a-icon type="plus" />
+                <div class="ant-upload-text">Upload Picture</div>
+              </div>
+            </a-upload>
+            <a-modal
+              :visible="previewVisible"
+              :footer="null"
+              @cancel="handleCancel"
+            >
+              <img alt="example" style="width: 100%" :src="previewImage" />
+            </a-modal>
+          </div>
+        </a-form-item>
+        <a-form-item v-bind="formItemLayout" label="课程实验">
+          <div id="lab">
+            <div v-if="lablist.length === 0">本课程暂无实验</div>
+            <div v-for="labitem in lablist">
+              <a-button block @click="gotoLabDetails(labitem)">
+                {{ labitem.labName }}
+              </a-button>
             </div>
-          </a-upload>
-          <a-modal
-            :visible="previewVisible"
-            :footer="null"
-            @cancel="handleCancel"
-          >
-            <img alt="example" style="width: 100%" :src="previewImage" />
-          </a-modal>
-        </div>
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="课程实验"> 
-        <div v-if="lablist.length === 0">
-          本课程暂无实验
-        </div>
-        <div v-for="labitem in lablist">
-          <a-button block @click="gotoLabDetails(labitem)">
-            {{labitem.labName}}
-          </a-button>
-        </div>
-
-      </a-form-item>
+          </div>
+        </a-form-item>
       </a-form>
     </a-card>
 
@@ -135,7 +125,8 @@ export default {
       previewVisible: false,
       previewImage: "",
       fileList: [],
-      fullUrl: "api/uploadcoursepicture?courseid="+ this.$route.query.obj.courseId,
+      fullUrl:
+        "api/uploadcoursepicture?courseid=" + this.$route.query.obj.courseId,
       formItemLayout: {
         labelCol: {
           xs: { span: 24 },
@@ -161,29 +152,35 @@ export default {
   },
 
   mounted() {
-    console.log("course_item is ", this.course_item)
-    if (this.course_item.picture != null){
+    console.log("course_item is ", this.course_item);
+    if (this.course_item.picture != null) {
       this.fileList.push({
-          uid: '-1',
-          name: String(this.course_item.picture),
-          status: 'done',
-          url: 'api/downloadcoursepicture?filename=' + this.course_item.picture
-      })
+        uid: "-1",
+        name: String(this.course_item.picture),
+        status: "done",
+        url: "api/downloadcoursepicture?filename=" + this.course_item.picture,
+      });
     }
     this.getLab();
   },
 
   methods: {
-
     onChange(current) {
       console.log("onChange:", current);
       // this.current = current;
       if (current === 0) {
         this.$router.push({
-          path: '/teacherCourseBasic',
-          query: {obj: this.course_item}
-          })
+          path: "/teacherCourseBasic",
+          query: { obj: this.course_item },
+        });
+      } else if (current === 2) {
+        this.$message.warning("请在“课程实验”中选择要进入的实验");
+        this.getfocus();
       }
+    },
+    getfocus() {
+      console.log(lab);
+      lab.scrollIntoView();
     },
 
     getLab() {
@@ -196,14 +193,13 @@ export default {
           console.log("返回数据");
           console.log(resp);
           this.lablist = resp;
-          
         });
     },
     gotoLabDetails(item) {
       this.$router.push({
-        path: '/teacherLabDetails',
-        query: {obj: item, courseobj: this.$route.query.obj}
-      })
+        path: "/teacherLabDetails",
+        query: { obj: item, courseobj: this.$route.query.obj },
+      });
     },
     handleCancel() {
       this.previewVisible = false;
@@ -250,7 +246,7 @@ export default {
 
     editAttribute(item) {
       item["course_id"] = this.course_item.courseId;
-      item["course_name"] = this.course_item.courseName
+      item["course_name"] = this.course_item.courseName;
       item["lab_id"] = null;
       item["env_id"] = 1;
       item["doc_path"] = "";

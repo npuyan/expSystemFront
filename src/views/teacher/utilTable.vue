@@ -1,6 +1,8 @@
 <template>
   <div>
-    <a-button v-if="" class="editable-add-btn" @click="handleAdd"> 添加 </a-button>
+
+    <a-button v-if="fetchUrl == 'api/getcoursebyteacher'" class="editable-add-btn" @click="handleAdd"> 添加 </a-button>
+    
     <a-table
       bordered
       :columns="columns"
@@ -33,6 +35,10 @@
         >
           <a-button>删除</a-button>
         </a-popconfirm>
+
+      </template>
+
+      <template slot="finsh" slot-scope="text, record, index">
         <a-popconfirm
           v-if="data.length"
           title="确定结束课程吗？"
@@ -41,6 +47,7 @@
           <a-button>结束</a-button>
         </a-popconfirm>
       </template>
+      
       <template slot="edit" slot-scope="text, record, index">
         <div class="editable-row-operations">
           <span v-if="record.editable">

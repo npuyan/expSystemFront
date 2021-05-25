@@ -66,10 +66,16 @@ const columns = [
     scopedSlots: {customRender: 'createTime'}
   },
   {
-    title: '操作',
+    title: '删除',
     dataIndex: 'delete',
     scopedSlots: {customRender: 'delete'}
-  }, {
+  },
+  {
+    title: '结束',
+    dataIndex: 'finsh',
+    scopedSlots: {customRender: 'finsh'}
+  },
+  , {
     title: '详细信息',
     dataIndex: 'info',
     scopedSlots: {customRender: 'info'}

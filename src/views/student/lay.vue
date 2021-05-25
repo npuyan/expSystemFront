@@ -7,7 +7,7 @@
               aria-placeholder="搜索"
               @click="search"
             ></a-input-search> -->
-          <a-col :span="3" :order="1">
+          <a-col :span="2" :order="1">
           <div class="logoleft">
             <img
               src="../../assets/logoko.png"
@@ -185,7 +185,7 @@ export default {
   width: 100%;
 }
 .logoleft {
-  width: 80%;
+  width: 100%;
   display: block;
   float: left;
 }

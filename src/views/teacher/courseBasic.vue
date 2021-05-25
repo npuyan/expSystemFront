@@ -18,7 +18,7 @@
     <br />
 
     <a-card title="课程详情" class="coursepage">
-      <div v-if="FormFlag === false" >
+      <!-- <div v-if="FormFlag === false" >
         <a-descriptions  bordered layout="vertical" :column="1">
           <a-descriptions-item label="课程名称">
             {{ course_item.courseName }}
@@ -38,10 +38,22 @@
         </a-descriptions>
         <br />
         <br />
-      </div>
+      </div> -->
 
-        <a-form v-if="FormFlag === true" :form="form" @submit="handleSubmit">
-          <a-form-item v-bind="formItemLayout" label="课程名称" has-feedback>
+        <a-form  :form="form" @submit="handleSubmit">
+          <a-form-item v-if="FormFlag === true" v-bind="formItemLayout" label="课程名称" has-feedback>
+            <a-input
+              v-decorator="[
+                'course_name',
+                { initialValue: course_item.courseName },
+                {
+                  rules: [{ required: true, message: '请输入课程名称!' }],
+                },
+              ]"
+            />
+          </a-form-item>
+
+          <a-form-item v-if="FormFlag === false" v-bind="formItemLayout" label="课程名称" has-feedback>
             <a-input
               v-decorator="[
                 'course_name',
@@ -89,6 +101,7 @@
             <a-textarea
               v-decorator="[
                 'remark',
+                { initialValue: course_item.remark },
                 {
                   rules: [{ required: true, message: '请输入课程描述!' }],
                 },
@@ -240,6 +253,9 @@ export default {
     onChange(current) {
       console.log("onChange:", current);
       // this.current = current;
+      if(current === 2){
+        alert("请在“课程详情信息”中选择要进入的实验");
+      }
       if (this.course_item.courseId != null) {
         if (current === 1) {
           this.next();

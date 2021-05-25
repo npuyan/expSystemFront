@@ -19,7 +19,7 @@
     </template>
     <template slot="operation" slot-scope="text, record, index">
       <div class="editable-row-operations">
-        <span>
+        <span v-if="record.state == '待定'">
           <a-popconfirm
             v-if="data.length"
             title="确定同意申请吗？"
@@ -121,17 +121,30 @@ export default {
           console.log(resp);
           resp.forEach((item) => {
             if (item.checkUserId == this.myId) {
+              if(item.state == 0){
+                item.state = '待定'
+              }
+              else if(item.state == 1){
+                item.state = '同意'
+              }
+              else if(item.state == 2){
+                item.state = '拒绝'
+              }
+
+              if(item.requestType == 'choose'){
+                item.requestType = '选课'
+              }
+               
               newList.push(item);
             }
           });
-          newList.reverse();
+          // newList.reverse();
           this.data = newList;
         });
 
       this.cacheData = this.data.map((item) => ({ ...item }));
     },
     agree(key) {
-      this.updateTime();
       key.checkTime = this.currentTime;
       console.log(key);
 
@@ -150,7 +163,6 @@ export default {
       });
     },
     refuse(key) {
-      this.updateTime();
       key.checkTime = this.currentTime;
       console.log(key);
       var params;

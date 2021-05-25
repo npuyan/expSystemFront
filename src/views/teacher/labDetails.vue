@@ -104,7 +104,7 @@
                     {
                       rules: [
                         {
-                          required: true,
+                          required: false,
                           message: 'Please select base Image!',
                         },
                       ],
@@ -121,14 +121,17 @@
                   </a-select-option>
                 </a-select>
               </a-col>
-              <a-col :span="6">
-                <a-button type="primary" @click="gotoNovnc()"> 编辑 </a-button>
+              <a-col :span="3">
+                <a-button type="default" @click="gotoNovnc()"> 编辑 </a-button>
+              </a-col>
+              <a-col :span="3">
+                 <a-button type="primary" @click="selectImage"> 选定 </a-button>
               </a-col>
             </a-row>
           </a-form-item>
 
           <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
-            <a-button type="primary" @click="handleSubmit"> 选择已有镜像 </a-button>
+            <a-button type="primary" @click="handleSubmit"> 提交 </a-button>
           </a-form-item>
         </a-form>
       </a-card>
@@ -209,6 +212,12 @@ export default {
           query: {obj: this.$route.query.courseobj}
         })
       }
+      else if( current === 0 && this.$route.query.fromTable === undefined) {
+         this.$router.push({
+          path: '/teacherCourseBasic',
+          query: {obj: this.$route.query.courseobj}
+        })
+      }
     },
 
     getImagelist() {
@@ -221,24 +230,7 @@ export default {
       });
     },
 
-    handleSubmit(e) {
-      // e.preventDefault();
-      // this.form.validateFields((err, values) => {
-      //   if (!err) {
-      //     delete values.dragger;
-      //     this.editAttribute(values);
-
-      //     console.log("Received values of form: ", values);
-      //     this.postRequest(this.saveUrl, values).then((resp) => {
-      //       if (resp && resp.status === 200) {
-      //         alert("编辑成功");
-      //       } else {
-      //         alert("编辑失败");
-      //       }
-      //     });
-      //   }
-      // });
-
+    selectImage() {
       console.log("使用已经存在的镜像发送数据")
       console.log({
         courselab: this.course_item,
@@ -257,6 +249,29 @@ export default {
         }
       })
 
+    },
+
+    updateLab(values) {
+      console.log("Received values of form: ", values);
+          this.postRequest(this.saveUrl, values).then((resp) => {
+            if (resp && resp.status === 200) {
+              alert("编辑成功");
+            } else {
+              alert("编辑失败");
+            }
+          });
+    },
+
+    handleSubmit(e) {
+      e.preventDefault();
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          delete values.dragger;
+          console.log(values)
+          this.editAttribute(values);       
+        }
+      });
+      
     },
 
     pdfDlfg: function () {
@@ -319,8 +334,20 @@ export default {
     editAttribute(item) {
       item["course_id"] = this.course_item.courseId;
       item["lab_id"] = this.course_item.labId;
-      item["env_id"] = 1;
-      item["doc_path"] = "";
+
+      this.postRequest("api/getcourselabbyid", {
+        id: this.course_item.labId
+      }).then((resp)=>{
+        if(resp){
+          console.log(resp)
+          item["env_id"] = resp.envId
+          item["doc_path"] = resp.docPath;
+          this.updateLab(item)
+        }
+      })
+      
+      
+
     },
   },
 };
