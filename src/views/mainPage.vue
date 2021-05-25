@@ -1,6 +1,6 @@
 <template>
   <a-layout id="components-layout-demo-top-side">
-    <a-layout-header class="header">
+    <a-layout-header>
       <div class="topHeader">
         <a-row type="flex">
         <div class="logoleft" style="width: 10%">
@@ -152,17 +152,15 @@ export default {
   color: #fff;
   /* height: 15%; */
 }
-.header {
-  /* text-align: left; */
-}
+
 .topHeader {
   width: 100%;
 }
-.logoleft {
+/* .logoleft {
   width: 10%;
   display: block;
   float: left;
-}
+} */
 .leftmenu {
   width: 70%;
   text-align: left;

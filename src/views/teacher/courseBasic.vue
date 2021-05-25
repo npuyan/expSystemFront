@@ -253,8 +253,9 @@ export default {
     onChange(current) {
       console.log("onChange:", current);
       // this.current = current;
-      if(current === 2){
+      if(this.course_item.courseId != null && current === 2){
         alert("请在“课程详情信息”中选择要进入的实验");
+        this.next()
       }
       if (this.course_item.courseId != null) {
         if (current === 1) {

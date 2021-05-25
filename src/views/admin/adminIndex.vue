@@ -99,6 +99,23 @@ export default {
       ]
     }
   },
+  mounted(){
+    if( this.$store.state.userName != ''){
+      console.log("userName != undefined")
+    }
+    else{
+      console.log("userName == undefined")
+      console.log("userName = ", sessionStorage.getItem("userName"))
+      this.$store.commit('update', ['userName', sessionStorage.getItem("userName")])
+      this.$store.commit('update', ['userId', sessionStorage.getItem("userId")])
+      this.$store.commit('update', ['userType', sessionStorage.getItem("userType")])
+    }
+    window.sessionStorage
+    sessionStorage.setItem('userName', this.$store.state.userName)
+    sessionStorage.setItem('userId', this.$store.state.userId)
+    sessionStorage.setItem('userType', this.$store.state.userType)
+    console.log("userName = ", sessionStorage.getItem("userName"))
+  },
   methods: {
     search: function () {
     },

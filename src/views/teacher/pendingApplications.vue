@@ -52,9 +52,14 @@ const columns = [
     scopedSlots: { customRender: "courseId" },
   },
   {
-    title: "申请人身份",
-    dataIndex: "requestUserId",
-    scopedSlots: { customRender: "requestUserId" },
+    title: "课程名称",
+    dataIndex: "coursename",
+    scopedSlots: {customRender: "coursename"}
+  },
+  {
+    title: "申请人",
+    dataIndex: "requestusername",
+    scopedSlots: { customRender: "requestusername" },
   },
   {
     title: "申请时间",
@@ -62,9 +67,9 @@ const columns = [
     scopedSlots: { customRender: "requestTime" },
   },
   {
-    title: "审核人ID",
-    dataIndex: "checkUserId",
-    scopedSlots: { customRender: "checkUserId" },
+    title: "审核人",
+    dataIndex: "checkusername",
+    scopedSlots: { customRender: "checkusername" },
   },
   {
     title: "审核时间",
@@ -145,8 +150,9 @@ export default {
       this.cacheData = this.data.map((item) => ({ ...item }));
     },
     agree(key) {
-      key.checkTime = this.currentTime;
       console.log(key);
+      key.requestType = 'choose'
+      key.state = 0
 
       var params;
       params = {
@@ -163,7 +169,6 @@ export default {
       });
     },
     refuse(key) {
-      key.checkTime = this.currentTime;
       console.log(key);
       var params;
       params = {

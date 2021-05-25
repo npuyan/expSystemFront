@@ -1,7 +1,7 @@
 <template>
   <a-layout id="components-layout-demo-top-side-2" style="min-height: 100vh">
-    <a-layout-header class="header">
-      <div class="topHeader">
+    <a-layout-header>
+      <div >
         <a-row type="flex">
           <!-- <a-input-search
               aria-placeholder="搜索"
@@ -12,14 +12,14 @@
             <img
               src="../../assets/logoko.png"
               @click="backDefaultPage"
-              width="60%"
+              width="100%"
             />
           </div>
           </a-col>
 
           <a-col :span="6" :order="3">
           <a-menu
-            theme="light"
+            theme="dark"
             mode="horizontal"
             :default-selected-keys="['1']"
             :style="{ lineHeight: '64px' }"
@@ -96,7 +96,18 @@ export default {
   },
 
   mounted() {
-    console.log("mounted!");
+    console.log("mounted! ",typeof(this.$store.state.userName));
+
+    if( this.$store.state.userName != ''){
+      console.log("userName != undefined")
+    }
+    else{
+      console.log("userName == undefined")
+      console.log("userName = ", sessionStorage.getItem("userName"))
+      this.$store.commit('update', ['userName', sessionStorage.getItem("userName")])
+      this.$store.commit('update', ['userId', sessionStorage.getItem("userId")])
+      this.$store.commit('update', ['userType', sessionStorage.getItem("userType")])
+    }
 
     var _this = this;
     _this
@@ -118,6 +129,14 @@ export default {
           alert("连接服务器失败");
         }
       });
+      window.sessionStorage
+      sessionStorage.setItem('userName', this.$store.state.userName)
+      sessionStorage.setItem('userId', this.$store.state.userId)
+      sessionStorage.setItem('userType', this.$store.state.userType)
+      console.log("userName = ", sessionStorage.getItem("userName"))
+
+
+    // sessionStorage.setItem("userName", ");
   },
 
   methods: {

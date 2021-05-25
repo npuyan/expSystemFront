@@ -66,6 +66,62 @@
 </template>
 <script>
 export default {
+  mounted(){
+    if( this.$store.state.userName != ''){
+      console.log("userName != undefined")
+      window.sessionStorage
+      sessionStorage.setItem('userName', this.$store.state.userName)
+      sessionStorage.setItem('userId', this.$store.state.userId)
+      sessionStorage.setItem('userType', this.$store.state.userType)
+      console.log("userName = ", sessionStorage.getItem("userName"))
+      sessionStorage.setItem('courseId', this.labitem.courseId)
+      sessionStorage.setItem('port', this.port)
+      sessionStorage.setItem('pageCount', this.pageCount)
+    }
+    else{
+      console.log("userName == undefined")
+      console.log("userName = ", sessionStorage.getItem("userName"))
+      this.$store.commit('update', ['userName', sessionStorage.getItem("userName")])
+      this.$store.commit('update', ['userId', sessionStorage.getItem("userId")])
+      this.$store.commit('update', ['userType', sessionStorage.getItem("userType")])
+      this.labitem = Object
+      this.labitem['courseId'] = sessionStorage.getItem("courseId")
+      this.port = sessionStorage.getItem("port")
+      this.currentIndex = sessionStorage.getItem("currentIndex")
+      this.pageCount = sessionStorage.getItem("pageCount")
+      console.log("port = ", sessionStorage.getItem("port"))
+    }
+
+
+    
+
+    
+    let _this = this;
+    window.addEventListener("beforeunload", (e) => this.beforeunloadHandler(e));
+    window.addEventListener("unload", (e) => this.unloadHandler(e));
+
+    _this
+      .postRequest("api/getlabbycourseid", {
+        courseid: String(this.labitem.courseId),
+      })
+      .then((resp) => {
+        if (resp) {
+          console.log("得到课程实验数据");
+          console.log(resp);
+          _this.lablist = resp;
+          if(this.currentIndex != null){
+            _this.labitem = resp[this.currentIndex]
+          }
+          console.log(_this.labitem)
+          this.fileUrl = encodeURIComponent(this.baseFileUrl + _this.labitem.docPath);
+          this.setPrevNext();
+        } else {
+          alert("连接服务器失败");
+        }
+      });
+
+
+  },  
   data() {
     return {
       collapsed: false,
@@ -76,6 +132,7 @@ export default {
       numPages: null, // pdf 总页数
       lablist: [],
       prevIndex: null,
+      currentIndex: null,
       nextIndex: null,
       labitem: this.$route.query.labObj,
       baseFileUrl: this.$store.state.baseUrl + "/api/downloadfile?filename=",
@@ -112,6 +169,7 @@ export default {
         if (resp && resp.status === 200) {
           console.log(resp);
           this.port = resp.obj;
+          sessionStorage.setItem('port', this.port)
         }
 
         this.labitem = labitem;
@@ -119,6 +177,8 @@ export default {
           this.baseFileUrl + this.labitem.docPath
         );
         this.setPrevNext();
+        sessionStorage.setItem('courseId', this.labitem.courseId)
+        
       });
     },
 
@@ -165,6 +225,8 @@ export default {
       for (i = 0; i < this.lablist.length; i++) {
         console.log("this.lablist[i].labId  =", this.lablist[i].labId);
         if (this.lablist[i].labId === this.labitem.labId) {
+          this.currentIndex = i
+          sessionStorage.setItem('currentIndex', this.currentIndex)
           if (i > 0) {
             this.prevIndex = i - 1;
           }
@@ -194,27 +256,7 @@ export default {
       }
     },
   },
-  mounted() {
-    this.fileUrl = encodeURIComponent(this.baseFileUrl + this.labitem.docPath);
-    let _this = this;
-    window.addEventListener("beforeunload", (e) => this.beforeunloadHandler(e));
-    window.addEventListener("unload", (e) => this.unloadHandler(e));
 
-    _this
-      .postRequest("api/getlabbycourseid", {
-        courseid: String(this.labitem.courseId),
-      })
-      .then((resp) => {
-        if (resp) {
-          console.log("得到课程实验数据");
-          console.log(resp);
-          _this.lablist = resp;
-          this.setPrevNext();
-        } else {
-          alert("连接服务器失败");
-        }
-      });
-  },
   destroyed() {
     window.removeEventListener("beforeunload", (e) =>
       this.beforeunloadHandler(e)

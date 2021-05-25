@@ -5,11 +5,13 @@
       size="default"
       type="navigation"
       @change="onChange"
+      v-if="fromTable === undefined"
     >
       <a-step title="课程基本信息" />
       <a-step title="课程详细信息" />
       <a-step title="实验详细信息" />
     </a-steps>
+    
     <br />
     <br />
     <br />
@@ -181,6 +183,7 @@ export default {
       imagelist: [],
       selected_image: null,
       envPort: null,
+      fromTable: this.$route.query.fromTable
     };
   },
 
@@ -195,6 +198,7 @@ export default {
     console.log("fullUrl == " + this.fullUrl);
     console.log("lab_item =", this.course_item);
     this.getImagelist();
+    console.log("fromTable", fromTable)
   },
 
   methods: {
