@@ -19,7 +19,7 @@
 
           <a-col :span="6" :order="3">
           <a-menu
-            theme="dark"
+            theme="light"
             mode="horizontal"
             :default-selected-keys="['1']"
             :style="{ lineHeight: '64px' }"
