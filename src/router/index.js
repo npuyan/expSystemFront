@@ -206,15 +206,7 @@ export default new Router({
     {
       path: '/',
       name: mainPage,
-      component: mainPage,
-      children: [
-        {
-          path: 'defaultPage',
-          name: defaultPage,
-          component: defaultPage
-        },
-        
-      ]
+      component: mainPage
     },
     {
       path: '/login',
@@ -241,6 +233,15 @@ export default new Router({
           name: studentCourseDetails,
           component: studentCourseDetails
     
+        }, 
+        {
+          path: '/course',
+          name: 'course',
+          component: course
+        }, {
+          path: '/guestCourseDetails',
+          name: 'guestCourseDetails',
+          component: guestCourseDetails
         }
       ]
     },
@@ -342,7 +343,7 @@ export default new Router({
           name: teacherCourseBasic,
           component: teacherCourseBasic,
           meta: {
-            keepAlive: true // 不需要缓存
+            keepAlive: true // 需要缓存
           }
         }, {
           path: '/envVnc',
@@ -373,14 +374,6 @@ export default new Router({
 
       ],
 
-    }, {
-      path: '/course',
-      name: 'course',
-      component: course
-    }, {
-      path: '/guestCourseDetails',
-      name: 'guestCourseDetails',
-      component: guestCourseDetails
     }
   ]
 })
