@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-button class="editable-add-btn" @click="handleAdd"> 添加 </a-button>
+    <a-button v-if="" class="editable-add-btn" @click="handleAdd"> 添加 </a-button>
     <a-table
       bordered
       :columns="columns"

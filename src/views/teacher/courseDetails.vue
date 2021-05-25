@@ -9,7 +9,7 @@
     <br />
     <br />
     <a-card title="课程详情" class="coursepage">
-      <a-form :form="form" @submit="handleSubmit">
+      <a-form :form="form">
       <a-form-item v-bind="formItemLayout" label="课程名称" has-feedback>
         <a-input
           v-decorator="[
@@ -202,7 +202,7 @@ export default {
     gotoLabDetails(item) {
       this.$router.push({
         path: '/teacherLabDetails',
-        query: {obj: item}
+        query: {obj: item, courseobj: this.$route.query.obj}
       })
     },
     handleCancel() {

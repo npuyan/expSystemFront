@@ -128,7 +128,7 @@
           </a-form-item>
 
           <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
-            <a-button type="primary" @click="handleSubmit"> Submit </a-button>
+            <a-button type="primary" @click="handleSubmit"> 选择已有镜像 </a-button>
           </a-form-item>
         </a-form>
       </a-card>
@@ -203,7 +203,11 @@ export default {
       console.log("onChange:", current);
       // this.current = current;
       if (current === 1 && this.$route.query.fromTable === undefined) {
-        this.$router.back();
+        // this.$router.back();
+        this.$router.push({
+          path: '/teacherCourseDetails',
+          query: {obj: this.$route.query.courseobj}
+        })
       }
     },
 

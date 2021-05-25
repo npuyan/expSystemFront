@@ -1,15 +1,14 @@
 <template>
   <div>
     <div id="target"></div>
-    <div style="background-color: #f5f5f5; padding: 15px">
-      <!-- style="border: 2px solid rgb(50, 50, 24)" -->
+    <!-- <div style="background-color: #f5f5f5; padding: 15px">
       <a-page-header
         :ghost="true"
         title="所有课程"
         sub-title="All courses"
         @back="backHistory"
       />
-    </div>
+    </div> -->
 
     <div>
     <a-tabs default-active-key="1" @change="callback">

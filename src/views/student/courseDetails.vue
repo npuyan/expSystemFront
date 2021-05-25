@@ -15,7 +15,7 @@
       align="center"
     >
       <div style="width: 50%">
-        <a-descriptions title="课程详情" bordered :column="1">
+        <a-descriptions  bordered :column="1">
           <a-descriptions-item label="课程名称">
             <h2>{{ courseitem.courseName }}</h2>
           </a-descriptions-item>
@@ -32,6 +32,8 @@
         
         <a-timeline>
           <a-timeline-item v-for="item in lablist" :key="item.labId">
+            <a-icon v-if="item.score == 0" slot="dot" type="clock-circle-o" style="font-size: 16px;" />
+            <a-icon v-if="item.score > 0" slot="dot" type="check-circle" style="font-size: 16px;" theme="twoTone" two-tone-color="#52c41a" />
             <a-card hoverable style="width: 600px">
               <!-- <img slot="cover" alt="example" :src="imageUrl" /> -->
               <template

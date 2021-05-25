@@ -18,16 +18,6 @@
 
 
       <a-form :form="form" layout='vertical'>
-        <!-- <a-form-item label="所属课程名称" has-feedback>
-          <a-input
-            v-decorator="[
-              'course_name',
-              {
-                rules: [{ required: true, message: '请输入课程名称!' }],
-              },
-            ]"
-          />
-        </a-form-item> -->
 
         <a-form-item label="实验名称" has-feedback>
           <a-input

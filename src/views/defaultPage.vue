@@ -82,9 +82,6 @@ img {
   top: 50%;
   left: 47%;
 }
-ul {
-  display: flex;
-}
 .bannerpot {
   height: 10px;
   width: 10px;

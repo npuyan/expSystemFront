@@ -18,30 +18,40 @@
     <br />
 
     <a-card title="课程详情" class="coursepage">
-      <keep-alive>
-        <a-form :form="form" @submit="handleSubmit">
+      <div v-if="FormFlag === false" >
+        <a-descriptions  bordered layout="vertical" :column="1">
+          <a-descriptions-item label="课程名称">
+            {{ course_item.courseName }}
+          </a-descriptions-item>
+          <a-descriptions-item label="课程类别">
+            {{ course_item.type }}
+          </a-descriptions-item>
+          <a-descriptions-item label="课程标签">
+            {{ course_item.tag }}
+          </a-descriptions-item>
+          <a-descriptions-item label="课程时长">
+            {{ course_item.time }}
+          </a-descriptions-item>
+          <a-descriptions-item label="课程描述" :span="3">
+            {{ course_item.remark }}
+          </a-descriptions-item>
+        </a-descriptions>
+        <br />
+        <br />
+      </div>
+
+        <a-form v-if="FormFlag === true" :form="form" @submit="handleSubmit">
           <a-form-item v-bind="formItemLayout" label="课程名称" has-feedback>
             <a-input
               v-decorator="[
                 'course_name',
-                { initialValue: course_item.courseName },
                 {
                   rules: [{ required: true, message: '请输入课程名称!' }],
                 },
               ]"
             />
           </a-form-item>
-          <!-- <a-form-item v-bind="formItemLayout" label="作者" has-feedback>
-            <a-input
-              v-decorator="[
-                'author',
-                { initialValue: course_item.author },
-                {
-                  rules: [{ required: true, message: '请输入课程作者!' }],
-                },
-              ]"
-            />
-          </a-form-item> -->
+
           <a-form-item v-bind="formItemLayout" label="课程类别" has-feedback>
             <a-input
               v-decorator="[
@@ -79,7 +89,6 @@
             <a-textarea
               v-decorator="[
                 'remark',
-                { initialValue: course_item.remark },
                 {
                   rules: [{ required: true, message: '请输入课程描述!' }],
                 },
@@ -95,7 +104,6 @@
             </a-space>
           </a-form-item>
         </a-form>
-      </keep-alive>
     </a-card>
   </div>
 </template>
@@ -125,6 +133,7 @@ export default {
       addUrl: "api/addcourse",
       statusUrl: "api/getcoursebyid",
       saveUrl: "",
+      FormFlag: true
     };
   },
 
@@ -139,6 +148,7 @@ export default {
       this.saveUrl = this.addUrl;
     } else {
       this.saveUrl = this.updateUrl;
+      this.FormFlag = false
     }
     console.log("saveUrl = ", this.saveUrl);
   },

@@ -2,8 +2,9 @@
   <a-layout id="components-layout-demo-top-side">
     <a-layout-header class="header">
       <div class="topHeader">
-        <div class="logoleft">
-          <img src="https://easyhpc.net/logo.png" @click="backDefaultPage" width="60%" />
+        <a-row type="flex">
+        <div class="logoleft" style="width: 10%">
+          <img src="../assets/logoko.png" @click="backDefaultPage" width="60%" />
         </div>
         <div class="leftmenu">
           <a-tabs @tabClick="menuCallback">
@@ -19,23 +20,8 @@
           <a-button @click="loginCallback">{{ signlist[0].title }}</a-button>
           <a-button @click="logupCallback">{{ signlist[1].title }}</a-button>
         </div>
+        </a-row>
       </div>
-      <!-- <a-menu
-        theme="light"
-        mode="horizontal"
-        :default-selected-keys="['1']"
-        :style="{ lineHeight: '64px' }"
-      >
-        <a-menu-item key="1">
-          nav 1
-        </a-menu-item>
-        <a-menu-item key="2">
-          nav 2
-        </a-menu-item>
-        <a-menu-item key="3">
-          nav 3
-        </a-menu-item>
-      </a-menu> -->
     </a-layout-header>
     <a-layout-content style="padding: 0 50px">
       
@@ -115,7 +101,7 @@ export default {
   },
   mounted() {
     // this.menulist = this.studentMenulist;
-    this.$router.push({path: '/defaultPage'})
+    // this.$router.push({path: '/defaultPage'})
   },
 
   created() {
@@ -148,7 +134,7 @@ export default {
       this.n = index; //显示当前点击的图片
     },
     backDefaultPage() {
-      this.$router.push({path: '/defaultPage'})
+      this.$router.push({path: '/'})
     }
   },
 };

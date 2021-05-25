@@ -8,7 +8,7 @@ const store = new Vuex.Store({
         userName: "",
 		    userId: null,
         userType: 0,
-        baseUrl: "http://localhost:8081"
+        baseUrl: "http://10.168.4.167:8081/"
     },
     mutations: {
 		update(state,[key,value]){
