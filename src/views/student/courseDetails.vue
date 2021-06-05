@@ -41,7 +41,7 @@
                 slot="actions"
                 class="ant-card-actions"
               >
-                <a-button icon="eye" @click="preview(item.labId)">
+                <a-button icon="eye" v-if="item.homeworkTime != null" @click="preview(item.labId)">
                   预览作业
                 </a-button>
 
@@ -140,9 +140,10 @@
 
       <a-list
         class="comment-list"
-        :header="`共有 ${momentdata.length} 条评论`"
+        :header="`共有 ${allMomentdata.length} 条评论`"
         item-layout="horizontal"
-        :data-source="momentdata"
+        :data-source="allMomentdata"
+        :pagination="pagination"
       >
         <a-list-item slot="renderItem" slot-scope="item, index">
           <a-comment
@@ -189,6 +190,13 @@ export default {
       newScore: null,
       submitting: false,
       momentdata: [],
+      allMomentdata:[],
+      pagination: {
+        onChange: page => {
+          console.log(page);
+        },
+        pageSize: 5,
+      },
       commentValue: "",
       moment,
       loadingflag: false,
@@ -373,7 +381,7 @@ export default {
 
             index = this.mapRespLabid(resp.labId);
             this.lablist[index]["score"] = resp.score;
-            this.lablist[index]["homeworktime"] = resp.homeworktime;
+            this.lablist[index]["homeworkTime"] = resp.homeworkTime;
             this.$forceUpdate();
           }
         });
@@ -385,11 +393,11 @@ export default {
         asc: false,
       }).then((resp) => {
         if (resp) {
-          this.momentdata = resp;
-          this.msToDate();
+          this.allMomentdata = resp;
         }
       });
     },
+
     msToDate() {
       var i;
       for (i = 0; i < this.momentdata.length; i++) {
@@ -407,10 +415,7 @@ export default {
 
       return index;
     },
-    mapRespUserid(userid) {
-      var i, index;
-      // this.postRequest("api/")
-    },
+
     uploadscore(id) {
       console.log("newScore = ", this.newScore);
       this.postRequest("api/putuserscore", {
