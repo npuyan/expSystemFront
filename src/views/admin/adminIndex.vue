@@ -8,10 +8,14 @@
         position: 'fixed',
         left: 0,}">
       <div class="logo">
-        <a-input-search
+        <!-- <a-input-search
           aria-placeholder="搜索"
           @click="search"
-        ></a-input-search>
+        ></a-input-search> -->
+        <img
+          src="../../assets/logoko.png"
+          width="100%"
+        />
       </div>
       <a-menu
         theme="dark"
@@ -30,7 +34,14 @@
     <a-layout :style=" { marginLeft:
         '200px' }">
       <a-layout-header style="background: #fff; padding: 0; text-align: center">
+        <a-row type="flex">
+          <a-col :span="23" :order="1">
         <h1 style="font-size: 25px">{{ menuitem }}</h1>
+          </a-col>
+          <a-col :span="1" :order="2">
+        <a-button @click="backDefaultPage">退出</a-button>
+          </a-col>
+        </a-row>
       </a-layout-header>
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb style="margin: 16px 0">
@@ -43,7 +54,6 @@
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
-        Ant Design @ZTY
       </a-layout-footer>
     </a-layout>
   </a-layout>
@@ -117,12 +127,13 @@ export default {
     console.log("userName = ", sessionStorage.getItem("userName"))
   },
   methods: {
-    search: function () {
-    },
     meunitemselect({item, key, selectedKeys}) {
       this.menuitem = item.title
       this.$router.push({
           path: key})
+    },
+    backDefaultPage: function () {
+      this.$router.push({ path: "/" });
     },
     menuClick({item, key, keyPath}) {
       // 获取到当前的key,并且跳转
@@ -137,7 +148,7 @@ export default {
 
 <style scoped>
 #components-layout-demo-side .logo {
-  height: 32px;
+  height: 56px;
   background: rgba(255, 255, 255, 0.2);
   margin: 16px;
 }

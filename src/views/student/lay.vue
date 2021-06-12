@@ -7,11 +7,10 @@
               aria-placeholder="搜索"
               @click="search"
             ></a-input-search> -->
-          <a-col :span="2" :order="1">
+          <a-col :span="3" :order="1">
           <div class="logoleft">
             <img
               src="../../assets/logoko.png"
-              @click="backDefaultPage"
               width="100%"
             />
           </div>
@@ -29,7 +28,7 @@
             <a-menu-item key="2"> 选课系统 </a-menu-item>
           </a-menu>
           </a-col>
-          <a-col :span="6" :order="2">
+          <a-col :span="5" :order="2">
           </a-col>
           <a-col :span="6" :order="4">
           </a-col>
@@ -193,6 +192,7 @@ export default {
     },
 
     backDefaultPage: function () {
+
       this.$router.push({ path: "/" });
     },
   },
@@ -205,6 +205,7 @@ export default {
 }
 .logoleft {
   width: 100%;
+  height: 56px;
   display: block;
   float: left;
 }

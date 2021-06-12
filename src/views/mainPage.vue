@@ -3,8 +3,8 @@
     <a-layout-header>
       <div class="topHeader">
         <a-row type="flex">
-        <div class="logoleft" style="width: 10%">
-          <img src="../assets/logoko.png" @click="backDefaultPage" width="60%" />
+        <div class="logoleft" >
+          <img src="../assets/logoko.png" @click="backDefaultPage"  />
         </div>
         <div class="leftmenu">
           <a-tabs @tabClick="menuCallback">
@@ -28,12 +28,14 @@
 
       <div class="default-page">
     <div class="banner">
-      <img
+      <!-- <img
         v-for="(item, index) in imgArray"
         :key="index"
         :src="item"
         v-show="n == index"
-      />
+      /> -->
+      <img src="../assets/banner2.jpg" v-show="n == 0" />
+      <img src="../assets/banner3.jpg" v-show="n == 1" />
       <div class="banner-circle">
         <ul class="bannerpotdiv">
           <li class="bannerpot"
@@ -51,7 +53,7 @@
     <br />
     <div class="introduce">
       <h1>平台介绍</h1>
-      超算习堂（EasyHPC）是基于国家高性能计算环境，面向全国广大高校本科生与研究生提供高性能计算优质教育内容的一个在线教育实践平台，由中山大学、清华大学、北京大学、中国科技大学等多所国内一流高校共同合作研发，获得了国家重点研发计划“高性能计算”重点专项支持。国家超算广州中心、国家超算长沙中心、中科院超算中心、上海超算中心等多家超算中心为平台提供机时资源与技术支持。平台涵盖课程教育、在线编程、在线实训、案例学习等诸多内容，通过结合丰富优质的课程资源与易于上手、即写即用的编程实践环境，使得用户可以在短期内轻松入门高性能计算并掌握基础的并行编程知识。对于有一定基础的高级用户，更有来自两百多道编程实战题、50个高性能计算经典案例以及编程竞赛平台的进阶挑战。超算习堂致力于提升广大学生和用户在高性能计算领域上的科学素养与实践能力，为我国高性能计算的可持续发展奠定基础。
+      NWPU实验云课堂 是基于集群服务器环境，面向西工大学生与教师提供在线实验教学的一个在线教育实践平台，平台涵盖课程实验，成绩管理等多个功能，通过结合丰富优质的课程资源与易于上手、即写即用的编程实践环境，使得用户可以在短期内轻松上手计算机实验课程，提高实验教学的效率。
     </div>
     <br />
     <br />
@@ -60,7 +62,6 @@
   </div>
     </a-layout-content>
     <a-layout-footer style="text-align: center">
-      Ant Design ©2018 Created by Ant UED
     </a-layout-footer>
   </a-layout>
 </template>
@@ -93,9 +94,8 @@ export default {
 
       n: 0, //默认图片是第一张开始
       imgArray: [
-        "https://easyhpc.net/carousels/carousel-1.jpg",
-        "https://easyhpc.net/carousels/carousel-2.jpg",
-        "https://easyhpc.net/carousels/carousel-3.jpg",
+        "../assets/banner2.jpg",
+        "../assets/banner3.jpg"
       ], //获取图片位置
     };
   },
@@ -156,13 +156,14 @@ export default {
 .topHeader {
   width: 100%;
 }
-/* .logoleft {
-  width: 10%;
+.logoleft {
+  width: 15%;
   display: block;
   float: left;
-} */
+  height: 56px;
+}
 .leftmenu {
-  width: 70%;
+  width: 65%;
   text-align: left;
   display: block;
   float: left;
@@ -175,6 +176,7 @@ export default {
 }
 .banner {
   width: 100%;
+  height: 300px;
 }
 img {
   width: 100%;

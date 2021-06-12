@@ -232,7 +232,7 @@ export default {
 
         this.postRequest(this.saveUrl, { courselab: values }).then((resp) => {
           if (resp && resp.status === 200) {
-            alert("编辑成功");
+            this.$message.success("实验添加成功");
             this.getLab();
           } else {
             alert("编辑失败");

@@ -4,7 +4,6 @@
       <div class="logo">
         <img
           src="../../assets/logoko.png"
-          @click="backDefaultPage"
           width="100%"
         />
 
@@ -31,7 +30,14 @@
     </a-layout-sider>
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0">
+        <a-row type="flex">
+          <a-col :span="23" :order="1">
         <h1 style="font-size: 25px">{{ menuitem }}</h1>
+          </a-col>
+          <a-col :span="1" :order="2">
+        <a-button @click="backDefaultPage">退出</a-button>
+          </a-col>
+        </a-row>
       </a-layout-header>
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb style="margin: 16px 0">
@@ -52,7 +58,6 @@
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
-        Ant Design ©2018 Created by Ant UED
       </a-layout-footer>
     </a-layout>
   </a-layout>
@@ -127,7 +132,7 @@ export default {
 
 <style>
 #components-layout-demo-side .logo {
-  /* height: 90px; */
+  height: 56px;
   background: rgba(255, 255, 255, 0.2);
   margin: 16px;
 }
