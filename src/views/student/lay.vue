@@ -8,7 +8,7 @@
               @click="search"
             ></a-input-search> -->
           <a-col :span="3" :order="1">
-          <div class="logoleft">
+          <div class="logoleft2">
             <img
               src="../../assets/logoko.png"
               width="100%"
@@ -203,7 +203,7 @@ export default {
 .topHeader {
   width: 100%;
 }
-.logoleft {
+.logoleft2 {
   width: 100%;
   height: 56px;
   display: block;
