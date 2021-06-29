@@ -20,7 +20,6 @@ const columnsName = [
   'type', 
   'tag', 
   'time', 
-  'picture', 
   'createTime',
 ]
 const columns = [
@@ -54,11 +53,6 @@ const columns = [
     title: '标志',
     dataIndex: 'tag',
     scopedSlots: {customRender: 'tag'}
-  },
-  {
-    title: '图片路径',
-    dataIndex: 'picture',
-    scopedSlots: {customRender: 'picture'}
   },
   {
     title: '创建时间',

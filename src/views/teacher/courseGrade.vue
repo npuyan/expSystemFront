@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-tabs @tabClick="callback">
+    <a-tabs type="card" @tabClick="callback">
       <a-tab-pane
         :key="courseitem.courseId"
         :tab="courseitem.courseName"

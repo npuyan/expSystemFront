@@ -18,105 +18,99 @@
     <br />
 
     <a-card title="课程详情" class="coursepage">
-      <!-- <div v-if="FormFlag === false" >
-        <a-descriptions  bordered layout="vertical" :column="1">
-          <a-descriptions-item label="课程名称">
-            {{ course_item.courseName }}
-          </a-descriptions-item>
-          <a-descriptions-item label="课程类别">
-            {{ course_item.type }}
-          </a-descriptions-item>
-          <a-descriptions-item label="课程标签">
-            {{ course_item.tag }}
-          </a-descriptions-item>
-          <a-descriptions-item label="课程时长">
-            {{ course_item.time }}
-          </a-descriptions-item>
-          <a-descriptions-item label="课程描述" :span="3">
-            {{ course_item.remark }}
-          </a-descriptions-item>
-        </a-descriptions>
-        <br />
-        <br />
-      </div> -->
 
         <a-form  :form="form" @submit="handleSubmit">
-          <a-form-item v-if="FormFlag === true" v-bind="formItemLayout" label="课程名称" has-feedback>
-            <a-input
+          <a-form-item v-bind="formItemLayout" label="课程名称" has-feedback>
+            <a-input v-if="display === false" :placeholder="course_item.courseName"
               v-decorator="[
                 'course_name',
-                { initialValue: course_item.courseName },
                 {
                   rules: [{ required: true, message: '请输入课程名称!' }],
                 },
               ]"
             />
+            <span v-if="display === true"  class="ant-form-text">
+              {{course_item.courseName}}
+            </span>
           </a-form-item>
 
-          <a-form-item v-if="FormFlag === false" v-bind="formItemLayout" label="课程名称" has-feedback>
-            <a-input
+          <!-- <a-form-item v-if="FormFlag === false" v-bind="formItemLayout" label="课程名称" has-feedback>
+            <a-input v-if="display === false"
               v-decorator="[
                 'course_name',
+                { initialValue: course_item.courseName},
                 {
                   rules: [{ required: true, message: '请输入课程名称!' }],
                 },
               ]"
             />
-          </a-form-item>
+            <span v-if="display === true"  class="ant-form-text">
+              {{course_item.courseName}}
+            </span>
+          </a-form-item> -->
 
           <a-form-item v-bind="formItemLayout" label="课程类别" has-feedback>
-            <a-input
+            <a-input v-if="display === false" :placeholder="course_item.type"
               v-decorator="[
                 'type',
-                { initialValue: course_item.type },
                 {
                   rules: [{ required: true, message: '请输入课程类别!' }],
                 },
               ]"
             />
+            <span  v-if="display === true" class="ant-form-text">
+              {{course_item.type}}
+            </span>
           </a-form-item>
           <a-form-item v-bind="formItemLayout" label="课程标签" has-feedback>
-            <a-input
+            <a-input v-if="display === false"  :placeholder="course_item.tag"
               v-decorator="[
                 'tag',
-                { initialValue: course_item.tag },
                 {
                   rules: [{ required: true, message: '请输入课程标签!' }],
                 },
               ]"
             />
+            <span  v-if="display === true" class="ant-form-text">
+              {{course_item.tag}}
+            </span>
           </a-form-item>
           <a-form-item v-bind="formItemLayout" label="课程时长" has-feedback>
-            <a-input
+            <a-input v-if="display === false" :placeholder="course_item.time"
               v-decorator="[
                 'time',
-                { initialValue: course_item.time },
                 {
                   rules: [{ required: true, message: '请输入课程时长!' }],
                 },
               ]"
             />
+            <span  v-if="display === true" class="ant-form-text">
+              {{course_item.time}}
+            </span>
           </a-form-item>
           <a-form-item v-bind="formItemLayout" label="课程描述" has-feedback>
-            <a-textarea
+            <a-textarea v-if="display === false"  :placeholder="course_item.remark"
               v-decorator="[
                 'remark',
-                { initialValue: course_item.remark },
                 {
                   rules: [{ required: true, message: '请输入课程描述!' }],
                 },
               ]"
             />
+            <span v-if="display === true" class="ant-form-text">
+              {{course_item.remark}}
+            </span>
           </a-form-item>
 
-          <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
+          <a-form-item   :wrapper-col="{ span: 12, offset: 6 }">
             <a-space :size="300">
-              <a-button type="primary" html-type="submit"> Submit </a-button>
-
+              <a-button v-if="display === false" type="primary" html-type="submit"> 提交 </a-button>
+              
               <!-- <a-button type="primary"  @click="next()">下一步</a-button> -->
             </a-space>
           </a-form-item>
         </a-form>
+        <a-button v-if="display === true" type="default" @click="updateinfo"> 修改 </a-button>
     </a-card>
   </div>
 </template>
@@ -146,7 +140,8 @@ export default {
       addUrl: "api/addcourse",
       statusUrl: "api/getcoursebyid",
       saveUrl: "",
-      FormFlag: true
+      FormFlag: true,
+      display: true
     };
   },
 
@@ -159,9 +154,10 @@ export default {
     console.log(this.course_item);
     if (this.course_item.courseName === "") {
       this.saveUrl = this.addUrl;
+      this.display = false
     } else {
       this.saveUrl = this.updateUrl;
-      this.FormFlag = false
+      this.display = true
     }
     console.log("saveUrl = ", this.saveUrl);
   },
@@ -223,6 +219,10 @@ export default {
         return e;
       }
       return e && e.fileList;
+    },
+    updateinfo() {
+      this.display = false
+      this.FormFlag = true
     },
 
     editAttribute(item) {

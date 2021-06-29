@@ -38,8 +38,10 @@
         </a-modal> -->
       </template>
       <template slot="gradeOpt" slot-scope="text, record, index">
-        <a-button @click="setGrade(record)">设置分数</a-button>
-        <a-input-number :min="0" :max="100" :step="0.1" @change="onChangeGrade" />
+        
+        <a-input-number :min="0" :step="0.1" @change="onChangeGrade" >
+        </a-input-number>
+        <a-button @click="setGrade(record)">确定</a-button>
       </template>
     </a-table>
     <a-button @click="downloadAllHomework()">下载所有学生作业</a-button>

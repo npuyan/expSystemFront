@@ -254,11 +254,13 @@ export default {
     },
     uploadHomework(info) {
       console.log("uploadUrl = ", this.uploadUrl);
+      
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
       }
       if (info.file.status === "done") {
         this.$message.success(`${info.file.name} file uploaded successfully`);
+        this.setvalues();
       } else if (info.file.status === "error") {
         this.$message.error(`${info.file.name} file upload failed.`);
       }

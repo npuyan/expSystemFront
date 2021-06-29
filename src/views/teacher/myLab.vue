@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-tabs @tabClick="callback">
+    <a-tabs type="card" @tabClick="callback">
       <a-tab-pane
         :key="courseitem.courseId"
         :tab="courseitem.courseName"
@@ -31,7 +31,6 @@ const columnsName = [
   'courseId',
   'courseName',
   'envId',
-  'docPath',
   'remarks',
   'sectionId'
 ]
@@ -59,12 +58,6 @@ const columns = [
     dataIndex: 'envId',
     sorter: false,
     scopedSlots: { customRender: 'envId' }
-  },
-  {
-    title: '实验文档路径',
-    dataIndex: 'docPath',
-    sorter: false,
-    scopedSlots: { customRender: 'docPath' }
   },
   {
     title: '实验描述',
